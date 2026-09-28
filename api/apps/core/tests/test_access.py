@@ -25,11 +25,11 @@ def test_writes_are_refused_even_when_a_view_defines_them():
     assert response.status_code == 403
 
 
-def test_github_pages_origin_is_allowed(api_client):
-    """The GitHub Pages site may read the API cross-origin."""
-    response = api_client.get("/api/health/", HTTP_ORIGIN="https://jsimerly.github.io")
+def test_the_site_origin_is_allowed(api_client):
+    """The site at jacob-simerly.com may read the API cross-origin."""
+    response = api_client.get("/api/health/", HTTP_ORIGIN="https://jacob-simerly.com")
 
-    assert response["Access-Control-Allow-Origin"] == "https://jsimerly.github.io"
+    assert response["Access-Control-Allow-Origin"] == "https://jacob-simerly.com"
 
 
 def test_other_origins_are_not_allowed(api_client):

@@ -1,5 +1,5 @@
 /**
- * The site as a visitor meets it: the production build under /personal-site/,
+ * The site as a visitor meets it: the production build at the site root,
  * reading the real API cross-origin.
  */
 import { expect, test } from './fixtures'
@@ -18,7 +18,7 @@ test('opening a project loads its data from the API', async ({ page }) => {
   await visit(page)
   await page.getByRole('link', { name: /^Example project/ }).click()
 
-  await expect(page).toHaveURL(/\/personal-site\/projects\/example$/)
+  await expect(page).toHaveURL('/projects/example')
   await expect(page.getByRole('listitem')).toHaveText(['First item', 'Second item', 'Third item'])
   await expectNoHorizontalScroll(page)
 })
@@ -35,7 +35,7 @@ test('the name in the header leads back home', async ({ page }) => {
   await visit(page, 'projects/example')
   await page.getByRole('link', { name: 'Jacob Simerly', exact: true }).click()
 
-  await expect(page).toHaveURL(/\/personal-site\/$/)
+  await expect(page).toHaveURL('/')
   await expect(page.getByRole('heading', { level: 1, name: 'Jacob Simerly', exact: true })).toBeVisible()
 })
 

@@ -46,9 +46,9 @@ describe('App', () => {
     expect(await screen.findByText('API online')).toBeInTheDocument()
   })
 
-  // GitHub Pages serves the site under /personal-site/, the same shape main.jsx
-  // gets from Vite's BASE_URL. Deep links must still route and fetch.
-  it('loads a project page under the GitHub Pages base path', async () => {
+  // Without the custom domain, Pages serves the site under /personal-site/,
+  // which main.jsx gets from Vite's BASE_URL. Deep links must still route and fetch.
+  it('loads a project page when the site is served under a base path', async () => {
     renderAt('/personal-site/projects/example', '/personal-site/')
 
     expect(await screen.findByText('First item')).toBeInTheDocument()

@@ -1,9 +1,8 @@
 /**
  * Shared E2E steps.
  *
- * The site lives under /personal-site/ (the baseURL), so navigation uses
- * relative paths: page.goto('/x') would skip the base path and miss the site.
- * visit() takes either form.
+ * Navigation goes through visit(), which resolves paths against the baseURL,
+ * so the specs work whether the site sits at a domain root or under a path.
  */
 import { expect } from './fixtures'
 

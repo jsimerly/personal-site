@@ -2,9 +2,9 @@
  * The E2E lane: real Chromium against the real stack, no API mocks.
  *
  * Prod-shaped on purpose. Vite builds the site the way GitHub Pages serves it
- * (under /personal-site/, calling the API cross-origin) and `vite preview`
- * serves that build. Django runs api.settings.e2e: DEBUG off, JSON only, CORS
- * open to exactly this origin. A base-path or CORS mistake fails here first.
+ * (at the root of jacob-simerly.com, calling the API cross-origin) and
+ * `vite preview` serves that build. Django runs api.settings.e2e: DEBUG off,
+ * JSON only, CORS open to exactly this origin. A CORS mistake fails here first.
  *
  * Playwright boots and owns both servers, so `npm run e2e` is the whole
  * ceremony. Every spec runs on a phone and on a laptop.
@@ -22,7 +22,6 @@ const API_PYTHON =
 
 const SITE = 'http://127.0.0.1:5175'
 const API = 'http://127.0.0.1:8001'
-const BASE_PATH = '/personal-site'
 
 export default defineConfig({
   testDir: './e2e',
@@ -33,8 +32,7 @@ export default defineConfig({
   retries: 0,
   reporter: process.env.CI ? [['list'], ['github']] : [['list']],
   use: {
-    // Trailing slash matters: specs navigate with relative paths (see helpers.js).
-    baseURL: `${SITE}${BASE_PATH}/`,
+    baseURL: `${SITE}/`,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
@@ -56,8 +54,8 @@ export default defineConfig({
       command:
         'npx vite build --outDir .e2e-dist && npx vite preview --outDir .e2e-dist --host 127.0.0.1 --port 5175 --strictPort',
       cwd: HERE,
-      env: { BASE_PATH, VITE_API_BASE_URL: API },
-      url: `${SITE}${BASE_PATH}/`,
+      env: { VITE_API_BASE_URL: API },
+      url: `${SITE}/`,
       reuseExistingServer: false,
       timeout: 120_000,
     },
