@@ -1,7 +1,7 @@
 import { Suspense, useEffect } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router'
 import { profile } from '../content/profile'
-import ApiStatus from './ApiStatus.jsx'
+import { useApi } from '../hooks/useApi'
 import SocialLinks from './SocialLinks.jsx'
 
 const navLink =
@@ -13,6 +13,9 @@ export default function Layout() {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
+  // A quiet ping on load, so the Cloud Run API starts waking before anyone
+  // opens a project that needs it.
+  useApi('/api/health/')
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -44,15 +47,12 @@ export default function Layout() {
         </Suspense>
       </main>
 
-      <footer className="border-t border-zinc-200 dark:border-zinc-800">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-6 text-sm text-zinc-500">
+      <footer className="border-t border-zinc-900">
+        <div className="mx-auto flex h-(--footer-height) max-w-6xl items-center justify-between px-4 text-xs text-zinc-600">
           <span>
             © {new Date().getFullYear()} {profile.name}
           </span>
-          <div className="flex items-center gap-4">
-            <ApiStatus />
-            <SocialLinks size={18} />
-          </div>
+          <SocialLinks size={16} className="-mr-2" />
         </div>
       </footer>
     </div>

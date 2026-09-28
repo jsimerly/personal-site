@@ -1,6 +1,11 @@
 // The journey, oldest first.
 //
-// - `side` is 'work' (jobs and school) or 'build' (projects and learning).
+// - `side` is 'work' (the formal side: jobs and school) or 'build' (the
+//   personal side: projects and learning).
+// - `org` (formal side) is the school or company. Consecutive entries at the
+//   same place share one faint rail down the margin, which runs until that
+//   place's `end` or the next place starts, so changes show without shouting.
+// - `tag` overrides the card's label ('Work' or 'Build' by default).
 // - `skills` maps each skill the entry used to how much it grows there. As
 //   you scroll past the entry, those skills jump into the basket, and each
 //   one grows by its number. A skill's first appearance is where it's picked
@@ -20,6 +25,9 @@ export const journey = [
   {
     date: '2020-05',
     side: 'work',
+    end: '2022-05',
+    tag: 'School',
+    org: '[University]',
     title: '[Placeholder] B.S. in [Major], [University]',
     summary: '[Placeholder: where you studied and what you focused on.]',
     skills: { Statistics: 2, Java: 1, 'Data structures': 1 },
@@ -66,6 +74,7 @@ export const journey = [
     date: '2022-06',
     end: '2024-10',
     side: 'work',
+    org: '[Company A]',
     title: '[Placeholder] Data Analyst at [Company A]',
     summary: '[Placeholder: what you owned there and what changed because of it.]',
     skills: { SQL: 3, Python: 2, Excel: 2, Tableau: 2, 'Data analysis': 2, Statistics: 1 },
@@ -183,6 +192,7 @@ export const journey = [
     date: '2024-10',
     end: 'now',
     side: 'work',
+    org: '[Company B]',
     title: '[Placeholder] Software Engineer at [Company B]',
     summary: '[Placeholder: what you build there and for whom.]',
     skills: {
@@ -200,6 +210,7 @@ export const journey = [
   {
     date: '2025-08',
     side: 'work',
+    org: '[Company B]',
     title: '[Placeholder] Led [a big project] at [Company B]',
     summary: '[Placeholder: a promotion or milestone worth its own dot.]',
     skills: { 'System design': 3, AWS: 2, TypeScript: 1, Kubernetes: 2 },

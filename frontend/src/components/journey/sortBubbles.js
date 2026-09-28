@@ -4,9 +4,9 @@
 // bubble centers relative to the layout's center, the same as packBubbles, so
 // bubbles can glide between the cloud and the rows. Pure.
 export const LABEL_WIDTH = 170
-const GAP_X = 10
-const GAP_Y = 10
-const SECTION_GAP = 36
+const GAP_X = 8
+const GAP_Y = 8
+const SECTION_GAP = 22
 const OTHER = 'Other'
 
 // bubbles: [{ key, w, h }]. categories: [{ name, skills }].

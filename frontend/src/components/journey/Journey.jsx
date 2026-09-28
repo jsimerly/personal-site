@@ -1,7 +1,9 @@
 import { useMemo, useRef, useState } from 'react'
 import { journey, skillTotals } from '../../content/journey'
 import BubbleCluster from './BubbleCluster.jsx'
+import { erasOf } from './eras'
 import JourneyEntry from './JourneyEntry.jsx'
+import JourneyProjects from './JourneyProjects.jsx'
 import SkillTray from './SkillTray.jsx'
 import WhatsNext from './WhatsNext.jsx'
 import { useJourneyProgress } from './useJourneyProgress'
@@ -39,6 +41,8 @@ function firstUses(entries) {
 
 const YEARS = groupByYear(journey)
 const NEW_SKILLS = firstUses(journey)
+// Where each new school or job starts: entry index -> place name.
+const ERA_STARTS = new Map(erasOf(journey).map(({ start, org }) => [start, org]))
 
 // Chips fly into the basket only when scrolling down past a few entries at a
 // time; a fast fling or a scroll back up just updates the basket. Decided
@@ -62,22 +66,39 @@ export default function Journey() {
   const flying = useFlying(passed)
   useSkillFlights(passed, flying, '[data-basket="desktop"]')
 
+  // Skills picked in the sorted basket choose the projects shown after it.
+  // Picking only works once the rows have landed; scrolling back up into the
+  // sort puts them down again.
+  const [picked, setPicked] = useState([])
+  if (sortProgress < 1 && picked.length) setPicked([])
+  const togglePick = (skill) =>
+    setPicked((current) => (current.includes(skill) ? current.filter((each) => each !== skill) : [...current, skill]))
+
   return (
     <section aria-labelledby="journey-title" className="mt-20">
       <h2 id="journey-title" className="text-2xl font-semibold tracking-tight">
         The journey so far
       </h2>
       <p className="mt-2 max-w-2xl text-zinc-400">
-        <span className="text-work">Work</span> on one side, <span className="text-build">things I built</span> on the
-        other. As you scroll, each one&apos;s skills jump into the middle and grow every time I use them again,
-        colored by where they came from: <span className="text-work">work</span>,{' '}
-        <span className="text-build">building</span>, or <span className="text-both">both</span>.
+        <span className="text-work">Work and school</span> on the left, <span className="text-build">personal</span>{' '}
+        projects on the right. As you scroll, each one&apos;s skills jump into the middle and grow every time I use
+        them again, colored by where they came from, with <span className="text-both">purple</span> for both.
       </p>
 
       {/* The timeline, then room to keep scrolling while the basket sorts
           itself. The basket rides down the middle of both. */}
       <div className="relative mt-10">
         <div ref={timelineRef} className="relative">
+          {/* Which side is which: a slim bar pinned under the site header
+              while the timeline scrolls, so cards pass beneath it. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none sticky top-14 z-20 mb-6 hidden justify-between border-b border-zinc-900 bg-zinc-950/85 py-2 text-[11px] font-semibold tracking-widest uppercase backdrop-blur md:flex"
+          >
+            <p className="text-work">Work and School</p>
+            <p className="text-build">Personal</p>
+          </div>
+
           <div aria-hidden="true" className="absolute inset-y-0 left-3 w-0.5 -translate-x-1/2 bg-zinc-800 md:left-1/2">
             <div
               className="w-full bg-linear-to-b from-work via-both to-build shadow-[0_0_6px_var(--color-both)] transition-[height] duration-150"
@@ -100,6 +121,7 @@ export default function Journey() {
                       entry={entry}
                       index={index}
                       newSkills={NEW_SKILLS[index]}
+                      era={ERA_STARTS.get(index)}
                       revealed={index < revealed}
                       passed={index < passed}
                     />
@@ -110,7 +132,7 @@ export default function Journey() {
           </ol>
 
           {/* The lived part of the line ends here. */}
-          <div className="relative mt-12 h-4">
+          <div data-journey-end className="relative mt-12 h-4">
             <span
               aria-hidden="true"
               className={`absolute top-0 left-3 size-4 -translate-x-1/2 rounded-full md:left-1/2 ${
@@ -124,7 +146,7 @@ export default function Journey() {
         </div>
 
         {/* Past today the line keeps going, dashed, to what's next. The basket
-            sorts itself along this stretch. */}
+            sorts itself along this stretch, then catches against the projects. */}
         <div ref={stageRef} aria-hidden="true" className="relative hidden h-[90vh] lg:block">
           <span className="absolute inset-y-0 left-1/2 -translate-x-1/2 border-l-2 border-dashed border-zinc-700" />
         </div>
@@ -136,10 +158,13 @@ export default function Journey() {
             popDelay={flying ? FLIGHT_MS : 0}
             width={CLUSTER_WIDTH}
             sortedWidth={SORTED_WIDTH}
+            picked={picked}
+            onToggle={togglePick}
           />
         </div>
       </div>
 
+      <JourneyProjects picked={picked} onClear={() => setPicked([])} />
       <SkillTray className="lg:hidden" totals={totals} complete={complete} />
       <WhatsNext />
     </section>

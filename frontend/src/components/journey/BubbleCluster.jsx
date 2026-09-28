@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { skillCategories } from '../../content/skillCategories'
-import { SORTED_COLORS, bubbleColors, bubbleFontPx, sortedFontPx } from './bubble'
+import { PICKED_COLORS, SORTED_COLORS, bubbleColors, bubbleFontPx, sortedFontPx } from './bubble'
 import { packBubbles } from './packBubbles'
 import { rowProgress, sortBubbles } from './sortBubbles'
 
@@ -12,7 +12,9 @@ import { rowProgress, sortBubbles } from './sortBubbles'
 // kind of skill, tied to the scroll (`sortProgress`, 0 to 1): rows assemble
 // one after another, each label fading in as its bubbles arrive, and it all
 // runs backward if you scroll up. As a row lands, its bubbles stop bobbing
-// and settle into an easier-to-read size and a single purple.
+// and settle into an easier-to-read size and a single purple, and a heading
+// grows in above them. Once every row has landed, each skill can be clicked
+// (several at once, `picked` / `onToggle`) to pick the projects shown below.
 //
 // Timing: in the cloud, neighbors make room right away, so a fast scroll
 // never leaves it scrunched up, and only a newly collected bubble waits
@@ -23,6 +25,7 @@ const FONT = (px) => `500 ${px}px "Inter Variable", ui-sans-serif, system-ui, sa
 const MOVE_MS = 450
 const FOLLOW_MS = 140
 const LABEL_SLIDE_PX = 16
+const HEADING_PX = 76
 // Faint lines between the kinds of skill once sorted. Set to false for none.
 const SHOW_DIVIDERS = true
 let measuringContext
@@ -44,10 +47,11 @@ function seed(text) {
 }
 
 const mix = (from, to, t) => from + (to - from) * t
+const clamp01 = (value) => Math.min(1, Math.max(0, value))
 
 const EMPTY_CLOUD = { bubbles: null, width: 0, layout: packBubbles([]) }
 
-export default function BubbleCluster({ totals, sortProgress, popDelay, width, sortedWidth }) {
+export default function BubbleCluster({ totals, sortProgress, popDelay, width, sortedWidth, picked, onToggle }) {
   const bubbles = useMemo(
     () =>
       totals.map((skillTotal) => {
@@ -85,103 +89,148 @@ export default function BubbleCluster({ totals, sortProgress, popDelay, width, s
   )
 
   const sorting = sortProgress > 0
+  const settledRows = sortProgress >= 1
   const height = mix(cloudLayout.height, rows.height, rowProgress(sortProgress, 0, 1))
+  const headingIn = clamp01((sortProgress - 0.35) / 0.65)
   const moveMs = sorting ? FOLLOW_MS : MOVE_MS
+
+  // Keep the whole block (heading and skills) centered on screen, but never
+  // tucked under the site header.
+  const box = useRef(null)
+  const [boxHeight, setBoxHeight] = useState(0)
+  useEffect(() => {
+    if (!box.current || typeof ResizeObserver === 'undefined') return undefined
+    const observer = new ResizeObserver(([entry]) => setBoxHeight(entry.contentRect.height))
+    observer.observe(box.current)
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <div
+      ref={box}
       data-basket="desktop"
       className="sticky transition-[top] ease-out"
-      style={{ top: `calc(50vh - ${height / 2 + 12}px)`, transitionDuration: `${moveMs}ms` }}
+      style={{ top: `max(4.5rem, calc(50vh - ${boxHeight / 2}px))`, transitionDuration: `${moveMs}ms` }}
     >
-      <p
-        className="relative z-1 text-center text-xs font-semibold tracking-widest text-zinc-500 uppercase"
-        style={{ opacity: 1 - Math.min(1, sortProgress * 4) }}
-      >
-        {/* Its own background, so the timeline's spine doesn't run through it. */}
-        <span className="bg-zinc-950 px-2 py-0.5">Skills</span>
-      </p>
-      {totals.length === 0 ? (
-        <p className="mt-3 text-center text-sm text-zinc-600">Scroll, and skills will jump in here.</p>
-      ) : (
-        <ul
-          className="relative mt-3 transition-[height] ease-out"
-          style={{ height, transitionDuration: `${moveMs}ms` }}
-        >
-          {sorting &&
-            SHOW_DIVIDERS &&
-            rows.dividers.map(({ section, y }) => (
-              <li
-                key={`divider-${section}`}
-                aria-hidden="true"
-                className="absolute top-1/2 left-1/2 border-t border-zinc-800"
-                style={{
-                  width: rows.width,
-                  opacity: rowProgress(sortProgress, section, rows.sections),
-                  transform: `translate(${-rows.width / 2}px, ${y}px)`,
-                }}
-              />
-            ))}
-          {sorting &&
-            rows.labels.map(({ name, section, x, y }) => {
-              const arrived = rowProgress(sortProgress, section, rows.sections)
+      {totals.length > 0 && (
+        <>
+          {/* Once the heading arrives, the section sits on its own backdrop so
+              the dashed line passes behind it, not through the words. */}
+          {sorting && (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-y-8 left-1/2 -translate-x-1/2 bg-zinc-950 mask-y-from-90%"
+              style={{ width: sortedWidth + 64, opacity: headingIn }}
+            />
+          )}
+          <p
+            className="relative z-1 text-center text-xs font-semibold tracking-widest text-zinc-500 uppercase"
+            style={{ opacity: 1 - Math.min(1, sortProgress * 4) }}
+          >
+            {/* Its own background, so the timeline's spine doesn't run through it. */}
+            <span className="bg-zinc-950 px-2 py-0.5">Skills</span>
+          </p>
+
+          {sorting && (
+            <div
+              className="relative left-1/2 -translate-x-1/2 overflow-hidden text-center"
+              style={{ width: sortedWidth, height: HEADING_PX * headingIn, opacity: headingIn }}
+            >
+              <h3 className="text-2xl font-semibold tracking-tight text-zinc-50">What I bring today</h3>
+              <p className="mt-1.5 text-sm text-zinc-400">
+                Everything the journey added up to. Click any skill to see the projects behind it.
+              </p>
+            </div>
+          )}
+
+          <ul
+            className="relative mt-3 transition-[height] ease-out"
+            style={{ height, transitionDuration: `${moveMs}ms` }}
+            aria-label={settledRows ? 'Skills: pick one or more to see related projects' : 'Skills'}
+          >
+            {sorting &&
+              SHOW_DIVIDERS &&
+              rows.dividers.map(({ section, y }) => (
+                <li
+                  key={`divider-${section}`}
+                  aria-hidden="true"
+                  className="absolute top-1/2 left-1/2 border-t border-zinc-800"
+                  style={{
+                    width: rows.width,
+                    opacity: rowProgress(sortProgress, section, rows.sections),
+                    transform: `translate(${-rows.width / 2}px, ${y}px)`,
+                  }}
+                />
+              ))}
+            {sorting &&
+              rows.labels.map(({ name, section, x, y }) => {
+                const arrived = rowProgress(sortProgress, section, rows.sections)
+                return (
+                  <li
+                    key={`label-${name}`}
+                    aria-hidden="true"
+                    className="absolute top-1/2 left-1/2 text-xs font-semibold tracking-widest whitespace-nowrap text-zinc-400 uppercase"
+                    style={{
+                      opacity: arrived,
+                      transform: `translate(${x - LABEL_SLIDE_PX * (1 - arrived)}px, calc(${y}px - 50%))`,
+                    }}
+                  >
+                    {name}
+                  </li>
+                )
+              })}
+            {bubbles.map(({ key, total: skillTotal, ...size }) => {
+              const inCloud = cloudLayout.positions.get(key)
+              const inRow = rows.positions.get(key)
+              const t = sorting ? rowProgress(sortProgress, inRow.section, rows.sections) : 0
+              const x = mix(inCloud.x, inRow.x, t)
+              const y = mix(inCloud.y, inRow.y, t)
+              const w = mix(size.w, size.rowW, t)
+              const h = mix(size.h, size.rowH, t)
+              const font = mix(size.font, size.rowFont, t)
+              // Past halfway to its row, a bubble stops bobbing and turns purple.
+              const settled = t > 0.5
+              const isPicked = picked.includes(key)
+              const colors = isPicked ? PICKED_COLORS : settled ? SORTED_COLORS : bubbleColors(skillTotal)
+              const rhythm = seed(key)
               return (
                 <li
-                  key={`label-${name}`}
-                  aria-hidden="true"
-                  className="absolute top-1/2 left-1/2 text-xs font-semibold tracking-widest whitespace-nowrap text-zinc-400 uppercase"
+                  key={key}
+                  data-basket-skill={key}
+                  className={`absolute top-1/2 left-1/2 transition-transform ease-out motion-reduce:animate-none motion-reduce:transition-none ${
+                    settled ? '' : 'animate-float'
+                  }`}
                   style={{
-                    opacity: arrived,
-                    transform: `translate(${x - LABEL_SLIDE_PX * (1 - arrived)}px, calc(${y}px - 50%))`,
+                    transform: `translate(${x - w / 2}px, ${y - h / 2}px)`,
+                    transitionDuration: `${moveMs}ms`,
+                    animationDuration: `${3.2 + rhythm * 2.4}s`,
+                    animationDelay: `${-rhythm * 4}s`,
                   }}
                 >
-                  {name}
+                  <button
+                    type="button"
+                    disabled={!settledRows}
+                    aria-pressed={settledRows ? isPicked : undefined}
+                    onClick={() => onToggle(key)}
+                    className="flex animate-pop items-center justify-center rounded-full font-medium whitespace-nowrap text-zinc-50 transition-all duration-400 [animation-fill-mode:backwards] enabled:cursor-pointer enabled:hover:brightness-125 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-both disabled:cursor-default motion-reduce:animate-none motion-reduce:transition-none"
+                    style={{
+                      width: w,
+                      height: h,
+                      fontSize: `${font}px`,
+                      ...colors,
+                      // With some skills picked, the rest step back.
+                      ...(picked.length && !isPicked ? { opacity: 0.5 } : {}),
+                      animationDelay: `${popDelay}ms`,
+                    }}
+                  >
+                    {key}
+                  </button>
                 </li>
               )
             })}
-          {bubbles.map(({ key, total: skillTotal, ...size }) => {
-            const inCloud = cloudLayout.positions.get(key)
-            const inRow = rows.positions.get(key)
-            const t = sorting ? rowProgress(sortProgress, inRow.section, rows.sections) : 0
-            const x = mix(inCloud.x, inRow.x, t)
-            const y = mix(inCloud.y, inRow.y, t)
-            const w = mix(size.w, size.rowW, t)
-            const h = mix(size.h, size.rowH, t)
-            const font = mix(size.font, size.rowFont, t)
-            // Past halfway to its row, a bubble stops bobbing and turns purple.
-            const settled = t > 0.5
-            const rhythm = seed(key)
-            return (
-              <li
-                key={key}
-                data-basket-skill={key}
-                title={key}
-                className={`absolute top-1/2 left-1/2 transition-transform ease-out motion-reduce:animate-none motion-reduce:transition-none ${
-                  settled ? '' : 'animate-float'
-                }`}
-                style={{
-                  transform: `translate(${x - w / 2}px, ${y - h / 2}px)`,
-                  transitionDuration: `${moveMs}ms`,
-                  animationDuration: `${3.2 + rhythm * 2.4}s`,
-                  animationDelay: `${-rhythm * 4}s`,
-                }}
-              >
-                <span
-                  className="flex animate-pop items-center justify-center rounded-full font-medium whitespace-nowrap text-zinc-50 transition-all duration-400 [animation-fill-mode:backwards] motion-reduce:animate-none motion-reduce:transition-none"
-                  style={{
-                    width: w,
-                    height: h,
-                    fontSize: `${font}px`,
-                    ...(settled ? SORTED_COLORS : bubbleColors(skillTotal)),
-                    animationDelay: `${popDelay}ms`,
-                  }}
-                >
-                  {key}
-                </span>
-              </li>
-            )
-          })}
-        </ul>
+          </ul>
+
+        </>
       )}
     </div>
   )

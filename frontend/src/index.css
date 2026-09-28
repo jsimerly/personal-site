@@ -64,6 +64,8 @@
 @layer base {
   :root {
     color-scheme: dark;
+    /* The footer's height, so the home page's last screen can account for it. */
+    --footer-height: 3rem;
   }
 
   body {

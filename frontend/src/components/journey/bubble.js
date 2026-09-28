@@ -66,6 +66,14 @@ export const SORTED_COLORS = {
   opacity: 1,
 }
 
+// A skill picked to find its projects: brighter, with a light ring.
+export const PICKED_COLORS = {
+  backgroundColor: 'color-mix(in oklab, var(--color-both) 55%, var(--color-zinc-950))',
+  boxShadow:
+    '0 0 12px color-mix(in oklab, var(--color-both) 45%, transparent), inset 0 0 0 1px color-mix(in oklab, white 70%, transparent)',
+  opacity: 1,
+}
+
 // The mobile tray's chips.
 export function bubbleStyle(total) {
   return { ...bubbleColors(total), fontSize: `${bubbleFontPx(total.points)}px` }
