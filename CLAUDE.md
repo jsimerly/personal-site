@@ -1,6 +1,6 @@
 # personal-site
 
-Static React site (`frontend/`, GitHub Pages) reading a public, read-only DRF API (`api/`, Cloud Run). The frontend is mobile-first: desktop comes from responsive prefixes, never at mobile's expense.
+Static React site (`frontend/`, GitHub Pages at jacob-simerly.com) reading a public, read-only DRF API (`api/`, Cloud Run). The frontend is mobile-first: desktop comes from responsive prefixes, never at mobile's expense.
 
 ## Commands
 
@@ -35,7 +35,7 @@ Three lanes, all required in CI:
 
 - **API (pytest).** Every test has a one-line docstring stating the behavior it protects; collection fails without one. The docstrings are the catalog in `api/TESTING.md`. Tests go in the app's `tests/` folder, in a file named for their subject.
 - **Frontend unit (Vitest + Testing Library).** `describe`/`it` names are full sentences; they are the catalog in `frontend/TESTING.md`. Stub the network with `src/test/fakeFetch.js` rather than mocking the modules under test.
-- **E2E (Playwright).** Real Chromium, on a phone and a laptop, against the production build served under `/personal-site/` and calling a real Django (`api.settings.e2e`) cross-origin, exactly as on Pages. No API mocks: specs may only delay or cut the network (`e2e/helpers.js`). Import `test` from `e2e/fixtures.js`, which fails any test whose page logs an error. Navigate with `visit()`: absolute paths skip the base path. GCS reads come from `api/e2e/gcs/<bucket>/<path>`, so a project that reads GCS adds its fixture files there.
+- **E2E (Playwright).** Real Chromium, on a phone and a laptop, against the production build served at the site root and calling a real Django (`api.settings.e2e`) cross-origin, exactly as on jacob-simerly.com. No API mocks: specs may only delay or cut the network (`e2e/helpers.js`). Import `test` from `e2e/fixtures.js`, which fails any test whose page logs an error. Navigate with `visit()`. GCS reads come from `api/e2e/gcs/<bucket>/<path>`, so a project that reads GCS adds its fixture files there.
 
 Rules:
 

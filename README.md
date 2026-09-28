@@ -2,7 +2,7 @@
 
 The source for my personal website: one home for the projects I build.
 
-**Live at [jsimerly.github.io/personal-site](https://jsimerly.github.io/personal-site/)**
+**Live at [jacob-simerly.com](https://jacob-simerly.com)**
 
 ## Projects
 

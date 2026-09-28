@@ -11,7 +11,7 @@ Run the suite: `pytest` (check the exit code, never pipe it to tail).
 
 - `test_reads_are_allowed`: Anyone can GET: the API is public and needs no login.
 - `test_writes_are_refused_even_when_a_view_defines_them`: The read-only rule lives in the default permissions, so a view that defines post still refuses it.
-- `test_github_pages_origin_is_allowed`: The GitHub Pages site may read the API cross-origin.
+- `test_the_site_origin_is_allowed`: The site at jacob-simerly.com may read the API cross-origin.
 - `test_other_origins_are_not_allowed`: Any other site gets no CORS header, so browsers block it from reading responses.
 
 ## apps/core/tests/test_gcs.py (4 tests)

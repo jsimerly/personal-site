@@ -51,8 +51,9 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
 }
 
-# The GitHub Pages site. A custom domain later gets added here (or via env).
-CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["https://jsimerly.github.io"])
+# The site. www and the old github.io address both redirect here, so this is
+# the only origin a browser ever sends.
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["https://jacob-simerly.com"])
 
 # How long parsed GCS blobs stay in each instance's in-memory cache.
 GCS_CACHE_SECONDS = env.int("GCS_CACHE_SECONDS", default=300)

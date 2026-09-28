@@ -15,7 +15,7 @@ pipe it to tail.
   - lists every registered project on the home page
   - shows a not-found page for unknown paths
   - reports the API as online once the health check answers
-  - loads a project page under the GitHub Pages base path
+  - loads a project page when the site is served under a base path
 
 ### src/components/ApiState.test.jsx (4 tests)
 
