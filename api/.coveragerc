@@ -1,0 +1,9 @@
+[run]
+source = apps
+omit = */tests/*
+
+[report]
+# CI fails below this. Raise it as the suite grows; never lower it to go green.
+fail_under = 90
+show_missing = true
+skip_covered = true
