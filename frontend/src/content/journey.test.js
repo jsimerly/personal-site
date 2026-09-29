@@ -28,6 +28,20 @@ describe('journey', () => {
     expect(unfiled).toEqual([])
   })
 
+  it('runs oldest first, however the entries are written', () => {
+    const dates = journey.map((entry) => entry.date)
+
+    expect(dates).toEqual([...dates].sort())
+  })
+
+  it('keeps entries from the same month in the order they are written', () => {
+    const titles = journey.map((entry) => entry.title)
+
+    // Both January 2022: the training program is written first, then Dominion.
+    expect(titles.indexOf('A new training program')).toBeLessThan(titles.indexOf('Dominion'))
+    expect(titles.indexOf('Dominion')).toBe(titles.indexOf('Dominion AI') - 1)
+  })
+
   it('starts the basket with Curious alone, purple, before any entry', () => {
     expect(skillTotals([])).toEqual([{ skill: 'Curious', points: 3, work: 1.5, build: 1.5 }])
   })

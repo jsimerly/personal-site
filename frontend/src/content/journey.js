@@ -1,4 +1,5 @@
-// The journey, oldest first.
+// The journey. The timeline shows it oldest first, sorted by `date` (see
+// `journey` below), so entries can be written in whatever order reads best.
 //
 // - `side` is 'work' (the formal side: jobs and school) or 'build' (the
 //   personal side: projects and learning).
@@ -30,7 +31,7 @@
 // Positions I've held. Each shows above the first card from it, with its logo
 // beside the title and dates; the cards under it are the projects I did there
 // (so they don't repeat the dates).
-const anthem = { logos: ['logos/anthem.svg'], title: '[Placeholder] Your role at Anthem', start: '2020' }
+const anthem = { logos: ['logos/anthem.svg'], title: 'Process Consulting', start: '2020' }
 const ukgConsultant = {
   logos: ['logos/ukg.svg'],
   title: 'Solutions Consultant (Team Lead)',
@@ -45,7 +46,7 @@ const ukgEngineer = {
 }
 const barnesThornburg = {
   logos: ['logos/barnes-thornburg.svg'],
-  title: 'Data Engineer',
+  title: 'Lead Data Engineer',
   start: '2024-09',
   end: '2026-03',
 }
@@ -56,7 +57,7 @@ const lilly = { logos: ['logos/eli-lilly.svg'], title: 'Senior Data Engineer', s
 // other skill joins as the journey goes.
 export const startingSkills = { Curious: 3 }
 
-export const journey = [
+const entries = [
   {
     date: '2013',
     side: 'build',
@@ -93,25 +94,47 @@ export const journey = [
     date: '2020',
     side: 'work',
     position: anthem,
-    title: '[Placeholder] A project from Anthem',
-    summary: '[Placeholder: what you built or owned there.]',
-    skills: {},
+    title: 'New website launch',
+    summary: 'Helped launch a new website built in C#: I ran the analytics that found what was wrong with it, and wrote the queries that helped fix it.',
+    skills: { 'C#': 1, SQL: 1, 'Data analysis': 1 },
   },
   {
-    date: '2021-01',
+    date: '2021-04',
     side: 'work',
     position: ukgConsultant,
-    title: 'Customer SaaS implementations',
-    summary: 'Ran up to six customer implementations at once, turning what each customer needed into a working setup.',
+    title: 'Customer implementations',
+    summary: 'Implemented UKG for customers in healthcare, manufacturing, and retail, up to six at a time.',
     skills: { 'Client consulting': 2 },
   },
   {
-    date: '2021-01',
+    date: '2022-01',
     side: 'work',
     position: ukgConsultant,
-    title: 'Training new consultants',
-    summary: 'Promoted to team lead, responsible for training 60 new consultants and how they did.',
+    title: 'A new training program',
+    summary: 'Developed a new training program as team lead, responsible for how 60 new consultants were trained and how they did.',
     skills: { 'Team leadership': 2 },
+  },
+  {
+    date: '2021-10',
+    side: 'work',
+    position: ukgConsultant,
+    title: 'Mentoring new consultants',
+    summary: 'Mentored five new consultants through regular one-on-ones.',
+    skills: { Mentoring: 1 },
+  },
+  {
+    date: '2022-09',
+    side: 'work',
+    position: ukgConsultant,
+    title: 'Innovation competition',
+    skills: {},
+  },
+  {
+    date: '2022-05',
+    side: 'work',
+    position: ukgConsultant,
+    title: 'Rules of Engagement project',
+    skills: {},
   },
   {
     date: '2021-11',
@@ -163,43 +186,54 @@ export const journey = [
     date: '2023-01',
     side: 'work',
     position: ukgEngineer,
+    title: 'Process merging and cleanup',
+    skills: { 'Process improvement': 1 },
+  },
+  {
+    date: '2023-07',
+    side: 'work',
+    position: ukgEngineer,
+    title: 'Process automation',
+    skills: { 'Process improvement': 1 },
+  },
+  {
+    date: '2023-10',
+    side: 'work',
+    position: ukgEngineer,
+    title: 'Smartsheet data pipelines',
+    summary: "Automated Python pipelines from Smartsheet's API into our BigQuery warehouse, cleaning the data along the way.",
+    skills: { Python: 2, BigQuery: 2, SQL: 1 },
+  },
+  {
+    date: '2024-01',
+    side: 'work',
+    position: ukgEngineer,
     title: 'Partner onboarding platform',
-    summary:
-      'Led the design of the process and the product: requirements, relational data schemas, and how the microservices work together.',
+    summary: 'Led the design of the process and the product: requirements, relational data schemas, and how the microservices work together.',
     skills: { 'System design': 1, 'Data modeling': 1 },
   },
   {
-    date: '2023-01',
+    date: '2024-03',
     side: 'work',
     position: ukgEngineer,
-    title: 'Data pipelines into BigQuery',
-    summary: "Automated Python pipelines from Smartsheet's API into our BigQuery warehouse, cleaning the data for analytics.",
-    skills: { Python: 2, SQL: 2, BigQuery: 2 },
+    title: 'Analytics and reporting in Smartsheet',
+    skills: { SQL: 1, 'Data analysis': 1 },
   },
   {
     date: '2023-03',
-    end: '2023-06',
-    side: 'build',
-    title: 'Brolympics',
-    summary: 'The first version: a Django app with a GraphQL API.',
-    skills: { Python: 1, Django: 2, GraphQL: 2 },
-    project: 'brolympics',
-  },
-  {
-    date: '2023-06',
     end: '2024-09',
     side: 'build',
-    title: 'Brolympics V2',
-    summary: 'Rebuilt on Django REST Framework instead of Graphene.',
+    title: 'Brolympics',
+    summary: 'The 2014 idea, rebuilt as a Django app: first on a GraphQL API, then on Django REST Framework with a React front end.',
     skills: {
-      Python: 1,
-      Django: 1,
+      Python: 2,
+      Django: 3,
+      GraphQL: 1,
       'Django REST Framework': 2,
       React: 2,
       JavaScript: 1,
       'Tailwind CSS': 1,
       CSS: 1,
-      GraphQL: -1,
     },
     project: 'brolympics',
   },
@@ -265,11 +299,12 @@ export const journey = [
     project: 'dsa',
   },
   {
-    date: '2024-09',
+    date: '2026-01',
     end: 'now',
     side: 'build',
-    title: 'Brolympics, in production',
-    summary: 'Split into its own API and frontend, running real game days on Cloud Run.',
+    title: 'Agentic Brolympics development',
+    summary:
+      'Brolympics built with agentic development: its own API and front end on Cloud Run, running real game days, backed by unit, API, and end-to-end tests.',
     skills: {
       Python: 2,
       Django: 2,
@@ -283,36 +318,37 @@ export const journey = [
       Docker: 1,
       pytest: 2,
       Playwright: 2,
+      'Agentic development': 1,
     },
     project: 'brolympics',
+  },
+  {
+    date: '2025-06',
+    side: 'build',
+    title: 'Soulpoint AI',
+    summary:
+      'Data and AI for tough workflows: the strategy, the tools, and the governance that keep operations compliant and efficient. Plus the React site that tells the story.',
+    skills: { 'AI governance': 2, 'Client consulting': 1, React: 1 },
+    project: 'soulpoint',
   },
   {
     date: '2024-09',
     side: 'work',
     position: barnesThornburg,
     title: 'Unified cloud data platform',
-    summary:
-      "Led the firm's first: moving off on-premises systems onto Microsoft Fabric and Azure, with data from 15+ systems in one lake.",
-    skills: {
-      'Microsoft Fabric': 3,
-      Azure: 2,
-      PySpark: 2,
-      SQL: 2,
-      'Data architecture': 2,
-      'Team leadership': 1,
-    },
+    summary: "Led the firm's first: moving off on-premises systems onto Microsoft Fabric and Azure, with data from 15+ systems in one lake.",
+    skills: { 'Microsoft Fabric': 3, Azure: 2, PySpark: 2, SQL: 2, 'Data architecture': 2 },
   },
   {
-    date: '2024-09',
+    date: '2024-12',
     side: 'work',
     position: barnesThornburg,
-    title: 'Fabric utilities and CI/CD',
-    summary:
-      'A reusable package and pipelines that standardized ingestion, transformation, and business logic across dev and production.',
+    title: 'Fabric utilities and CI/CD library',
+    summary: 'A reusable package and pipelines that standardized ingestion, transformation, and business logic across dev and production.',
     skills: { Python: 2, 'CI/CD': 2 },
   },
   {
-    date: '2024-09',
+    date: '2025-03',
     side: 'work',
     position: barnesThornburg,
     title: 'SharePoint MCP server',
@@ -320,30 +356,67 @@ export const journey = [
     skills: { MCP: 1 },
   },
   {
+    date: '2025-06',
+    side: 'work',
+    position: barnesThornburg,
+    title: 'Unstructured data, normalized with AI',
+    summary: 'An automated pipeline using Power Automate and ChatGPT to turn media-licensing and option-agreement contracts into structured data, verified by attorneys.',
+    skills: { 'LLM APIs': 1 },
+  },
+  {
+    date: '2025-09',
+    side: 'work',
+    position: barnesThornburg,
+    title: 'Software architecture and design',
+    skills: { 'System design': 1 },
+  },
+  {
+    date: '2025-12',
+    side: 'work',
+    position: barnesThornburg,
+    title: 'Team management',
+    summary: 'Managed the data team, employees and contractors: assigning the work and owning the backlog to keep delivery visible.',
+    skills: { 'Team leadership': 2 },
+  },
+  {
     date: '2026-03',
     side: 'work',
     position: lilly,
-    title: 'GitHub-native CI/CD for Microsoft Fabric',
-    summary:
-      "Lilly's first: a workspace per branch, parameterized deployments, and approval gates that brought Fabric under SOX compliance.",
+    title: 'SOX-compliant CI/CD for Microsoft Fabric',
+    summary: "Lilly's first GitHub-native CI/CD for Fabric: a workspace per branch, parameterized deployments, and approval gates that brought it under SOX.",
     skills: { 'CI/CD': 3, 'GitHub Actions': 2, 'Microsoft Fabric': 2 },
   },
   {
     date: '2026-03',
     side: 'work',
     position: lilly,
-    title: 'Cash Flow Statement platform',
-    summary:
-      'Re-architected a highly manual quarterly process, with a semantic model that rolls up by day, month, and year and drills to document level.',
-    skills: { 'Data modeling': 2, 'Data architecture': 2 },
+    title: 'Cash Flow Statement automation',
+    summary: 'Re-architected a highly manual quarterly process, with a semantic model that rolls up by day, month, and year and drills to document level.',
+    skills: { 'Data modeling': 2, 'Data architecture': 1 },
   },
   {
     date: '2026-03',
     side: 'work',
     position: lilly,
-    title: 'Agentic Fabric development',
+    title: 'Agentic development enablement',
     summary: 'Brought Claude Code, Fabric Git integration, and VS Code together so developers work locally with context-aware agents.',
     skills: { 'Agentic development': 2 },
+  },
+  {
+    date: '2026-03',
+    side: 'work',
+    position: lilly,
+    title: 'SDLC development',
+    summary: 'Bringing software development principles and a real development lifecycle to the data teams.',
+    skills: { Mentoring: 1 },
+  },
+  {
+    date: '2026-03',
+    side: 'work',
+    position: lilly,
+    title: 'Architectural redesign',
+    summary: 'Refining our medallion architecture, moving toward a data mesh, and drawing clear lines between analytics engineers, data engineers, and analysts.',
+    skills: { 'Data architecture': 2, 'System design': 1 },
   },
   {
     date: '2026-09',
@@ -364,6 +437,12 @@ export const journey = [
     project: 'personal-site',
   },
 ]
+
+// The timeline, oldest first. Entries are sorted by date here, so they can be
+// written in any order above (a job's projects together, say); ones from the
+// same month keep the order they're written in. A bare year sorts before the
+// months of that year.
+export const journey = [...entries].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0))
 
 // Each skill's running total across `entries`, on top of `startingSkills`, in
 // the order it was first picked up: [{ skill, points, work, build }].

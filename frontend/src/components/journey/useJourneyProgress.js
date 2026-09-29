@@ -10,11 +10,14 @@ import { useEffect, useState } from 'react'
 // start with the reader, not on load. (Cards still fade in where they are.)
 //
 // After the timeline comes the sorting stage. `sortProgress` goes from 0 to 1
-// as its top scrolls from SORT_FROM down the screen to SORT_SPAN screens
-// higher, so the basket sorts itself at the reader's own pace.
+// as the end of the timeline ("Today") scrolls from SORT_FROM down the screen
+// to SORT_SPAN screens higher, so the basket sorts itself at the reader's own
+// pace. It starts as "Today" reaches the middle of the screen, where the
+// basket rides; the rows assemble bottom up so they stay clear of the last
+// cards (see BubbleCluster).
 const REVEAL_AT = 0.92
 const COLLECT_AT = 0.65
-const SORT_FROM = 0.7
+const SORT_FROM = 0.5
 const SORT_SPAN = 0.6
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value))
@@ -52,7 +55,7 @@ export function useJourneyProgress(timelineRef, stageRef) {
           if (started && top < collectLine) passed += 1
         }
         const sortProgress = hasStage
-          ? clamp01((window.innerHeight * SORT_FROM - stage.top) / (window.innerHeight * SORT_SPAN))
+          ? clamp01((window.innerHeight * SORT_FROM - box.bottom) / (window.innerHeight * SORT_SPAN))
           : 0
         next = {
           progress: !started ? 0 : box.height ? clamp01((collectLine - box.top) / box.height) : 1,

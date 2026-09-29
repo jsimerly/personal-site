@@ -12,7 +12,10 @@
 // Pure: the same bubbles and starting points always give the same cloud.
 const GAP = 5
 const GATHER_STEPS = 160
-const SETTLE_STEPS = 140
+// Settling goes on until nothing overlaps. The cap only guards against a
+// cloud that can't come apart, which shouldn't happen: it can always grow
+// taller.
+const MAX_SETTLE_STEPS = 2000
 // How hard bubbles are pulled toward the middle each step. Pulling harder
 // sideways than vertically keeps the cloud narrow enough for its column.
 const SQUEEZE_X = 0.04
@@ -41,7 +44,9 @@ export function packBubbles(items, previous = new Map(), maxWidth = Infinity) {
   const canSlide = (node, direction) =>
     direction > 0 ? node.x < limitFor(node) - 0.01 : node.x > -limitFor(node) + 0.01
 
+  // One round of pushing overlapping pairs apart. Returns how many overlapped.
   const separate = (settling) => {
+    let overlapping = 0
     for (let a = 0; a < nodes.length; a++) {
       for (let b = a + 1; b < nodes.length; b++) {
         const first = nodes[a]
@@ -51,6 +56,7 @@ export function packBubbles(items, previous = new Map(), maxWidth = Infinity) {
         const overlapX = (first.w + second.w) / 2 + GAP - Math.abs(dx)
         const overlapY = (first.h + second.h) / 2 + GAP - Math.abs(dy)
         if (overlapX <= 0 || overlapY <= 0) continue
+        overlapping += 1
 
         // Heavier (bigger) bubbles hold their ground; lighter ones give way.
         const firstShare = second.mass / (first.mass + second.mass)
@@ -87,6 +93,7 @@ export function packBubbles(items, previous = new Map(), maxWidth = Infinity) {
       const limit = limitFor(node)
       node.x = Math.min(limit, Math.max(-limit, node.x))
     }
+    return overlapping
   }
 
   // Bigger bubbles pull harder toward the middle and are heavier when pushed,
@@ -105,7 +112,9 @@ export function packBubbles(items, previous = new Map(), maxWidth = Infinity) {
     }
     separate(false)
   }
-  for (let step = 0; step < SETTLE_STEPS; step++) separate(true)
+  for (let step = 0; step < MAX_SETTLE_STEPS && separate(true); step++) {
+    // Keep settling while anything still overlaps.
+  }
 
   if (!nodes.length) return { positions: new Map(), width: 0, height: 0 }
 

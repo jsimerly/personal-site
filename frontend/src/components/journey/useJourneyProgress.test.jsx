@@ -19,7 +19,10 @@ const runFrames = () =>
   })
 
 function place(element, box) {
-  element.getBoundingClientRect = () => ({ top: box.top - window.scrollY, height: box.height, width: 100 })
+  element.getBoundingClientRect = () => {
+    const top = box.top - window.scrollY
+    return { top, bottom: top + box.height, height: box.height, width: 100 }
+  }
 }
 
 function Harness({ onState }) {
@@ -100,15 +103,20 @@ describe('useJourneyProgress', () => {
     expect(progress.current()).toMatchObject({ passed: 1 })
   })
 
-  it('sorts the basket as the stage rises, at the reader’s pace', () => {
+  it('starts sorting the basket as the end of the timeline passes the middle of the screen, then at the reader’s pace', () => {
     const progress = renderAt(0)
 
-    // Stage top at 400 on screen: halfway from 70% down to 60% of a screen higher.
-    progress.scrollTo(2600)
+    // The timeline ends at 1300 on the page. Scrolled 750, its end is still
+    // 550px down the screen, below the middle.
+    progress.scrollTo(750)
+    expect(progress.current().sortProgress).toBe(0)
+
+    // Its end at 200: halfway from the middle to 60% of a screen higher.
+    progress.scrollTo(1100)
     expect(progress.current().sortProgress).toBe(0.5)
 
-    progress.scrollTo(2000)
-    expect(progress.current().sortProgress).toBe(0)
+    progress.scrollTo(1400)
+    expect(progress.current().sortProgress).toBe(1)
   })
 
   it('counts everything finished at the bottom of the page', () => {

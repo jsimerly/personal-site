@@ -39,10 +39,11 @@ pipe it to tail.
   - shows a project's cover image when it has one
   - stands in with its initials on a flat color, the same color every time, until it has one
 
-### src/components/journey/BubbleCluster.test.jsx (4 tests)
+### src/components/journey/BubbleCluster.test.jsx (5 tests)
 
 - **BubbleCluster**
   - floats as a plain cloud of skills, not yet clickable, while the timeline scrolls
+  - assembles the rows from the bottom up, so the top rows land last
   - brings in the heading and the kinds of skill as it sorts, still not clickable
   - lets any skill be picked once every row has landed
   - shows which skills are picked, and steps the rest back
@@ -88,10 +89,11 @@ pipe it to tail.
   - treats an ongoing place as running to the end
   - ignores personal entries and formal ones with no place
 
-### src/components/journey/packBubbles.test.js (6 tests)
+### src/components/journey/packBubbles.test.js (7 tests)
 
 - **packBubbles**
   - never overlaps two bubbles at any point while scrolling the real journey
+  - settles until nothing overlaps, even with many bubbles crowded into a narrow column
   - keeps every bubble inside the basket column
   - lets existing bubbles drift instead of reshuffling across the whole journey
   - anchors the biggest skill near the middle of the finished cloud
@@ -123,12 +125,22 @@ pipe it to tail.
   - assembles rows in turn, top to bottom
   - only ever moves a row forward as the sort advances
 
+### src/components/journey/timelineLayout.test.js (6 tests)
+
+- **layoutTimeline**
+  - sets a personal project beside the job it happened during, a step lower
+  - stacks cards on the same side one under the other, never overlapping
+  - never starts an entry above the one before it, whichever side each is on
+  - starts each year below everything from the year before, cards under its marker
+  - stacks everything in order in a single lane (phones)
+  - lays out nothing as an empty timeline
+
 ### src/components/journey/useJourneyProgress.test.jsx (5 tests)
 
 - **useJourneyProgress**
   - collects nothing before the reader scrolls, even entries already above the collect line
   - collects each entry once scrolling carries it above the collect line
-  - sorts the basket as the stage rises, at the reader’s pace
+  - starts sorting the basket as the end of the timeline passes the middle of the screen, then at the reader’s pace
   - counts everything finished at the bottom of the page
   - never sorts where the stage is not laid out (phones)
 
@@ -139,12 +151,14 @@ pipe it to tail.
   - sends nothing flying on the way back up, or when the caller says not to
   - keeps still for readers who ask for reduced motion
 
-### src/content/journey.test.js (6 tests)
+### src/content/journey.test.js (8 tests)
 
 - **journey**
   - links every timeline card that names a project to a page that exists
   - gives every personal build on the timeline a project page
   - files every skill on the timeline under a kind, so none lands in \"Other\" when the basket sorts
+  - runs oldest first, however the entries are written
+  - keeps entries from the same month in the order they are written
   - starts the basket with Curious alone, purple, before any entry
   - keeps Curious first as the rest of the skills join
   - has every logo a card names in public/, so the build ships it
@@ -214,8 +228,10 @@ pipe it to tail.
 - **when the API is down**
   - the site still loads and says so plainly
 
-### e2e/journey.spec.js (1 tests)
+### e2e/journey.spec.js (3 tests)
 
+- lays the timeline out in order, with no cards overlapping and work beside personal projects
+- splits the skills into rows as they pass Today, never into the cards, and lands them before the projects
 - **the skills basket**
   - holds only Curious until the reader scrolls, then starts collecting
 
@@ -228,4 +244,4 @@ pipe it to tail.
 
 ---
 
-100 unit and 8 end-to-end tests cataloged.
+110 unit and 10 end-to-end tests cataloged.

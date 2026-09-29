@@ -33,13 +33,23 @@ function EntryTitle({ entry }) {
 // basket without a chip.
 // `position` is set on the first card from a job: its logo, title, and dates
 // go above the card, and the cards under it are projects from that job.
-export default function JourneyEntry({ entry, index, newSkills, era, position, revealed, passed }) {
+// `top` places the card on the timeline (timelineLayout); the row spans the
+// full width, so it lets clicks through to a card beside it.
+export default function JourneyEntry({ entry, index, newSkills, era, position, top = 0, revealed, passed }) {
   const side = SIDES[entry.side]
   const skills = Object.keys(entry.skills).filter((skill) => entry.skills[skill] > 0)
   const logos = position?.logos ?? entry.logos
 
   return (
-    <li data-journey-entry data-entry-index={index} className={`relative ${ROW}`}>
+    <li
+      data-journey-entry
+      data-entry-index={index}
+      data-layout-key={`entry-${index}`}
+      data-layout-kind="entry"
+      data-lane={entry.side}
+      className={`pointer-events-none absolute inset-x-0 ${ROW}`}
+      style={{ top }}
+    >
       {/* The dot sits level with the title's first line, below whatever is
           above the card. */}
       <span
@@ -51,7 +61,7 @@ export default function JourneyEntry({ entry, index, newSkills, era, position, r
         }`}
       />
       <div
-        className={`ml-9 transition duration-700 ease-out motion-reduce:transition-none md:ml-0 ${side.column} ${
+        className={`pointer-events-auto ml-9 transition duration-700 ease-out motion-reduce:transition-none md:ml-0 ${side.column} ${
           revealed ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0 motion-reduce:translate-y-0 motion-reduce:opacity-100'
         }`}
       >
@@ -71,7 +81,9 @@ export default function JourneyEntry({ entry, index, newSkills, era, position, r
             ))}
             {position && (
               <div className="min-w-0 leading-tight">
-                <p className="truncate text-sm font-medium text-zinc-300">{position.title}</p>
+                <p title={position.title} className="truncate text-[13px] font-medium text-zinc-300">
+                  {position.title}
+                </p>
                 <p className="text-xs text-zinc-500 tabular-nums">{span(position.start, position.end)}</p>
               </div>
             )}
