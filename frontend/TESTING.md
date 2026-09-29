@@ -139,12 +139,14 @@ pipe it to tail.
   - sends nothing flying on the way back up, or when the caller says not to
   - keeps still for readers who ask for reduced motion
 
-### src/content/journey.test.js (6 tests)
+### src/content/journey.test.js (8 tests)
 
 - **journey**
   - links every timeline card that names a project to a page that exists
   - gives every personal build on the timeline a project page
   - files every skill on the timeline under a kind, so none lands in \"Other\" when the basket sorts
+  - runs oldest first, however the entries are written
+  - keeps projects from the same month in the order they are written
   - starts the basket with Curious alone, purple, before any entry
   - keeps Curious first as the rest of the skills join
   - has every logo a card names in public/, so the build ships it
@@ -228,4 +230,4 @@ pipe it to tail.
 
 ---
 
-100 unit and 8 end-to-end tests cataloged.
+102 unit and 8 end-to-end tests cataloged.

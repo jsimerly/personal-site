@@ -28,6 +28,18 @@ describe('journey', () => {
     expect(unfiled).toEqual([])
   })
 
+  it('runs oldest first, however the entries are written', () => {
+    const dates = journey.map((entry) => entry.date)
+
+    expect(dates).toEqual([...dates].sort())
+  })
+
+  it('keeps projects from the same month in the order they are written', () => {
+    const titles = journey.map((entry) => entry.title)
+
+    expect(titles.indexOf('A new training program')).toBe(titles.indexOf('Rules of Engagement project') - 1)
+  })
+
   it('starts the basket with Curious alone, purple, before any entry', () => {
     expect(skillTotals([])).toEqual([{ skill: 'Curious', points: 3, work: 1.5, build: 1.5 }])
   })

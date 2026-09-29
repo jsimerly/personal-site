@@ -1,4 +1,5 @@
-// The journey, oldest first.
+// The journey. The timeline shows it oldest first, sorted by `date` (see
+// `journey` below), so entries can be written in whatever order reads best.
 //
 // - `side` is 'work' (the formal side: jobs and school) or 'build' (the
 //   personal side: projects and learning).
@@ -56,7 +57,7 @@ const lilly = { logos: ['logos/eli-lilly.svg'], title: 'Senior Data Engineer', s
 // other skill joins as the journey goes.
 export const startingSkills = { Curious: 3 }
 
-export const journey = [
+const entries = [
   {
     date: '2013',
     side: 'build',
@@ -98,7 +99,7 @@ export const journey = [
     skills: { 'C#': 1, SQL: 1, 'Data analysis': 1 },
   },
   {
-    date: '2021-01',
+    date: '2021-04',
     side: 'work',
     position: ukgConsultant,
     title: 'Customer implementations',
@@ -106,7 +107,7 @@ export const journey = [
     skills: { 'Client consulting': 2 },
   },
   {
-    date: '2021-01',
+    date: '2022-01',
     side: 'work',
     position: ukgConsultant,
     title: 'A new training program',
@@ -114,7 +115,7 @@ export const journey = [
     skills: { 'Team leadership': 2 },
   },
   {
-    date: '2021-01',
+    date: '2021-09',
     side: 'work',
     position: ukgConsultant,
     title: 'Mentoring new consultants',
@@ -122,14 +123,14 @@ export const journey = [
     skills: { Mentoring: 1 },
   },
   {
-    date: '2021-01',
+    date: '2022-09',
     side: 'work',
     position: ukgConsultant,
     title: 'Innovation competition',
     skills: {},
   },
   {
-    date: '2021-01',
+    date: '2022-01',
     side: 'work',
     position: ukgConsultant,
     title: 'Rules of Engagement project',
@@ -434,6 +435,12 @@ export const journey = [
     project: 'personal-site',
   },
 ]
+
+// The timeline, oldest first. Entries are sorted by date here, so they can be
+// written in any order above (a job's projects together, say); ones from the
+// same month keep the order they're written in. A bare year sorts before the
+// months of that year.
+export const journey = [...entries].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0))
 
 // Each skill's running total across `entries`, on top of `startingSkills`, in
 // the order it was first picked up: [{ skill, points, work, build }].
