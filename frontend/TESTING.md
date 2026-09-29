@@ -39,10 +39,11 @@ pipe it to tail.
   - shows a project's cover image when it has one
   - stands in with its initials on a flat color, the same color every time, until it has one
 
-### src/components/journey/BubbleCluster.test.jsx (4 tests)
+### src/components/journey/BubbleCluster.test.jsx (5 tests)
 
 - **BubbleCluster**
   - floats as a plain cloud of skills, not yet clickable, while the timeline scrolls
+  - assembles the rows from the bottom up, so the top rows land last
   - brings in the heading and the kinds of skill as it sorts, still not clickable
   - lets any skill be picked once every row has landed
   - shows which skills are picked, and steps the rest back
@@ -139,7 +140,7 @@ pipe it to tail.
 - **useJourneyProgress**
   - collects nothing before the reader scrolls, even entries already above the collect line
   - collects each entry once scrolling carries it above the collect line
-  - sorts the basket only once the end of the timeline is a quarter of the way down, then at the reader’s pace
+  - starts sorting the basket as the end of the timeline passes the middle of the screen, then at the reader’s pace
   - counts everything finished at the bottom of the page
   - never sorts where the stage is not laid out (phones)
 
@@ -230,7 +231,7 @@ pipe it to tail.
 ### e2e/journey.spec.js (3 tests)
 
 - lays the timeline out in order, with no cards overlapping and work beside personal projects
-- never spreads the sorting skills into the cards, and lands the rows before the projects
+- splits the skills into rows as they pass Today, never into the cards, and lands them before the projects
 - **the skills basket**
   - holds only Curious until the reader scrolls, then starts collecting
 
@@ -243,4 +244,4 @@ pipe it to tail.
 
 ---
 
-109 unit and 10 end-to-end tests cataloged.
+110 unit and 10 end-to-end tests cataloged.

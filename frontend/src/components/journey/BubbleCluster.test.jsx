@@ -39,8 +39,24 @@ describe('BubbleCluster', () => {
     ])
   })
 
+  it('assembles the rows from the bottom up, so the top rows land last', () => {
+    // Curious is the top row (Mindset), SQL a lower one (Languages).
+    const { container, rerender } = render(
+      <BubbleCluster totals={totals} sortProgress={0} popDelay={0} width={320} sortedWidth={1024} picked={[]} onToggle={() => {}} />,
+    )
+    const placeOf = (skill) => container.querySelector(`[data-basket-skill="${skill}"]`).style.transform
+    const cloud = { Curious: placeOf('Curious'), SQL: placeOf('SQL') }
+
+    rerender(
+      <BubbleCluster totals={totals} sortProgress={0.3} popDelay={0} width={320} sortedWidth={1024} picked={[]} onToggle={() => {}} />,
+    )
+
+    expect(placeOf('SQL')).not.toBe(cloud.SQL)
+    expect(placeOf('Curious')).toBe(cloud.Curious)
+  })
+
   it('brings in the heading and the kinds of skill as it sorts, still not clickable', () => {
-    renderCluster({ sortProgress: 0.6 })
+    renderCluster({ sortProgress: 0.8 })
 
     expect(screen.getByRole('heading', { name: 'What I bring today' })).toBeInTheDocument()
     expect(screen.getAllByRole('button').every((button) => button.disabled)).toBe(true)

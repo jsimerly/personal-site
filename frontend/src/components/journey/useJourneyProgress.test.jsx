@@ -103,19 +103,19 @@ describe('useJourneyProgress', () => {
     expect(progress.current()).toMatchObject({ passed: 1 })
   })
 
-  it('sorts the basket only once the end of the timeline is a quarter of the way down, then at the reader’s pace', () => {
+  it('starts sorting the basket as the end of the timeline passes the middle of the screen, then at the reader’s pace', () => {
     const progress = renderAt(0)
 
-    // The timeline ends at 1300 on the page. Scrolled 1000, its end is still
-    // 300px down the screen, below the 25% line.
-    progress.scrollTo(1000)
+    // The timeline ends at 1300 on the page. Scrolled 750, its end is still
+    // 550px down the screen, below the middle.
+    progress.scrollTo(750)
     expect(progress.current().sortProgress).toBe(0)
 
-    // Its end at -50: halfway from 25% down to 60% of a screen higher.
-    progress.scrollTo(1350)
+    // Its end at 200: halfway from the middle to 60% of a screen higher.
+    progress.scrollTo(1100)
     expect(progress.current().sortProgress).toBe(0.5)
 
-    progress.scrollTo(1650)
+    progress.scrollTo(1400)
     expect(progress.current().sortProgress).toBe(1)
   })
 

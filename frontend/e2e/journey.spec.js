@@ -58,23 +58,38 @@ test('lays the timeline out in order, with no cards overlapping and work beside 
   expect(rules.cardTop).toBeLessThan(sportsbook.cardBottom)
 })
 
-test('never spreads the sorting skills into the cards, and lands the rows before the projects', async ({ page }, testInfo) => {
+test('splits the skills into rows as they pass Today, never into the cards, and lands them before the projects', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name === 'mobile', 'The basket is the desktop layout; phones get the skill tray.')
-  await page.setViewportSize({ width: 1440, height: 900 })
-  await visit(page)
-  const heading = page.getByRole('heading', { name: 'What I bring today' })
   const settle = () => page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))))
-  const scrollBy = async (y) => {
-    await page.evaluate((y) => window.scrollBy(0, y), y)
-    await settle()
-  }
+  const places = () => page.evaluate(() => [...document.querySelectorAll('[data-basket-skill]')].map((bubble) => bubble.style.transform).join('|'))
+  const todayAt = () => page.evaluate(() => document.querySelector('[data-journey-end]').getBoundingClientRect().top)
   // Any card overlapping what the basket shows (its heading, bubbles, labels,
-  // and dividers), as "card / skill".
+  // and dividers), as "card / skill". Only what's actually visible counts: a
+  // piece faded out, or clipped away by its container, can't collide.
   const collisions = () =>
     page.evaluate(() => {
-      const basket = [...document.querySelectorAll('[data-basket="desktop"] :is(h3, li)')]
-        .map((element) => ({ name: element.textContent, box: element.getBoundingClientRect() }))
-        .filter(({ box }) => box.width && box.height)
+      const root = document.querySelector('[data-basket="desktop"]')
+      const visible = (element) => {
+        let box = element.getBoundingClientRect()
+        let opacity = 1
+        for (let node = element; node && node !== root.parentElement; node = node.parentElement) {
+          const style = getComputedStyle(node)
+          opacity *= Number(style.opacity)
+          if (node !== element && style.overflow !== 'visible') {
+            const clip = node.getBoundingClientRect()
+            box = {
+              left: Math.max(box.left, clip.left),
+              right: Math.min(box.right, clip.right),
+              top: Math.max(box.top, clip.top),
+              bottom: Math.min(box.bottom, clip.bottom),
+            }
+          }
+        }
+        return opacity > 0 && box.right > box.left && box.bottom > box.top ? box : null
+      }
+      const basket = [...root.querySelectorAll(':is(h3, li)')]
+        .map((element) => ({ name: element.textContent, box: visible(element) }))
+        .filter(({ box }) => box)
       const cards = [...document.querySelectorAll('[data-journey-entry]')].map((row) => ({
         name: row.querySelector('h3').textContent,
         box: row.children[1].getBoundingClientRect(),
@@ -83,19 +98,34 @@ test('never spreads the sorting skills into the cards, and lands the rows before
       return cards.flatMap((card) => basket.filter((piece) => meet(card.box, piece.box)).map((piece) => `${card.name} / ${piece.name}`))
     })
 
-  // Up to "Today" at the bottom of the screen, then on through the whole sort
-  // a little at a time, checking at every step.
-  await page.evaluate(() => window.scrollTo(0, document.querySelector('[data-journey-end]').offsetTop))
-  await settle()
-  const python = page.locator('[data-basket="desktop"]').getByRole('button', { name: 'Python' })
-  const seen = []
-  while (!(await python.isEnabled())) {
-    if (await heading.count()) seen.push(...(await collisions()))
-    await scrollBy(25)
-  }
-  expect([...new Set(seen)]).toEqual([])
+  for (const [width, height] of [
+    [1280, 720],
+    [1440, 900],
+  ]) {
+    await page.setViewportSize({ width, height })
+    await visit(page)
+    // Up to "Today" at the bottom of the screen, then on through the whole
+    // sort a little at a time, checking at every step.
+    await page.evaluate(() => window.scrollTo(0, document.querySelector('[data-journey-end]').offsetTop))
+    await settle()
+    const cloud = await places()
+    const python = page.locator('[data-basket="desktop"]').getByRole('button', { name: 'Python' })
+    let splitAt = null
+    const seen = []
+    while (!(await python.isEnabled())) {
+      if (splitAt === null && (await places()) !== cloud) splitAt = await todayAt()
+      seen.push(...(await collisions()))
+      await page.evaluate(() => window.scrollBy(0, 20))
+      await settle()
+    }
 
-  // The rows have all landed before the project cards are fully on screen.
-  const projects = await page.getByRole('region', { name: 'Projects' }).boundingBox()
-  expect(projects.y + projects.height).toBeGreaterThan(900)
+    // The rows start splitting just as "Today" passes the middle of the screen,
+    // where the cloud rides.
+    expect(splitAt).toBeGreaterThan(height / 2 - 60)
+    expect(splitAt).toBeLessThanOrEqual(height / 2)
+    expect([...new Set(seen)]).toEqual([])
+    // The rows have all landed before the project cards are fully on screen.
+    const projects = await page.getByRole('region', { name: 'Projects' }).boundingBox()
+    expect(projects.y + projects.height).toBeGreaterThan(height)
+  }
 })

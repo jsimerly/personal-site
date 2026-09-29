@@ -9,8 +9,12 @@ import { rowProgress, sortBubbles } from './sortBubbles'
 // drift aside as others join, and bob gently on their own.
 //
 // Past the end of the timeline, the cloud sorts itself into labeled rows by
-// kind of skill, tied to the scroll (`sortProgress`, 0 to 1): rows assemble
-// one after another, each label fading in as its bubbles arrive, and it all
+// kind of skill, tied to the scroll (`sortProgress`, 0 to 1), starting as the
+// cloud passes "Today". The rows assemble from the bottom up: the last cards
+// are still beside the top of the cloud then, so the lowest rows (below
+// "Today", where there are no cards) split out first, and the top rows and
+// the heading land last, once the cards have risen out of the way. Rows
+// assemble one after another, each label fading in as its bubbles arrive, and it all
 // runs backward if you scroll up. As a row lands, its bubbles stop bobbing
 // and settle into an easier-to-read size and a single purple, and a heading
 // grows in above them. Once every row has landed, each skill can be clicked
@@ -90,8 +94,11 @@ export default function BubbleCluster({ totals, sortProgress, popDelay, width, s
 
   const sorting = sortProgress > 0
   const settledRows = sortProgress >= 1
+  // How far along a row is, bottom row first.
+  const arrivalOf = (section) => rowProgress(sortProgress, rows.sections - 1 - section, rows.sections)
   const height = mix(cloudLayout.height, rows.height, rowProgress(sortProgress, 0, 1))
-  const headingIn = clamp01((sortProgress - 0.35) / 0.65)
+  // The heading sits above the top rows, so it comes in with them, last.
+  const headingIn = clamp01((sortProgress - 0.5) / 0.5)
   const moveMs = sorting ? FOLLOW_MS : MOVE_MS
 
   // Keep the whole block (heading and skills) centered on screen, but never
@@ -159,14 +166,14 @@ export default function BubbleCluster({ totals, sortProgress, popDelay, width, s
                   className="absolute top-1/2 left-1/2 border-t border-zinc-800"
                   style={{
                     width: rows.width,
-                    opacity: rowProgress(sortProgress, section, rows.sections),
+                    opacity: arrivalOf(section),
                     transform: `translate(${-rows.width / 2}px, ${y}px)`,
                   }}
                 />
               ))}
             {sorting &&
               rows.labels.map(({ name, section, x, y }) => {
-                const arrived = rowProgress(sortProgress, section, rows.sections)
+                const arrived = arrivalOf(section)
                 return (
                   <li
                     key={`label-${name}`}
@@ -184,7 +191,7 @@ export default function BubbleCluster({ totals, sortProgress, popDelay, width, s
             {bubbles.map(({ key, total: skillTotal, ...size }) => {
               const inCloud = cloudLayout.positions.get(key)
               const inRow = rows.positions.get(key)
-              const t = sorting ? rowProgress(sortProgress, inRow.section, rows.sections) : 0
+              const t = sorting ? arrivalOf(inRow.section) : 0
               const x = mix(inCloud.x, inRow.x, t)
               const y = mix(inCloud.y, inRow.y, t)
               const w = mix(size.w, size.rowW, t)

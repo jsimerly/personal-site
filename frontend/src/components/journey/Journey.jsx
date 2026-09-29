@@ -165,7 +165,7 @@ export default function Journey() {
             sorts itself along this stretch once "Today" is up out of the way,
             then catches against the projects. Long enough for the rows to land
             just before the catch. */}
-        <div ref={stageRef} aria-hidden="true" className="relative hidden h-[135vh] lg:block">
+        <div ref={stageRef} aria-hidden="true" className="relative hidden h-[110vh] lg:block">
           <span className="absolute inset-y-0 left-1/2 -translate-x-1/2 border-l-2 border-dashed border-zinc-700" />
         </div>
 
