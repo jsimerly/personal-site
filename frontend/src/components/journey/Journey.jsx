@@ -5,6 +5,7 @@ import { erasOf } from './eras'
 import JourneyEntry from './JourneyEntry.jsx'
 import JourneyProjects from './JourneyProjects.jsx'
 import SkillTray from './SkillTray.jsx'
+import { useTimelineLayout } from './timelineLayout'
 import WhatsNext from './WhatsNext.jsx'
 import { useJourneyProgress } from './useJourneyProgress'
 import { FLIGHT_MS, MAX_ENTRIES_AT_ONCE, useSkillFlights } from './useSkillFlights'
@@ -67,6 +68,10 @@ function useFlying(passed) {
 export default function Journey() {
   const timelineRef = useRef(null)
   const stageRef = useRef(null)
+  // Cards are placed by measurement, two lanes side by side (timelineLayout).
+  const listRef = useRef(null)
+  const layout = useTimelineLayout(listRef)
+  const topOf = (key) => layout.tops.get(key) ?? 0
   const { progress, revealed, passed, sortProgress } = useJourneyProgress(timelineRef, stageRef)
   // Finished once every entry and the "Today" marker have scrolled past.
   const complete = passed >= journey.length && progress >= 1
@@ -110,15 +115,20 @@ export default function Journey() {
             />
           </div>
 
-          <ol className="space-y-10">
+          <ol ref={listRef} className="relative" style={{ height: layout.height }}>
             {YEARS.map(({ year, items }) => (
               <li key={year}>
-                <div className="relative z-1 mb-6 flex md:justify-center">
+                <div
+                  data-layout-key={`year-${year}`}
+                  data-layout-kind="year"
+                  className="pointer-events-none absolute inset-x-0 z-1 flex md:justify-center"
+                  style={{ top: topOf(`year-${year}`) }}
+                >
                   <span className="ml-3 -translate-x-1/2 rounded-full border border-zinc-700 bg-zinc-950 px-3 py-1 text-xs font-semibold text-zinc-300 tabular-nums md:ml-0 md:translate-x-0">
                     {year}
                   </span>
                 </div>
-                <ol className="space-y-6">
+                <ol>
                   {items.map(({ entry, index }) => (
                     <JourneyEntry
                       key={`${entry.date}-${entry.title}`}
@@ -127,6 +137,7 @@ export default function Journey() {
                       newSkills={NEW_SKILLS[index]}
                       era={ERA_STARTS.get(index)}
                       position={POSITION_STARTS.get(index)}
+                      top={topOf(`entry-${index}`)}
                       revealed={index < revealed}
                       passed={index < passed}
                     />

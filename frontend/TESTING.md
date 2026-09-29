@@ -123,6 +123,16 @@ pipe it to tail.
   - assembles rows in turn, top to bottom
   - only ever moves a row forward as the sort advances
 
+### src/components/journey/timelineLayout.test.js (6 tests)
+
+- **layoutTimeline**
+  - sets a personal project beside the job it happened during, a step lower
+  - stacks cards on the same side one under the other, never overlapping
+  - never starts an entry above the one before it, whichever side each is on
+  - starts each year below everything from the year before, cards under its marker
+  - stacks everything in order in a single lane (phones)
+  - lays out nothing as an empty timeline
+
 ### src/components/journey/useJourneyProgress.test.jsx (5 tests)
 
 - **useJourneyProgress**
@@ -216,8 +226,9 @@ pipe it to tail.
 - **when the API is down**
   - the site still loads and says so plainly
 
-### e2e/journey.spec.js (1 tests)
+### e2e/journey.spec.js (2 tests)
 
+- lays the timeline out in order, with no cards overlapping and work beside personal projects
 - **the skills basket**
   - holds only Curious until the reader scrolls, then starts collecting
 
@@ -230,4 +241,4 @@ pipe it to tail.
 
 ---
 
-102 unit and 8 end-to-end tests cataloged.
+108 unit and 9 end-to-end tests cataloged.
