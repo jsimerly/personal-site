@@ -410,6 +410,15 @@ const entries = [
     skills: { 'Data architecture': 2, 'System design': 1 },
   },
   {
+    date: '2025',
+    side: 'build',
+    title: 'Soulpoint AI',
+    summary:
+      'Data and AI for tough workflows: the strategy, the tools, and the governance that keep operations compliant and efficient. Plus the React site that tells the story.',
+    skills: { 'AI governance': 2, 'Client consulting': 1, React: 1 },
+    project: 'soulpoint',
+  },
+  {
     date: '2026-09',
     end: 'now',
     side: 'build',

@@ -25,7 +25,7 @@ export const skillCategories = [
       'Tableau',
     ],
   },
-  { name: 'AI', skills: ['LLM APIs', 'MCP', 'Agentic development'] },
+  { name: 'AI', skills: ['LLM APIs', 'MCP', 'Agentic development', 'AI governance'] },
   {
     name: 'Cloud and DevOps',
     skills: ['Azure', 'CI/CD', 'Cloud Run', 'Cloud Storage', 'AWS', 'Docker', 'Kubernetes', 'GitHub Actions'],

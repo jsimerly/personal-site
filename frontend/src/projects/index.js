@@ -65,6 +65,16 @@ export const projects = [
     links: { github: repo('personal-site') },
   },
   {
+    slug: 'soulpoint',
+    name: 'Soulpoint AI',
+    kind: 'personal',
+    year: '2025',
+    summary:
+      'Data and AI for tough workflows: the strategy, the tools, and the governance that keep operations compliant and efficient. Plus the React site that tells the story.',
+    tags: ['AI governance', 'Client consulting', 'React'],
+    links: {},
+  },
+  {
     slug: 'dsa',
     name: 'Data structures and algorithms',
     kind: 'personal',
