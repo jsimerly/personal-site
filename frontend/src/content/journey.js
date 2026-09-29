@@ -340,7 +340,7 @@ const entries = [
     skills: { 'Microsoft Fabric': 3, Azure: 2, PySpark: 2, SQL: 2, 'Data architecture': 2 },
   },
   {
-    date: '2024-09',
+    date: '2024-12',
     side: 'work',
     position: barnesThornburg,
     title: 'Fabric utilities and CI/CD library',
@@ -348,7 +348,7 @@ const entries = [
     skills: { Python: 2, 'CI/CD': 2 },
   },
   {
-    date: '2024-09',
+    date: '2025-03',
     side: 'work',
     position: barnesThornburg,
     title: 'SharePoint MCP server',
@@ -356,7 +356,7 @@ const entries = [
     skills: { MCP: 1 },
   },
   {
-    date: '2024-09',
+    date: '2025-06',
     side: 'work',
     position: barnesThornburg,
     title: 'Unstructured data, normalized with AI',
@@ -364,14 +364,14 @@ const entries = [
     skills: { 'LLM APIs': 1 },
   },
   {
-    date: '2024-09',
+    date: '2025-09',
     side: 'work',
     position: barnesThornburg,
     title: 'Software architecture and design',
     skills: { 'System design': 1 },
   },
   {
-    date: '2024-09',
+    date: '2025-12',
     side: 'work',
     position: barnesThornburg,
     title: 'Team management',
