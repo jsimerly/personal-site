@@ -2,7 +2,7 @@
 // in display order. A skill not listed here lands in "Other".
 export const skillCategories = [
   { name: 'Mindset', skills: ['Curious'] },
-  { name: 'Languages', skills: ['Python', 'JavaScript', 'TypeScript', 'SQL', 'Rust', 'Java', 'C++', 'Visual Basic'] },
+  { name: 'Languages', skills: ['Python', 'JavaScript', 'TypeScript', 'SQL', 'Rust', 'Java', 'C++', 'C#', 'Visual Basic'] },
   { name: 'Frontend', skills: ['React', 'Tailwind CSS', 'Vite', 'HTML', 'CSS'] },
   {
     name: 'Backend',
@@ -43,5 +43,5 @@ export const skillCategories = [
       'Game AI',
     ],
   },
-  { name: 'Leadership', skills: ['Team leadership', 'Client consulting'] },
+  { name: 'Leadership', skills: ['Team leadership', 'Mentoring', 'Client consulting', 'Process improvement'] },
 ]
