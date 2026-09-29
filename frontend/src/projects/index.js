@@ -1,14 +1,233 @@
 import { lazy } from 'react'
 
-// Every project on the site. To add one: build its page under
-// src/projects/<slug>/, register it here, and if it needs data, add a matching
-// Django app under api/apps/ served at /api/<slug>/. Pages are lazy-loaded so
-// each project's code only downloads when someone opens it.
+// Every project on the site, in gallery order: everything I've built, big or
+// small, shipped or not. Each one gets a card and a page at /projects/<slug>,
+// and every build on the home page's timeline links to its page. The page is built from these fields unless the
+// project has its own `Page` (for interactive or data-backed projects, which
+// read from the API under /api/<slug>/). `hidden` keeps a project routable
+// but out of the gallery.
+//
+// `tags` double as the project's skills: on the home page, picking a skill
+// finds the projects tagged with it, so use the same names as the journey.
+// `featured` projects are the favorites shown there before anything is
+// picked (the first three), and win ties when something is.
+const repo = (name) => `https://github.com/jsimerly/${name}`
+
 export const projects = [
+  {
+    slug: 'brolympics',
+    name: 'Brolympics',
+    kind: 'personal',
+    year: '2023 to now',
+    summary:
+      "Runs a weekend of games for a group of friends: leagues, teams, brackets, and live standings on everyone's phone.",
+    tags: ['React', 'Django REST Framework', 'Cloud Run', 'Postgres', 'Firebase Auth'],
+    links: { live: 'https://brolympics.app' },
+    description: [
+      'Commissioners set up a league, draw teams, and schedule the events. On game day, players check in, report their scores, and follow brackets and standings live.',
+      "It's a mobile-first React app on a Django REST Framework API, running on Cloud Run with Postgres and Firebase Auth, and backed by unit, API, and end-to-end test suites.",
+    ],
+  },
+  {
+    slug: 'fantasy-analysis',
+    name: 'Fantasy Analysis',
+    kind: 'personal',
+    year: '2021 to now',
+    summary: 'Data pipelines, projections, and analysis for my dynasty fantasy football league.',
+    tags: ['Python', 'Polars', 'Cloud Storage', 'Jupyter'],
+    links: { github: 'https://github.com/jsimerly/fantasy-analysis' },
+  },
+  {
+    slug: 'ecs-engine',
+    name: 'ECS Engine',
+    kind: 'personal',
+    year: '2024',
+    summary: 'A lightweight, dependency-free Entity Component System for building games in Python.',
+    tags: ['Python', 'Entity Component Systems'],
+    links: { github: 'https://github.com/jsimerly/ecs_engine' },
+  },
+  {
+    slug: 'ankicode',
+    name: 'AnkiCode',
+    kind: 'personal',
+    year: '2024',
+    summary: 'An Anki-style spaced repetition system for keeping LeetCode practice fresh.',
+    tags: ['Python', 'Algorithms'],
+    links: { github: 'https://github.com/jsimerly/ankicode' },
+  },
+  {
+    slug: 'personal-site',
+    name: 'This site',
+    kind: 'personal',
+    year: '2026 to now',
+    summary: 'A static React site on GitHub Pages, reading a Django API on Cloud Run.',
+    tags: ['React', 'JavaScript', 'Vite', 'Tailwind CSS', 'Python', 'Django REST Framework', 'GitHub Actions', 'Playwright'],
+    links: { github: repo('personal-site') },
+  },
+  {
+    slug: 'dsa',
+    name: 'Data structures and algorithms',
+    kind: 'personal',
+    year: '2024',
+    summary: 'Classic data structures and algorithms, worked through in Python.',
+    tags: ['Python', 'Jupyter', 'Algorithms'],
+    links: { github: repo('dsa') },
+  },
+  {
+    slug: 'rune',
+    name: 'Rune',
+    kind: 'personal',
+    year: '2024',
+    summary: 'A game with its own client and server.',
+    tags: ['Python', 'Networking'],
+    links: { github: repo('Rune_Server') },
+  },
+  {
+    slug: 'rust-engine',
+    name: 'Rust engine',
+    kind: 'personal',
+    year: '2024',
+    summary: 'An Entity Component System game engine, in Rust.',
+    tags: ['Rust', 'Entity Component Systems'],
+    links: {},
+  },
+  {
+    slug: 'gpt-image-processor',
+    name: 'GPT image processor',
+    kind: 'personal',
+    year: '2023',
+    summary: 'Image processing powered by GPT.',
+    tags: ['Python', 'LLM APIs'],
+    links: { github: repo('gpt-image-processor') },
+  },
+  {
+    slug: 'design-patterns',
+    name: 'Design patterns',
+    kind: 'personal',
+    year: '2023',
+    summary: 'The classic software design patterns, implemented one by one.',
+    tags: ['Design patterns', 'Object-oriented design'],
+    links: { github: repo('design-patterns') },
+  },
+  {
+    slug: 'sih-sportsbook',
+    name: 'Stuck in High School Sportsbook',
+    kind: 'personal',
+    year: '2022',
+    summary: "Turns fantasy football projections into betting lines and over/unders for my league's matchups.",
+    tags: ['Python', 'Django', 'JavaScript', 'HTML', 'CSS', 'AWS', 'Docker'],
+    links: { github: repo('SIHSportsbook') },
+    description: [
+      "The project that got me out of tutorial hell. It pulls projections and win rates from Sleeper, turns them into moneylines, spreads, and over/unders, and lets everyone in the league bet on each week's matchups and climb a leaderboard.",
+      'Friends playtested it and liked it, but Sleeper stopped supporting its projections API before the whole league got in. It still taught me how to take something from a script to a deployed app: Django, Docker, and AWS.',
+    ],
+  },
+  {
+    slug: 'dominion-ai',
+    name: 'Dominion AI',
+    kind: 'personal',
+    year: '2022',
+    summary: 'Computer players for the Dominion board game.',
+    tags: ['Python', 'Game AI'],
+    links: { github: repo('DominionAI') },
+  },
+  {
+    slug: 'dominion',
+    name: 'Dominion',
+    kind: 'personal',
+    year: '2022',
+    summary: 'A Python implementation of the Dominion board game.',
+    tags: ['Python', 'Object-oriented design'],
+    links: { github: repo('dominion') },
+  },
+  {
+    slug: 'ktc-analysis',
+    name: 'KTC analysis and scraping',
+    kind: 'personal',
+    year: '2021',
+    summary: 'Scraping and analyzing KeepTradeCut dynasty fantasy values.',
+    tags: ['Python', 'Jupyter', 'Web scraping', 'Data analysis'],
+    links: { github: repo('KTC-Analysis-and-Scraping') },
+  },
+  {
+    slug: 'monty-hall',
+    name: 'Monty Hall simulation',
+    kind: 'personal',
+    year: '2021',
+    summary: 'Simulating the Monty Hall problem to watch the odds play out.',
+    tags: ['Python', 'Jupyter'],
+    links: { github: repo('Monty-Hall-Python') },
+  },
+  {
+    slug: 'odin-project',
+    name: 'The Odin Project',
+    kind: 'personal',
+    year: '2021',
+    summary: "Projects from The Odin Project's web development curriculum.",
+    tags: ['HTML', 'CSS', 'JavaScript'],
+    links: { github: repo('OdinRepo') },
+  },
+  {
+    slug: 'kaggle',
+    name: 'A Kaggle competition',
+    kind: 'personal',
+    year: '2019',
+    summary: '[Placeholder: which competition, and what you tried.]',
+    tags: [],
+    links: {},
+  },
+  {
+    slug: 'cpp',
+    name: 'Teaching myself C++',
+    kind: 'personal',
+    year: '2013',
+    summary: 'My first code: the basics of C++, learned on my own.',
+    tags: ['C++'],
+    links: {},
+  },
+  {
+    slug: 'company-b-project',
+    name: '[Placeholder] Flagship project at [Company B]',
+    kind: 'work',
+    year: '[Year]',
+    featured: true,
+    summary: '[What it was, what you did, and what changed because of it.]',
+    tags: ['Python', 'TypeScript', 'React', 'AWS', 'System design'],
+    links: {},
+  },
+  {
+    slug: 'company-a-project',
+    name: '[Placeholder] Project at [Company A]',
+    kind: 'work',
+    year: '[Year]',
+    featured: true,
+    summary: '[What it was, what you did, and what changed because of it.]',
+    tags: ['SQL', 'Python', 'Tableau', 'Data analysis'],
+    links: {},
+  },
+  {
+    slug: 'school-project',
+    name: '[Placeholder] Capstone at [University]',
+    kind: 'school',
+    year: '[Year]',
+    featured: true,
+    summary: '[What you built, and what it taught you.]',
+    tags: ['Java', 'Data structures', 'Statistics'],
+    links: {},
+  },
   {
     slug: 'example',
     name: 'Example project',
-    summary: 'A template for new projects. Fetches a list from the API and renders it.',
+    kind: 'personal',
+    year: '2026',
+    hidden: true,
+    summary: 'A template for data-backed projects. Fetches a list from the API and renders it.',
+    tags: [],
+    links: {},
     Page: lazy(() => import('./example/ExamplePage.jsx')),
   },
 ]
+
+export const listedProjects = projects.filter((project) => !project.hidden)
+
+export const KIND_LABELS = { work: 'Work', school: 'School', personal: 'Personal' }

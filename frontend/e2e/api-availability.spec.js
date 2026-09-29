@@ -12,20 +12,19 @@ test.describe('while the API is waking up', () => {
     await visit(page, 'projects/example')
 
     await expect(page.getByText(/^Waking up the server/)).toBeVisible()
-    await expect(page.getByText('Waking up the API', { exact: true })).toBeVisible()
     await expect(page.getByText('First item', { exact: true })).toBeVisible({ timeout: 10_000 })
-    await expect(page.getByText('API online', { exact: true })).toBeVisible()
   })
 
   test('the home page renders without waiting on it', async ({ page }) => {
     await delayApi(page, 5_000)
+    const health = page.waitForResponse('**/api/health/', { timeout: 10_000 })
     await visit(page)
 
-    // The project list is on screen while the health check is still out.
-    await expect(page.getByRole('link', { name: /^Example project/ })).toBeVisible()
-    await expect(page.getByText(/^(Checking|Waking up) the API$/)).toBeVisible()
-    // Let the held request finish so nothing is in flight at teardown.
-    await expect(page.getByText('API online', { exact: true })).toBeVisible({ timeout: 10_000 })
+    // The whole page is on screen while the wake-up ping is still out.
+    await expect(page.getByRole('heading', { level: 1, name: 'Jacob Simerly', exact: true })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'My journey' })).toBeVisible()
+    // Let the held ping finish so nothing is in flight at teardown.
+    expect((await health).status()).toBe(200)
   })
 })
 
@@ -37,7 +36,6 @@ test.describe('when the API is down', () => {
     await visit(page, 'projects/example')
 
     await expect(page.getByRole('alert')).toHaveText("Couldn't load this. Try again in a moment.")
-    await expect(page.getByText('API offline', { exact: true })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Example project' })).toBeVisible()
   })
 })
