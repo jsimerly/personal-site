@@ -162,8 +162,10 @@ export default function Journey() {
         </div>
 
         {/* Past today the line keeps going, dashed, to what's next. The basket
-            sorts itself along this stretch, then catches against the projects. */}
-        <div ref={stageRef} aria-hidden="true" className="relative hidden h-[90vh] lg:block">
+            rides alone until "Today" is up near the top, sorts itself along the
+            rest of this stretch, then catches against the projects. Long
+            enough for the rows to land before the catch. */}
+        <div ref={stageRef} aria-hidden="true" className="relative hidden h-[150vh] lg:block">
           <span className="absolute inset-y-0 left-1/2 -translate-x-1/2 border-l-2 border-dashed border-zinc-700" />
         </div>
 

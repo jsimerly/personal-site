@@ -57,3 +57,34 @@ test('lays the timeline out in order, with no cards overlapping and work beside 
   expect(rules.left).not.toBe(sportsbook.left)
   expect(rules.cardTop).toBeLessThan(sportsbook.cardBottom)
 })
+
+test('sorts the skills only once the cards have scrolled away, and lands the rows before the projects', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile', 'The basket is the desktop layout; phones get the skill tray.')
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await visit(page)
+  const heading = page.getByRole('heading', { name: 'What I bring today' })
+  const settle = () => page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))))
+  const scrollBy = async (y) => {
+    await page.evaluate((y) => window.scrollBy(0, y), y)
+    await settle()
+  }
+
+  // Up to "Today" at the bottom of the screen, then a little at a time until
+  // the rows start forming.
+  await page.evaluate(() => window.scrollTo(0, document.querySelector('[data-journey-end]').offsetTop))
+  await settle()
+  while (!(await heading.count())) await scrollBy(20)
+
+  const { lowestCard, underHeader } = await page.evaluate(() => ({
+    lowestCard: Math.max(
+      ...[...document.querySelectorAll('[data-journey-entry]')].map((row) => row.children[1].getBoundingClientRect().bottom),
+    ),
+    underHeader: document.querySelector('header').getBoundingClientRect().bottom,
+  }))
+  expect(lowestCard).toBeLessThanOrEqual(underHeader)
+
+  // By the time the project cards are fully on screen, every row has landed.
+  const projects = page.getByRole('region', { name: 'Projects' })
+  while ((await projects.boundingBox()).y + (await projects.boundingBox()).height > 900) await scrollBy(40)
+  await expect(page.locator('[data-basket="desktop"]').getByRole('button', { name: 'Python' })).toBeEnabled()
+})
