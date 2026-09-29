@@ -1,7 +1,8 @@
 // The kinds of skill the basket sorts itself into at the end of the journey,
 // in display order. A skill not listed here lands in "Other".
 export const skillCategories = [
-  { name: 'Languages', skills: ['Python', 'JavaScript', 'TypeScript', 'SQL', 'Rust', 'Java'] },
+  { name: 'Mindset', skills: ['Curious'] },
+  { name: 'Languages', skills: ['Python', 'JavaScript', 'TypeScript', 'SQL', 'Rust', 'Java', 'C++', 'Visual Basic'] },
   { name: 'Frontend', skills: ['React', 'Tailwind CSS', 'Vite', 'HTML', 'CSS'] },
   {
     name: 'Backend',
@@ -9,11 +10,25 @@ export const skillCategories = [
   },
   {
     name: 'Data',
-    skills: ['Data analysis', 'Jupyter', 'Polars', 'Web scraping', 'Statistics', 'Excel', 'Tableau', 'LLM APIs'],
+    skills: [
+      'Microsoft Fabric',
+      'PySpark',
+      'BigQuery',
+      'Data modeling',
+      'Data architecture',
+      'Data analysis',
+      'Jupyter',
+      'Polars',
+      'Web scraping',
+      'Statistics',
+      'Excel',
+      'Tableau',
+    ],
   },
+  { name: 'AI', skills: ['LLM APIs', 'MCP', 'Agentic development'] },
   {
     name: 'Cloud and DevOps',
-    skills: ['Cloud Run', 'Cloud Storage', 'AWS', 'Docker', 'Kubernetes', 'GitHub Actions'],
+    skills: ['Azure', 'CI/CD', 'Cloud Run', 'Cloud Storage', 'AWS', 'Docker', 'Kubernetes', 'GitHub Actions'],
   },
   { name: 'Testing', skills: ['pytest', 'Playwright'] },
   {
@@ -28,4 +43,5 @@ export const skillCategories = [
       'Game AI',
     ],
   },
+  { name: 'Leadership', skills: ['Team leadership', 'Client consulting'] },
 ]

@@ -1,7 +1,8 @@
 import { lazy } from 'react'
 
-// Every project on the site, in gallery order. Each one gets a card and a
-// page at /projects/<slug>. The page is built from these fields unless the
+// Every project on the site, in gallery order: everything I've built, big or
+// small, shipped or not. Each one gets a card and a page at /projects/<slug>,
+// and every build on the home page's timeline links to its page. The page is built from these fields unless the
 // project has its own `Page` (for interactive or data-backed projects, which
 // read from the API under /api/<slug>/). `hidden` keeps a project routable
 // but out of the gallery.
@@ -10,6 +11,8 @@ import { lazy } from 'react'
 // finds the projects tagged with it, so use the same names as the journey.
 // `featured` projects are the favorites shown there before anything is
 // picked (the first three), and win ties when something is.
+const repo = (name) => `https://github.com/jsimerly/${name}`
+
 export const projects = [
   {
     slug: 'brolympics',
@@ -51,6 +54,136 @@ export const projects = [
     summary: 'An Anki-style spaced repetition system for keeping LeetCode practice fresh.',
     tags: ['Python', 'Algorithms'],
     links: { github: 'https://github.com/jsimerly/ankicode' },
+  },
+  {
+    slug: 'personal-site',
+    name: 'This site',
+    kind: 'personal',
+    year: '2026 to now',
+    summary: 'A static React site on GitHub Pages, reading a Django API on Cloud Run.',
+    tags: ['React', 'JavaScript', 'Vite', 'Tailwind CSS', 'Python', 'Django REST Framework', 'GitHub Actions', 'Playwright'],
+    links: { github: repo('personal-site') },
+  },
+  {
+    slug: 'dsa',
+    name: 'Data structures and algorithms',
+    kind: 'personal',
+    year: '2024',
+    summary: 'Classic data structures and algorithms, worked through in Python.',
+    tags: ['Python', 'Jupyter', 'Algorithms'],
+    links: { github: repo('dsa') },
+  },
+  {
+    slug: 'rune',
+    name: 'Rune',
+    kind: 'personal',
+    year: '2024',
+    summary: 'A game with its own client and server.',
+    tags: ['Python', 'Networking'],
+    links: { github: repo('Rune_Server') },
+  },
+  {
+    slug: 'rust-engine',
+    name: 'Rust engine',
+    kind: 'personal',
+    year: '2024',
+    summary: 'An Entity Component System game engine, in Rust.',
+    tags: ['Rust', 'Entity Component Systems'],
+    links: {},
+  },
+  {
+    slug: 'gpt-image-processor',
+    name: 'GPT image processor',
+    kind: 'personal',
+    year: '2023',
+    summary: 'Image processing powered by GPT.',
+    tags: ['Python', 'LLM APIs'],
+    links: { github: repo('gpt-image-processor') },
+  },
+  {
+    slug: 'design-patterns',
+    name: 'Design patterns',
+    kind: 'personal',
+    year: '2023',
+    summary: 'The classic software design patterns, implemented one by one.',
+    tags: ['Design patterns', 'Object-oriented design'],
+    links: { github: repo('design-patterns') },
+  },
+  {
+    slug: 'sih-sportsbook',
+    name: 'Stuck in High School Sportsbook',
+    kind: 'personal',
+    year: '2022',
+    summary: "Turns fantasy football projections into betting lines and over/unders for my league's matchups.",
+    tags: ['Python', 'Django', 'JavaScript', 'HTML', 'CSS', 'AWS', 'Docker'],
+    links: { github: repo('SIHSportsbook') },
+    description: [
+      "The project that got me out of tutorial hell. It pulls projections and win rates from Sleeper, turns them into moneylines, spreads, and over/unders, and lets everyone in the league bet on each week's matchups and climb a leaderboard.",
+      'Friends playtested it and liked it, but Sleeper stopped supporting its projections API before the whole league got in. It still taught me how to take something from a script to a deployed app: Django, Docker, and AWS.',
+    ],
+  },
+  {
+    slug: 'dominion-ai',
+    name: 'Dominion AI',
+    kind: 'personal',
+    year: '2022',
+    summary: 'Computer players for the Dominion board game.',
+    tags: ['Python', 'Game AI'],
+    links: { github: repo('DominionAI') },
+  },
+  {
+    slug: 'dominion',
+    name: 'Dominion',
+    kind: 'personal',
+    year: '2022',
+    summary: 'A Python implementation of the Dominion board game.',
+    tags: ['Python', 'Object-oriented design'],
+    links: { github: repo('dominion') },
+  },
+  {
+    slug: 'ktc-analysis',
+    name: 'KTC analysis and scraping',
+    kind: 'personal',
+    year: '2021',
+    summary: 'Scraping and analyzing KeepTradeCut dynasty fantasy values.',
+    tags: ['Python', 'Jupyter', 'Web scraping', 'Data analysis'],
+    links: { github: repo('KTC-Analysis-and-Scraping') },
+  },
+  {
+    slug: 'monty-hall',
+    name: 'Monty Hall simulation',
+    kind: 'personal',
+    year: '2021',
+    summary: 'Simulating the Monty Hall problem to watch the odds play out.',
+    tags: ['Python', 'Jupyter'],
+    links: { github: repo('Monty-Hall-Python') },
+  },
+  {
+    slug: 'odin-project',
+    name: 'The Odin Project',
+    kind: 'personal',
+    year: '2021',
+    summary: "Projects from The Odin Project's web development curriculum.",
+    tags: ['HTML', 'CSS', 'JavaScript'],
+    links: { github: repo('OdinRepo') },
+  },
+  {
+    slug: 'kaggle',
+    name: 'A Kaggle competition',
+    kind: 'personal',
+    year: '2019',
+    summary: '[Placeholder: which competition, and what you tried.]',
+    tags: [],
+    links: {},
+  },
+  {
+    slug: 'cpp',
+    name: 'Teaching myself C++',
+    kind: 'personal',
+    year: '2013',
+    summary: 'My first code: the basics of C++, learned on my own.',
+    tags: ['C++'],
+    links: {},
   },
   {
     slug: 'company-b-project',

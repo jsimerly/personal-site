@@ -37,15 +37,13 @@ export function skillColor({ work, build }) {
   return `color-mix(in oklch, ${side} ${Math.round(towardSide * 100)}%, var(--color-both))`
 }
 
-// Background, glow, and outline for a bubble, lit like stage lights on a
-// black stage: bigger skills are richer and throw a wider glow.
+// Background and outline for a bubble, flat: bigger skills are richer.
 export function bubbleColors(total) {
   const color = skillColor(total)
   const level = bubbleLevel(total.points)
-  const glow = `0 0 ${Math.round(2 + level * 9)}px color-mix(in oklab, ${color} ${Math.round(12 + level * 20)}%, transparent)`
   return {
     backgroundColor: `color-mix(in oklab, ${color} ${Math.round(20 + level * 34)}%, var(--color-zinc-950))`,
-    boxShadow: `${glow}, inset 0 0 0 1px color-mix(in oklab, ${color} 60%, transparent)`,
+    boxShadow: `inset 0 0 0 1px color-mix(in oklab, ${color} 60%, transparent)`,
     opacity: 0.8 + level * 0.2,
   }
 }
@@ -61,16 +59,14 @@ export function sortedFontPx(points) {
 
 export const SORTED_COLORS = {
   backgroundColor: 'color-mix(in oklab, var(--color-both) 24%, var(--color-zinc-950))',
-  boxShadow:
-    '0 0 6px color-mix(in oklab, var(--color-both) 18%, transparent), inset 0 0 0 1px color-mix(in oklab, var(--color-both) 55%, transparent)',
+  boxShadow: 'inset 0 0 0 1px color-mix(in oklab, var(--color-both) 55%, transparent)',
   opacity: 1,
 }
 
 // A skill picked to find its projects: brighter, with a light ring.
 export const PICKED_COLORS = {
   backgroundColor: 'color-mix(in oklab, var(--color-both) 55%, var(--color-zinc-950))',
-  boxShadow:
-    '0 0 12px color-mix(in oklab, var(--color-both) 45%, transparent), inset 0 0 0 1px color-mix(in oklab, white 70%, transparent)',
+  boxShadow: 'inset 0 0 0 1px color-mix(in oklab, white 70%, transparent)',
   opacity: 1,
 }
 

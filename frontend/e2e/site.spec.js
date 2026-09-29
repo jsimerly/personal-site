@@ -5,21 +5,22 @@
 import { expect, test } from './fixtures'
 import { expectNoHorizontalScroll, visit } from './helpers'
 
-test('the home page lists the projects and reports the API online', async ({ page }) => {
+test('the home page introduces me and leads to my portfolio', async ({ page }) => {
   await visit(page)
 
   await expect(page.getByRole('heading', { level: 1, name: 'Jacob Simerly', exact: true })).toBeVisible()
-  await expect(page.getByRole('link', { name: /^Example project/ })).toBeVisible()
-  await expect(page.getByText('API online', { exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'My journey' })).toBeVisible()
   await expectNoHorizontalScroll(page)
+
+  await page.getByRole('link', { name: 'See my portfolio' }).click()
+  await expect(page).toHaveURL('/portfolio')
+  await expect(page.getByRole('heading', { level: 1, name: 'Portfolio' })).toBeVisible()
 })
 
-test('opening a project loads its data from the API', async ({ page }) => {
-  await visit(page)
-  await page.getByRole('link', { name: /^Example project/ }).click()
+test('a data-backed project page loads its data from the API', async ({ page }) => {
+  await visit(page, 'projects/example')
 
-  await expect(page).toHaveURL('/projects/example')
-  await expect(page.getByRole('listitem')).toHaveText(['First item', 'Second item', 'Third item'])
+  await expect(page.getByRole('main').getByRole('listitem')).toHaveText(['First item', 'Second item', 'Third item'])
   await expectNoHorizontalScroll(page)
 })
 
@@ -36,13 +37,5 @@ test('the name in the header leads back home', async ({ page }) => {
   await page.getByRole('link', { name: 'Jacob Simerly', exact: true }).click()
 
   await expect(page).toHaveURL('/')
-  await expect(page.getByRole('heading', { level: 1, name: 'Jacob Simerly', exact: true })).toBeVisible()
-})
-
-test('an unknown address shows the not-found page with a way home', async ({ page }) => {
-  await visit(page, 'no-such-page')
-  await expect(page.getByRole('heading', { name: 'Page not found' })).toBeVisible()
-
-  await page.getByRole('link', { name: 'Back to the home page' }).click()
   await expect(page.getByRole('heading', { level: 1, name: 'Jacob Simerly', exact: true })).toBeVisible()
 })

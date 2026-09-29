@@ -4,19 +4,13 @@
 // from lg up a center column is kept free for the basket.
 export const SIDES = {
   work: {
-    label: 'Work',
-    chip: 'bg-work/15 text-work',
     newSkill: 'bg-work/15 text-work',
-    dot: 'bg-work shadow-[0_0_6px_var(--color-work)]',
+    dot: 'bg-work',
     column: 'md:col-start-1',
   },
   build: {
-    label: 'Build',
-    chip: 'bg-build/15 text-build',
     newSkill: 'bg-build/15 text-build',
-    dot: 'bg-build shadow-[0_0_6px_var(--color-build)]',
+    dot: 'bg-build',
     column: 'md:col-start-2 lg:col-start-3',
   },
 }
-
-export const sideLabel = (entry) => entry.tag ?? SIDES[entry.side].label

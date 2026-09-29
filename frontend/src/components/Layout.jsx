@@ -19,13 +19,18 @@ export default function Layout() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="sticky top-0 z-30 border-b border-zinc-200/80 bg-white/85 backdrop-blur dark:border-zinc-800/80 dark:bg-zinc-950/85">
+      <header className="sticky top-0 z-30 border-b border-zinc-200/80 bg-white dark:border-zinc-800/80 dark:bg-zinc-950">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
           <Link to="/" className="font-semibold tracking-tight">
             {profile.name}
           </Link>
           <nav aria-label="Main">
             <ul className="flex items-center">
+              <li>
+                <NavLink to="/portfolio" className={navLink}>
+                  Portfolio
+                </NavLink>
+              </li>
               <li>
                 <NavLink to="/projects" className={navLink}>
                   Projects
@@ -34,6 +39,11 @@ export default function Layout() {
               <li>
                 <NavLink to="/resume" className={navLink}>
                   Resume
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/about" className={navLink}>
+                  About
                 </NavLink>
               </li>
             </ul>

@@ -8,6 +8,11 @@ export const buttonStyles = {
   secondary: `${buttonBase} border border-zinc-300 text-zinc-900 hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-100 dark:hover:border-zinc-500 dark:hover:bg-zinc-900`,
 }
 
+// Spread on every link that leaves the site, so the site stays open in its own
+// tab and people can come back to keep exploring. (noreferrer implies
+// noopener, so the new page can't reach back into this one.)
+export const newTab = { target: '_blank', rel: 'noreferrer' }
+
 export const sectionLabel = 'text-xs font-semibold tracking-widest text-zinc-500 uppercase'
 
 export const textLink =

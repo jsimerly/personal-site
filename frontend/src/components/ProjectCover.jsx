@@ -1,5 +1,5 @@
-// A project's cover image, or until it has one, a gradient with its initials.
-// The gradient's hue comes from the slug, so each project keeps its own color.
+// A project's cover image, or until it has one, a flat muted color with its
+// initials. The hue comes from the slug, so each project keeps its own color.
 function hueFor(slug) {
   let hue = 0
   for (const char of slug) hue = (hue * 31 + char.charCodeAt(0)) % 360
@@ -25,7 +25,7 @@ export default function ProjectCover({ project, className = '' }) {
     <div
       aria-hidden="true"
       className={`flex w-full items-center justify-center ${className}`}
-      style={{ background: `linear-gradient(135deg, hsl(${hue} 65% 55%), hsl(${(hue + 50) % 360} 60% 38%))` }}
+      style={{ backgroundColor: `oklch(0.42 0.06 ${hue})` }}
     >
       <span className="text-3xl font-semibold tracking-tight text-white/90">{initialsFor(project.name)}</span>
     </div>

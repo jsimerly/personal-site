@@ -6,7 +6,7 @@
 export const LABEL_WIDTH = 170
 const GAP_X = 8
 const GAP_Y = 8
-const SECTION_GAP = 22
+const SECTION_GAP = 18
 const OTHER = 'Other'
 
 // bubbles: [{ key, w, h }]. categories: [{ name, skills }].

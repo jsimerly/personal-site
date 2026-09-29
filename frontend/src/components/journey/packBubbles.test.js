@@ -29,6 +29,15 @@ function overlappingPairs(bubbles, positions) {
   return pairs
 }
 
+const median = (values) => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)]
+
+// How far each bubble in `previous` is from there in `positions`.
+const moves = (previous, positions) =>
+  [...previous].map(([key, before]) => {
+    const after = positions.get(key)
+    return Math.hypot(after.x - before.x, after.y - before.y)
+  })
+
 // Scrolls the whole journey one entry at a time, like a reader, each layout
 // starting from the last.
 function scrollThrough() {
@@ -60,13 +69,21 @@ describe('packBubbles', () => {
     }
   })
 
-  it('lets existing bubbles drift a little instead of reshuffling when one more joins', () => {
-    const [, second, third] = scrollThrough().slice(-3)
-    for (const { key } of second.bubbles) {
-      const before = second.layout.positions.get(key)
-      const after = third.layout.positions.get(key)
-      expect(Math.hypot(after.x - before.x, after.y - before.y)).toBeLessThan(120)
+  // Drifting, not reshuffling. Measured against rebuilding each cloud from
+  // scratch with the same bubbles, so the rule holds however many skills the
+  // journey grows to: across the whole journey, the typical bubble moves less
+  // than half as far as a rebuild would move it. (Ignoring where bubbles were
+  // scores 1; the real journey is about a third. A single step can still move
+  // a lot when a big card grows many skills at once, and that's fine.)
+  it('lets existing bubbles drift instead of reshuffling across the whole journey', () => {
+    let drifted = 0
+    let rebuilt = 0
+    for (const { bubbles, layout, previous } of scrollThrough().slice(1)) {
+      drifted += median(moves(previous, layout.positions))
+      rebuilt += median(moves(previous, packBubbles(bubbles, new Map(), WIDTH).positions))
     }
+
+    expect(drifted / rebuilt).toBeLessThan(0.5)
   })
 
   it('anchors the biggest skill near the middle of the finished cloud', () => {

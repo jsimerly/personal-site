@@ -114,13 +114,15 @@ export default function BubbleCluster({ totals, sortProgress, popDelay, width, s
     >
       {totals.length > 0 && (
         <>
-          {/* Once the heading arrives, the section sits on its own backdrop so
-              the dashed line passes behind it, not through the words. */}
+          {/* Once the heading arrives, the dashed line fades out behind the
+              section instead of running through the words. Only a strip over
+              the line: a box as wide as the rows would show its edges over
+              the last cards and the page as it fades in. */}
           {sorting && (
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -inset-y-8 left-1/2 -translate-x-1/2 bg-zinc-950 mask-y-from-90%"
-              style={{ width: sortedWidth + 64, opacity: headingIn }}
+              className="pointer-events-none absolute -inset-y-8 left-1/2 w-6 -translate-x-1/2 bg-zinc-950 mask-y-from-90%"
+              style={{ opacity: headingIn }}
             />
           )}
           <p

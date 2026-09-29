@@ -9,13 +9,15 @@ pipe it to tail.
 
 ## Unit and component tests (Vitest)
 
-### src/App.test.jsx (4 tests)
+### src/App.test.jsx (6 tests)
 
 - **App**
-  - lists every registered project on the home page
+  - introduces me on the home page and points to my portfolio and every project
+  - shows my three favorite projects under the skills until skills are picked
   - shows a not-found page for unknown paths
-  - reports the API as online once the health check answers
+  - quietly pings the API once when the site loads
   - loads a project page when the site is served under a base path
+  - opens every link that leaves the site in a new tab, on every page
 
 ### src/components/ApiState.test.jsx (4 tests)
 
@@ -25,12 +27,127 @@ pipe it to tail.
   - shows a plain alert instead of the content when the request fails
   - hands the loaded data to its children
 
-### src/components/ApiStatus.test.jsx (3 tests)
+### src/components/ProfilePhoto.test.jsx (2 tests)
 
-- **ApiStatus**
-  - reports the API online once the health check answers
-  - reports the API offline when the health check fails
-  - says it is checking, then that the API is waking up once the check runs slow
+- **ProfilePhoto**
+  - shows the photo from public/ under the site base, described by name
+  - holds the initials and a marked spot until there is a photo
+
+### src/components/ProjectCover.test.jsx (2 tests)
+
+- **ProjectCover**
+  - shows a project's cover image when it has one
+  - stands in with its initials on a flat color, the same color every time, until it has one
+
+### src/components/journey/BubbleCluster.test.jsx (4 tests)
+
+- **BubbleCluster**
+  - floats as a plain cloud of skills, not yet clickable, while the timeline scrolls
+  - brings in the heading and the kinds of skill as it sorts, still not clickable
+  - lets any skill be picked once every row has landed
+  - shows which skills are picked, and steps the rest back
+
+### src/components/journey/JourneyEntry.test.jsx (6 tests)
+
+- **JourneyEntry**
+  - makes the whole card a link to its project page, named by its title
+  - shows the logos greyed out above the card, in order, hidden from screen readers
+  - shows a newly picked-up skill by its color alone, with no plus sign
+  - puts the position beside its logo above the card, and leaves the dates off the project card
+  - shows nothing above a later card from the same position
+  - leaves a card with no project page as plain text
+
+### src/components/journey/JourneyProjects.test.jsx (3 tests)
+
+- **JourneyProjects**
+  - invites picking skills while showing the favorites
+  - shows the projects behind the picked skills, with a way back to the favorites
+  - says so plainly when nothing in the gallery uses the picked skills
+
+### src/components/journey/SkillTray.test.jsx (3 tests)
+
+- **SkillTray**
+  - shows the newest skill first while the timeline scrolls, and opens up on request
+  - settles open, in the order they were picked up, once the journey is complete
+  - invites scrolling before anything is collected
+
+### src/components/journey/bubble.test.js (4 tests)
+
+- **skillColor**
+  - is pure blue for a skill grown only at work
+  - is pure red for a skill grown only in builds
+  - is pure purple for an even split
+  - leans toward the side that contributed more, by how much more
+
+### src/components/journey/eras.test.js (5 tests)
+
+- **erasOf**
+  - runs each place until the next one starts
+  - ends a place early when its end date passes before the next place starts
+  - keeps consecutive entries at the same place in one era
+  - treats an ongoing place as running to the end
+  - ignores personal entries and formal ones with no place
+
+### src/components/journey/packBubbles.test.js (6 tests)
+
+- **packBubbles**
+  - never overlaps two bubbles at any point while scrolling the real journey
+  - keeps every bubble inside the basket column
+  - lets existing bubbles drift instead of reshuffling across the whole journey
+  - anchors the biggest skill near the middle of the finished cloud
+  - gives the same cloud for the same bubbles and starting points
+  - returns an empty cloud for no bubbles
+
+### src/components/journey/related.test.js (5 tests)
+
+- **relevantProjects**
+  - shows the first three favorites before anything is picked
+  - ranks projects using more of the picked skills first, favorites winning ties
+  - never shows more than three, even when more match
+  - shows nothing when no project uses the picked skills
+- **listOf**
+  - reads naturally for one, two, and several skills
+
+### src/components/journey/sortBubbles.test.js (10 tests)
+
+- **sortBubbles**
+  - stacks one labeled row per kind of skill, in category order, skipping empty kinds
+  - puts the biggest skill of each kind first, right after the label
+  - files skills it has no kind for under Other, last
+  - wraps a long row onto more lines and never overlaps or leaves the width
+  - tags each bubble and label with its row, top to bottom
+  - draws a divider between each pair of kinds, halfway through the gap
+  - is centered on its own middle, like the cloud
+- **rowProgress**
+  - holds every row in the cloud before the sort starts and in place once it ends
+  - assembles rows in turn, top to bottom
+  - only ever moves a row forward as the sort advances
+
+### src/components/journey/useJourneyProgress.test.jsx (5 tests)
+
+- **useJourneyProgress**
+  - collects nothing before the reader scrolls, even entries already above the collect line
+  - collects each entry once scrolling carries it above the collect line
+  - sorts the basket as the stage rises, at the reader’s pace
+  - counts everything finished at the bottom of the page
+  - never sorts where the stage is not laid out (phones)
+
+### src/components/journey/useSkillFlights.test.jsx (3 tests)
+
+- **useSkillFlights**
+  - flies a copy of each passed entry's chips into their bubbles, then clears it away
+  - sends nothing flying on the way back up, or when the caller says not to
+  - keeps still for readers who ask for reduced motion
+
+### src/content/journey.test.js (6 tests)
+
+- **journey**
+  - links every timeline card that names a project to a page that exists
+  - gives every personal build on the timeline a project page
+  - files every skill on the timeline under a kind, so none lands in \"Other\" when the basket sorts
+  - starts the basket with Curious alone, purple, before any entry
+  - keeps Curious first as the rest of the skills join
+  - has every logo a card names in public/, so the build ships it
 
 ### src/hooks/useApi.test.jsx (4 tests)
 
@@ -47,6 +164,46 @@ pipe it to tail.
   - prefixes the configured API base URL, ignoring a trailing slash
   - throws an ApiError carrying the status on a failed response
 
+### src/lib/format.test.js (3 tests)
+
+- **formatMonth**
+  - shows a year and month as the short month and year
+  - keeps a year on its own as just the year, for when the month is not known
+- **formatRange**
+  - joins a start and end with an en dash
+
+### src/pages/About.test.jsx (1 tests)
+
+- **About**
+  - shows each paragraph about me, in order, beside my photo spot
+
+### src/pages/Portfolio.test.jsx (7 tests)
+
+- **Portfolio**
+  - offers one tab per piece, in order, with coming-soon ones marked, and opens on the first
+  - shows a ready piece's project, with a link to try it
+  - switches pieces when a tab is clicked, and keeps the choice in the URL
+  - opens straight to the tab named in the URL
+  - falls back to the first tab when the URL names one that does not exist
+  - moves between tabs with the arrow keys, Home, and End, wrapping at the ends
+  - points every ready piece at a project that exists
+
+### src/pages/Projects.test.jsx (3 tests)
+
+- **Projects**
+  - shows every listed project, with a count on each filter
+  - filters by kind and keeps the filter in the URL, so a filtered view can be shared
+  - opens straight to the filter named in the URL
+
+### src/pages/Resume.test.jsx (5 tests)
+
+- **Resume**
+  - offers the resume PDF as a download, named for me, when there is one
+  - shows no download until there is a PDF
+  - never points the download at a PDF missing from public/, so the build ships it
+  - puts my current role and where I live under my name
+  - lists every role newest first, each under its company
+
 ## End-to-end tests (Playwright, each on a phone and a laptop)
 
 ### e2e/api-availability.spec.js (3 tests)
@@ -57,14 +214,18 @@ pipe it to tail.
 - **when the API is down**
   - the site still loads and says so plainly
 
-### e2e/site.spec.js (5 tests)
+### e2e/journey.spec.js (1 tests)
 
-- the home page lists the projects and reports the API online
-- opening a project loads its data from the API
+- **the skills basket**
+  - holds only Curious until the reader scrolls, then starts collecting
+
+### e2e/site.spec.js (4 tests)
+
+- the home page introduces me and leads to my portfolio
+- a data-backed project page loads its data from the API
 - a project address works when opened directly and survives a reload
 - the name in the header leads back home
-- an unknown address shows the not-found page with a way home
 
 ---
 
-18 unit and 8 end-to-end tests cataloged.
+100 unit and 8 end-to-end tests cataloged.

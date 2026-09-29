@@ -5,6 +5,10 @@ import { useEffect, useState } from 'react'
 // skills go in the basket) once they cross COLLECT_AT. `progress` (0 to 1)
 // drives how far the spine is filled.
 //
+// Nothing counts as passed until the page has been scrolled: on a tall screen
+// the first cards start out above the collect line, and the journey should
+// start with the reader, not on load. (Cards still fade in where they are.)
+//
 // After the timeline comes the sorting stage. `sortProgress` goes from 0 to 1
 // as its top scrolls from SORT_FROM down the screen to SORT_SPAN screens
 // higher, so the basket sorts itself at the reader's own pace.
@@ -39,18 +43,19 @@ export function useJourneyProgress(timelineRef, stageRef) {
       if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) {
         next = { progress: 1, revealed: entries.length, passed: entries.length, sortProgress: hasStage ? 1 : 0 }
       } else {
+        const started = window.scrollY > 0
         let revealed = 0
         let passed = 0
         for (const entry of entries) {
           const top = entry.getBoundingClientRect().top
           if (top < revealLine) revealed += 1
-          if (top < collectLine) passed += 1
+          if (started && top < collectLine) passed += 1
         }
         const sortProgress = hasStage
           ? clamp01((window.innerHeight * SORT_FROM - stage.top) / (window.innerHeight * SORT_SPAN))
           : 0
         next = {
-          progress: box.height ? clamp01((collectLine - box.top) / box.height) : 1,
+          progress: !started ? 0 : box.height ? clamp01((collectLine - box.top) / box.height) : 1,
           revealed,
           passed,
           // Rounded so tiny scrolls don't re-render the basket for nothing.

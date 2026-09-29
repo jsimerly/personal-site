@@ -17,7 +17,7 @@ export default function Projects() {
       <title>Projects | Jacob Simerly</title>
       <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Projects</h1>
       <p className="mt-3 max-w-2xl text-lg text-zinc-600 dark:text-zinc-400">
-        Things I&apos;ve built at work and on my own.
+        Everything I&apos;ve built at work and on my own, big or small.
       </p>
 
       <div role="group" aria-label="Filter projects" className="mt-8 flex flex-wrap gap-2">

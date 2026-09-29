@@ -2,7 +2,7 @@ import { IconArrowLeft, IconBrandGithub, IconExternalLink } from '@tabler/icons-
 import { Link, useParams } from 'react-router'
 import ProjectCover from '../components/ProjectCover.jsx'
 import TagList from '../components/TagList.jsx'
-import { buttonStyles } from '../components/ui'
+import { buttonStyles, newTab } from '../components/ui'
 import { KIND_LABELS, projects } from '../projects'
 import NotFound from './NotFound.jsx'
 
@@ -30,13 +30,13 @@ function ProjectDetail({ project }) {
       {(links.live || links.github) && (
         <div className="mt-6 flex flex-wrap gap-3">
           {links.live && (
-            <a href={links.live} className={buttonStyles.primary}>
+            <a href={links.live} {...newTab} className={buttonStyles.primary}>
               <IconExternalLink size={16} aria-hidden="true" />
               Visit the site
             </a>
           )}
           {links.github && (
-            <a href={links.github} className={buttonStyles.secondary}>
+            <a href={links.github} {...newTab} className={buttonStyles.secondary}>
               <IconBrandGithub size={16} aria-hidden="true" />
               View the code
             </a>
