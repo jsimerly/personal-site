@@ -59,6 +59,23 @@ describe('packBubbles', () => {
     }
   })
 
+  // However crowded, settling keeps going until nothing overlaps: a fixed
+  // number of rounds once left crowded clouds with bubbles a pixel into each
+  // other.
+  it('settles until nothing overlaps, even with many bubbles crowded into a narrow column', () => {
+    // 80 bubbles of varied, repeatable sizes, in a column a third narrower.
+    // None wider than the column, as the cloud shrinks long names to fit.
+    const crowd = Array.from({ length: 80 }, (_, index) => {
+      const font = 9 + ((index * 7) % 13)
+      const letters = 4 + ((index * 5) % 17)
+      return { key: `skill-${index}`, w: Math.min(216, letters * font * 0.56 + font * 1.4), h: font * 1.9 }
+    })
+
+    const layout = packBubbles(crowd, new Map(), 220)
+
+    expect(overlappingPairs(crowd, layout.positions)).toEqual([])
+  })
+
   it('keeps every bubble inside the basket column', () => {
     for (const { bubbles, layout } of scrollThrough()) {
       for (const { key, w } of bubbles) {

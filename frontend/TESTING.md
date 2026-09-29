@@ -88,10 +88,11 @@ pipe it to tail.
   - treats an ongoing place as running to the end
   - ignores personal entries and formal ones with no place
 
-### src/components/journey/packBubbles.test.js (6 tests)
+### src/components/journey/packBubbles.test.js (7 tests)
 
 - **packBubbles**
   - never overlaps two bubbles at any point while scrolling the real journey
+  - settles until nothing overlaps, even with many bubbles crowded into a narrow column
   - keeps every bubble inside the basket column
   - lets existing bubbles drift instead of reshuffling across the whole journey
   - anchors the biggest skill near the middle of the finished cloud
@@ -241,4 +242,4 @@ pipe it to tail.
 
 ---
 
-108 unit and 9 end-to-end tests cataloged.
+109 unit and 9 end-to-end tests cataloged.
