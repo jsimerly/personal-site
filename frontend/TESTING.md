@@ -146,7 +146,7 @@ pipe it to tail.
   - gives every personal build on the timeline a project page
   - files every skill on the timeline under a kind, so none lands in \"Other\" when the basket sorts
   - runs oldest first, however the entries are written
-  - keeps projects from the same month in the order they are written
+  - keeps entries from the same month in the order they are written
   - starts the basket with Curious alone, purple, before any entry
   - keeps Curious first as the rest of the skills join
   - has every logo a card names in public/, so the build ships it

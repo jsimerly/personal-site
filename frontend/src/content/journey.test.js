@@ -34,10 +34,12 @@ describe('journey', () => {
     expect(dates).toEqual([...dates].sort())
   })
 
-  it('keeps projects from the same month in the order they are written', () => {
+  it('keeps entries from the same month in the order they are written', () => {
     const titles = journey.map((entry) => entry.title)
 
-    expect(titles.indexOf('A new training program')).toBe(titles.indexOf('Rules of Engagement project') - 1)
+    // Both January 2022: the training program is written first, then Dominion.
+    expect(titles.indexOf('A new training program')).toBeLessThan(titles.indexOf('Dominion'))
+    expect(titles.indexOf('Dominion')).toBe(titles.indexOf('Dominion AI') - 1)
   })
 
   it('starts the basket with Curious alone, purple, before any entry', () => {

@@ -115,7 +115,7 @@ const entries = [
     skills: { 'Team leadership': 2 },
   },
   {
-    date: '2022-06',
+    date: '2021-10',
     side: 'work',
     position: ukgConsultant,
     title: 'Mentoring new consultants',
@@ -130,7 +130,7 @@ const entries = [
     skills: {},
   },
   {
-    date: '2022-01',
+    date: '2022-05',
     side: 'work',
     position: ukgConsultant,
     title: 'Rules of Engagement project',
