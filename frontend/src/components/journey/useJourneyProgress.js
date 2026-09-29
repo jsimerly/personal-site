@@ -12,11 +12,12 @@ import { useEffect, useState } from 'react'
 // After the timeline comes the sorting stage. `sortProgress` goes from 0 to 1
 // as the end of the timeline ("Today") scrolls from SORT_FROM down the screen
 // to SORT_SPAN screens higher, so the basket sorts itself at the reader's own
-// pace. It waits until "Today" is up near the top: by then the last cards are
-// under the header, so the rows spread out over nothing.
+// pace. It waits until "Today" is a quarter of the way down: by then the last
+// cards sit above the skills, and they rise faster than the rows grow, so the
+// rows never spread into them.
 const REVEAL_AT = 0.92
 const COLLECT_AT = 0.65
-const SORT_FROM = 0.1
+const SORT_FROM = 0.25
 const SORT_SPAN = 0.6
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value))

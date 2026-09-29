@@ -139,7 +139,7 @@ pipe it to tail.
 - **useJourneyProgress**
   - collects nothing before the reader scrolls, even entries already above the collect line
   - collects each entry once scrolling carries it above the collect line
-  - sorts the basket only once the end of the timeline is up near the top, then at the reader’s pace
+  - sorts the basket only once the end of the timeline is a quarter of the way down, then at the reader’s pace
   - counts everything finished at the bottom of the page
   - never sorts where the stage is not laid out (phones)
 
@@ -230,7 +230,7 @@ pipe it to tail.
 ### e2e/journey.spec.js (3 tests)
 
 - lays the timeline out in order, with no cards overlapping and work beside personal projects
-- sorts the skills only once the cards have scrolled away, and lands the rows before the projects
+- never spreads the sorting skills into the cards, and lands the rows before the projects
 - **the skills basket**
   - holds only Curious until the reader scrolls, then starts collecting
 

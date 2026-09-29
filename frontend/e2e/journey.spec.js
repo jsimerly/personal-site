@@ -58,7 +58,7 @@ test('lays the timeline out in order, with no cards overlapping and work beside 
   expect(rules.cardTop).toBeLessThan(sportsbook.cardBottom)
 })
 
-test('sorts the skills only once the cards have scrolled away, and lands the rows before the projects', async ({ page }, testInfo) => {
+test('never spreads the sorting skills into the cards, and lands the rows before the projects', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name === 'mobile', 'The basket is the desktop layout; phones get the skill tray.')
   await page.setViewportSize({ width: 1440, height: 900 })
   await visit(page)
@@ -68,23 +68,34 @@ test('sorts the skills only once the cards have scrolled away, and lands the row
     await page.evaluate((y) => window.scrollBy(0, y), y)
     await settle()
   }
+  // Any card overlapping what the basket shows (its heading, bubbles, labels,
+  // and dividers), as "card / skill".
+  const collisions = () =>
+    page.evaluate(() => {
+      const basket = [...document.querySelectorAll('[data-basket="desktop"] :is(h3, li)')]
+        .map((element) => ({ name: element.textContent, box: element.getBoundingClientRect() }))
+        .filter(({ box }) => box.width && box.height)
+      const cards = [...document.querySelectorAll('[data-journey-entry]')].map((row) => ({
+        name: row.querySelector('h3').textContent,
+        box: row.children[1].getBoundingClientRect(),
+      }))
+      const meet = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom
+      return cards.flatMap((card) => basket.filter((piece) => meet(card.box, piece.box)).map((piece) => `${card.name} / ${piece.name}`))
+    })
 
-  // Up to "Today" at the bottom of the screen, then a little at a time until
-  // the rows start forming.
+  // Up to "Today" at the bottom of the screen, then on through the whole sort
+  // a little at a time, checking at every step.
   await page.evaluate(() => window.scrollTo(0, document.querySelector('[data-journey-end]').offsetTop))
   await settle()
-  while (!(await heading.count())) await scrollBy(20)
+  const python = page.locator('[data-basket="desktop"]').getByRole('button', { name: 'Python' })
+  const seen = []
+  while (!(await python.isEnabled())) {
+    if (await heading.count()) seen.push(...(await collisions()))
+    await scrollBy(25)
+  }
+  expect([...new Set(seen)]).toEqual([])
 
-  const { lowestCard, underHeader } = await page.evaluate(() => ({
-    lowestCard: Math.max(
-      ...[...document.querySelectorAll('[data-journey-entry]')].map((row) => row.children[1].getBoundingClientRect().bottom),
-    ),
-    underHeader: document.querySelector('header').getBoundingClientRect().bottom,
-  }))
-  expect(lowestCard).toBeLessThanOrEqual(underHeader)
-
-  // By the time the project cards are fully on screen, every row has landed.
-  const projects = page.getByRole('region', { name: 'Projects' })
-  while ((await projects.boundingBox()).y + (await projects.boundingBox()).height > 900) await scrollBy(40)
-  await expect(page.locator('[data-basket="desktop"]').getByRole('button', { name: 'Python' })).toBeEnabled()
+  // The rows have all landed before the project cards are fully on screen.
+  const projects = await page.getByRole('region', { name: 'Projects' }).boundingBox()
+  expect(projects.y + projects.height).toBeGreaterThan(900)
 })
