@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "apps.core",
     "apps.example",
+    "apps.fantasy_analysis",
 ]
 
 MIDDLEWARE = [

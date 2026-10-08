@@ -1,4 +1,4 @@
-import { IconBrandGithub, IconExternalLink } from '@tabler/icons-react'
+import { IconBrandGithub, IconChartLine, IconExternalLink } from '@tabler/icons-react'
 import { useRef } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import ProjectCover from '../components/ProjectCover.jsx'
@@ -10,10 +10,12 @@ import { projects } from '../projects'
 const tabId = (slug) => `portfolio-tab-${slug}`
 const panelId = (slug) => `portfolio-panel-${slug}`
 
-// A piece that's ready: its project's story and links, beside its cover.
+// A piece that's ready: its project's story and links, beside its cover (or
+// its live preview, when it has one).
 function Showcase({ piece }) {
   const project = projects.find((each) => each.slug === piece.project)
   const { links } = project
+  const { Preview } = piece
   return (
     <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12">
       <div>
@@ -27,8 +29,14 @@ function Showcase({ piece }) {
             ))}
           </div>
         )}
-        {(links.live || links.github) && (
+        {(links.explore || links.live || links.github) && (
           <div className="mt-6 flex flex-wrap gap-3">
+            {links.explore && (
+              <Link to={links.explore} className={buttonStyles.primary}>
+                <IconChartLine size={16} aria-hidden="true" />
+                Explore the data
+              </Link>
+            )}
             {links.live && (
               <a href={links.live} {...newTab} className={buttonStyles.primary}>
                 <IconExternalLink size={16} aria-hidden="true" />
@@ -45,7 +53,7 @@ function Showcase({ piece }) {
         )}
         <TagList tags={project.tags} className="mt-6" />
       </div>
-      <ProjectCover project={project} className="aspect-video rounded-xl" />
+      {Preview ? <Preview /> : <ProjectCover project={project} className="aspect-video rounded-xl" />}
     </div>
   )
 }

@@ -34,6 +34,16 @@
   --color-accent-600: var(--color-blue-600);
   --color-accent-700: var(--color-blue-700);
 
+  /* Charts. The work and build hues one step darker, so a thin line or bar
+     holds its color against the dark cards (checked with the dataviz
+     palette validator). The model is the blue; the market and the other
+     baselines it's measured against are gray. Mispricing diverges: cheap is
+     the blue, rich the red, with a gray track between. */
+  --color-model: #4791d6;
+  --color-cheap: #4791d6;
+  --color-rich: #d76059;
+  --color-baseline: #7d7d7d;
+
   /* A bubble in the skill cloud bobbing in place. Uses `translate`, not
      `transform`, so it stacks on top of the bubble's position. */
   --animate-float: float 4s ease-in-out infinite;

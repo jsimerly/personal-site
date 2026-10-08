@@ -14,12 +14,15 @@ Run the suite: `pytest` (check the exit code, never pipe it to tail).
 - `test_the_site_origin_is_allowed`: The site at jacob-simerly.com may read the API cross-origin.
 - `test_other_origins_are_not_allowed`: Any other site gets no CORS header, so browsers block it from reading responses.
 
-## apps/core/tests/test_gcs.py (4 tests)
+## apps/core/tests/test_gcs.py (7 tests)
 
 - `test_read_json_parses_the_blob`: read_json downloads the named blob from the named bucket and returns it parsed.
 - `test_repeat_reads_come_from_the_cache`: A second read of the same blob is served from the cache, not a second download.
 - `test_each_blob_is_cached_separately`: The cache is keyed by bucket and path, so different blobs never share an entry.
 - `test_a_local_root_reads_from_disk_and_never_touches_gcs`: With GCS_LOCAL_ROOT set (the E2E lane), reads come from <root>/<bucket>/<path> and GCS is never called.
+- `test_list_names_lists_the_blobs_under_a_prefix`: list_names returns the names of every blob under the prefix, sorted.
+- `test_repeat_listings_come_from_the_cache`: A second listing of the same prefix is served from the cache, not a second round trip.
+- `test_a_local_root_lists_files_on_disk_under_the_prefix`: With GCS_LOCAL_ROOT set, listing walks <root>/<bucket> and keeps only names under the prefix.
 
 ## apps/core/tests/test_health.py (1 tests)
 
@@ -29,6 +32,46 @@ Run the suite: `pytest` (check the exit code, never pipe it to tail).
 
 - `test_items_lists_every_item`: The example endpoint returns every item, in order, as a JSON list.
 
+## apps/fantasy_analysis/tests/test_model.py (1 tests)
+
+- `test_summarizes_how_the_model_is_validated`: The model view carries the backtest metrics, rounded, and nothing else from the performance section.
+
+## apps/fantasy_analysis/tests/test_player.py (3 tests)
+
+- `test_shows_a_players_season_by_season_projection_and_weights`: The detail lists each season's projection and value, weighted at the reader's rate within the horizon.
+- `test_values_seasons_in_the_chosen_league`: The per-season wins are the chosen league's.
+- `test_an_unknown_player_is_a_404`: A player id that isn't in the current run answers 404.
+
+## apps/fantasy_analysis/tests/test_players.py (6 tests)
+
+- `test_lists_every_player_valued_at_the_dashboards_defaults`: With no settings, players are valued in the default league at 20% a year over 10 years, by career WAR against KTC.
+- `test_flags_unpriced_and_thinly_priced_players`: A player the market doesn't price has no market rank; one priced under 1,500 is flagged as not liquid.
+- `test_the_readers_settings_change_the_values_and_ranks`: Rate, horizon, unit, and league all come from the query: here, undiscounted points over two seasons.
+- `test_ranks_against_whichever_market_is_chosen`: Choosing another market prices against it: only FantasyCalc's one priced player has a market rank.
+- `test_describes_the_run_and_each_league`: The response says which run it is and describes each league's format, so the page can label itself.
+- `test_refuses_settings_outside_the_dashboards_range`: A rate outside 0-1, a horizon outside 1-10 seasons, or an unknown unit, market, method, or league is a 400.
+
+## apps/fantasy_analysis/tests/test_privacy.py (2 tests)
+
+- `test_no_response_repeats_a_market_price_or_names_a_person`: No market price, roster, trade, manager, or other private field ever appears in a response.
+- `test_the_made_up_page_really_holds_the_private_data_these_tests_look_for`: The fixture must carry every private name and price, or the leak checks above would pass vacuously.
+
+## apps/fantasy_analysis/tests/test_source.py (3 tests)
+
+- `test_serves_the_newest_run_by_season_then_week_then_run_date`: The newest page wins: highest season, then week (numerically, so week 10 beats week 9), then run date.
+- `test_ignores_files_that_are_not_page_exports`: Other model outputs beside the pages (parquet, metrics) are never mistaken for the page.
+- `test_says_nothing_is_published_when_the_bucket_has_no_pages`: With no page published yet, every endpoint answers 404 with a plain reason, not a server error.
+
+## apps/fantasy_analysis/tests/test_valuation.py (7 tests)
+
+- `test_discounts_each_later_season_and_stops_at_the_horizon`: Season k counts (1 - rate)^k, and seasons past the horizon count nothing.
+- `test_values_and_ranks_every_player_at_the_chosen_rate`: Career WAR and PAR are the discounted seasons, and players rank by the chosen unit.
+- `test_rest_of_season_units_ignore_the_discount_rate`: ROS value is the current season alone, so the rate and horizon don't move it.
+- `test_each_league_has_its_own_values`: A player is worth what he's worth in the chosen league's scoring and lineups.
+- `test_rank_match_gives_each_player_the_price_at_their_model_rank`: The player we rank k-th among priced players is fair at the k-th highest price, overall and within their position.
+- `test_a_curve_fit_finds_nothing_mispriced_when_prices_follow_the_curve`: With prices exactly on a power law of value, curve-fit fair value equals the price: no mispricing.
+- `test_ties_keep_the_page_order`: Players with equal value keep the order the page lists them in, as on the dashboard.
+
 ---
 
-10 tests cataloged.
+35 tests cataloged.
