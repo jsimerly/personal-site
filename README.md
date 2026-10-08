@@ -31,6 +31,6 @@ Scaling to zero means the API can take a few seconds to wake up, so the site is 
 - **Frontend:** React, Vite, Tailwind CSS, React Router
 - **API:** Django REST Framework on Google Cloud Run
 - **Data:** Google Cloud Storage
-- **CI/CD:** GitHub Actions, deploying to GitHub Pages
+- **CI/CD:** GitHub Actions, deploying to Cloud Run and GitHub Pages
 
 The frontend lives in [`frontend/`](frontend/) and the API in [`api/`](api/).

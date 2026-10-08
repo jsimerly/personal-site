@@ -27,7 +27,7 @@ Check exit codes. Never pipe a test run through tail or grep and treat the resul
 
 ## Git
 
-`main` is protected. Every change lands through a PR, and the **API**, **Frontend**, and **E2E** checks must pass on a branch that is up to date with `main`. Merging a frontend change deploys the site; the API deploys manually.
+`main` is protected. Every change lands through a PR, and the **API**, **Frontend**, and **E2E** checks must pass on a branch that is up to date with `main`. Merging deploys what changed (`.github/workflows/deploy.yml`): the API to Cloud Run first, then the site to Pages.
 
 ## Testing
 

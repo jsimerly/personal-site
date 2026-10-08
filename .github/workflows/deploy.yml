@@ -1,0 +1,151 @@
+name: Deploy
+
+# Runs when a merge into main touches the API or the site. The PR already
+# passed the required checks on a branch up to date with main, so this ships
+# whatever changed: the API to Cloud Run first, then the site to Pages, so the
+# site never gets ahead of the API it calls.
+on:
+  push:
+    branches: [main]
+    paths: ["api/**", "frontend/**", ".github/workflows/deploy.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never cancel a deploy halfway.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+env:
+  PROJECT_ID: fantasy-football-473418
+  REGION: us-central1
+  SERVICE: jacobsimerly-api
+  IMAGE: us-central1-docker.pkg.dev/fantasy-football-473418/personal-site/api
+  RUNTIME_SA: jacobsimerly-api@fantasy-football-473418.iam.gserviceaccount.com
+  # Cloud Run's fixed address for the service. The repo variable
+  # VITE_API_BASE_URL, which the site is built with, holds the same host.
+  API_HOST: jacobsimerly-api-624985976737.us-central1.run.app
+
+jobs:
+  changes:
+    name: What changed
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.diff.outputs.api }}
+      site: ${{ steps.diff.outputs.site }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # A manual run deploys both. A push deploys what it touched; a change to
+      # this workflow counts for both.
+      - id: diff
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ] || ! git cat-file -e "$BEFORE" 2>/dev/null; then
+            echo "api=true" >> "$GITHUB_OUTPUT"
+            echo "site=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          changed="$(git diff --name-only "$BEFORE" "$GITHUB_SHA")"
+          echo "$changed"
+          echo "api=$(echo "$changed" | grep -qE '^(api/|\.github/workflows/deploy\.yml)' && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "site=$(echo "$changed" | grep -qE '^(frontend/|\.github/workflows/deploy\.yml)' && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+  api:
+    name: API
+    needs: changes
+    if: needs.changes.outputs.api == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Keyless: GitHub's OIDC token is exchanged for the deployer service
+      # account through the project's workload identity pool.
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: projects/624985976737/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+          service_account: github-actions-deployer@fantasy-football-473418.iam.gserviceaccount.com
+
+      - uses: google-github-actions/setup-gcloud@v3
+
+      - run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+      - name: Build and push the image
+        run: |
+          docker build --tag "$IMAGE:$GITHUB_SHA" --tag "$IMAGE:latest" api
+          docker push --all-tags "$IMAGE"
+
+      # The runtime service account can read the Django secret key and the
+      # buckets the API serves from, and nothing else. --cpu-boost shortens
+      # cold starts; the site explains the wait when one happens anyway.
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy "$SERVICE" \
+            --image "$IMAGE:$GITHUB_SHA" \
+            --region "$REGION" \
+            --project "$PROJECT_ID" \
+            --service-account "$RUNTIME_SA" \
+            --allow-unauthenticated \
+            --cpu-boost \
+            --set-secrets "SECRET_KEY=django-secret-key:latest" \
+            --set-env-vars "ALLOWED_HOSTS=$API_HOST" \
+            --quiet
+
+      - name: Check it answers
+        run: curl --fail --silent --show-error --retry 5 --retry-delay 3 "https://$API_HOST/api/health/"
+
+  build:
+    name: Build site
+    needs: [changes, api]
+    # Runs whether the API deployed or had nothing to deploy, never after it failed.
+    if: always() && needs.changes.outputs.site == 'true' && needs.api.result != 'failure' && needs.api.result != 'cancelled'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      # Gives the /<repo> prefix Pages serves the site under (empty on a custom domain).
+      - id: pages
+        uses: actions/configure-pages@v6
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+
+      # Pages has no rewrite rules, so a deep link like /projects/x would 404.
+      # Serving the app as the 404 page lets the router take over instead.
+      - run: cp dist/index.html dist/404.html
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: frontend/dist
+
+  site:
+    name: Deploy site
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
