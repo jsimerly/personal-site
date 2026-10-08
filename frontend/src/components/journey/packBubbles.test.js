@@ -1,7 +1,13 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { journey, skillTotals } from '../../content/journey'
 import { bubbleFontPx } from './bubble'
 import { packBubbles } from './packBubbles'
+
+// These pack the whole journey's cloud at every scroll step, some of them
+// twice. That's a third of a second here and up to eight on a CI runner
+// sharing its cores with the other test files, so the default five-second
+// limit was tripping on load, not on a hang.
+vi.setConfig({ testTimeout: 30_000 })
 
 const WIDTH = 320
 
