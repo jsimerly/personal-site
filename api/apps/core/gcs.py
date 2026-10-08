@@ -4,8 +4,8 @@ Fetching a blob is a network round trip, so parsed results are kept in the
 process-local cache for GCS_CACHE_SECONDS. Each Cloud Run instance has its own
 cache, which is fine for data that changes rarely.
 
-With GCS_LOCAL_ROOT set, reads come from <root>/<bucket>/<path> on disk
-instead. The E2E lane uses that so it never needs credentials or real data.
+With GCS_LOCAL_ROOT set, reads (and listings) come from <root>/<bucket>/<path>
+on disk instead. The E2E lane uses that so it never needs credentials or real data.
 """
 
 import json
@@ -22,6 +22,20 @@ def _client():
     # One client per process. Credentials come from the Cloud Run service
     # account in prod and `gcloud auth application-default login` locally.
     return storage.Client()
+
+
+def list_names(bucket, prefix):
+    """The names of every blob under `prefix`, sorted. Listing is a round trip
+    too, so it's cached like reads; with GCS_LOCAL_ROOT it walks the folder."""
+
+    def listing():
+        if settings.GCS_LOCAL_ROOT:
+            root = Path(settings.GCS_LOCAL_ROOT) / bucket
+            names = (path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file())
+            return sorted(name for name in names if name.startswith(prefix))
+        return sorted(blob.name for blob in _client().list_blobs(bucket, prefix=prefix))
+
+    return django_cache.get_or_set(f"gcs-list:{bucket}/{prefix}", listing, settings.GCS_CACHE_SECONDS)
 
 
 def read_json(bucket, blob_path):

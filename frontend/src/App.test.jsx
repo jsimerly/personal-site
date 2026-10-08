@@ -6,6 +6,7 @@ import { portfolio } from './content/portfolio'
 import { profile } from './content/profile'
 import { listedProjects } from './projects'
 import { fakeFetch } from './test/fakeFetch'
+import { MODEL, PLAYERS, model, players } from './test/fantasyApi'
 
 const API = {
   '/api/health/': { status: 'ok' },
@@ -13,6 +14,8 @@ const API = {
     { id: 1, name: 'First item' },
     { id: 2, name: 'Second item' },
   ],
+  [PLAYERS]: players(),
+  [MODEL]: model,
 }
 
 function renderAt(path, basename) {
@@ -54,6 +57,32 @@ describe('App', () => {
         .slice(0, 3)
         .map((project) => `/projects/${project.slug}`),
     )
+  })
+
+  it('opens the fantasy section on its player values, with a tab for each view', async () => {
+    renderAt('/fantasy-analysis')
+
+    expect(await screen.findByRole('table', { name: 'Player values' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Fantasy Analysis')
+    const views = within(screen.getByRole('navigation', { name: 'Fantasy analysis' })).getAllByRole('link')
+    expect(views.map((link) => [link.textContent, link.getAttribute('href'), link.getAttribute('aria-current')])).toEqual([
+      ['Player values', '/fantasy-analysis', 'page'],
+      ['Model performance', '/fantasy-analysis/model', null],
+    ])
+  })
+
+  it('opens the model performance view at its own address', async () => {
+    renderAt('/fantasy-analysis/model')
+
+    expect(await screen.findByRole('group', { name: 'Rest of season' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Model performance' })).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByRole('link', { name: 'Player values' })).not.toHaveAttribute('aria-current')
+  })
+
+  it("links the fantasy project's page into the section", () => {
+    renderAt('/projects/fantasy-analysis')
+
+    expect(screen.getByRole('link', { name: 'Explore the data' })).toHaveAttribute('href', '/fantasy-analysis')
   })
 
   it('shows a not-found page for unknown paths', () => {

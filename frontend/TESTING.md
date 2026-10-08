@@ -9,11 +9,14 @@ pipe it to tail.
 
 ## Unit and component tests (Vitest)
 
-### src/App.test.jsx (6 tests)
+### src/App.test.jsx (9 tests)
 
 - **App**
   - introduces me on the home page and points to my portfolio and every project
   - shows my three favorite projects under the skills until skills are picked
+  - opens the fantasy section on its player values, with a tab for each view
+  - opens the model performance view at its own address
+  - links the fantasy project's page into the section
   - shows a not-found page for unknown paths
   - quietly pings the API once when the site loads
   - loads a project page when the site is served under a base path
@@ -163,13 +166,93 @@ pipe it to tail.
   - keeps Curious first as the rest of the skills join
   - has every logo a card names in public/, so the build ships it
 
-### src/hooks/useApi.test.jsx (4 tests)
+### src/fantasy/LineChart.test.jsx (3 tests)
+
+- **LineChart**
+  - names every series in a legend and at the end of its line
+  - skips missing values in the line, the tooltip, and the table
+  - draws at the width of its container as the container resizes
+
+### src/fantasy/ModelPage.test.jsx (10 tests)
+
+- **Model performance**
+  - leads with the headline numbers from the backtests
+  - charts rest-of-season accuracy against the market, with the same numbers as a table
+  - charts projection error by how far ahead it looks
+  - reads every series at the hovered week, best first, until the pointer leaves
+  - sets out the value backtest by cohort, then whether the mispricing paid
+  - bolds the best score in each row
+  - compares the model with the market overall, and by position at the longest horizon
+  - lists the ten best experiments, and the rest on request
+  - leaves out the sections a run has no results for
+  - says so when the results cannot load
+
+### src/fantasy/PlayersPage.test.jsx (13 tests)
+
+- **Player values**
+  - shows the priced, non-fringe players by rank, with the run they come from
+  - fills each row from the API, showing the market only as ranks and percentages
+  - groups the columns and names each by its group for screen readers
+  - describes the league the values are for
+  - refetches when a setting changes, and keeps every setting in the URL
+  - shows a new discount rate at once and refetches once the slider settles
+  - keeps the board on screen, marked busy, while new values load
+  - opens on the settings in the URL
+  - narrows the board by name, position, and how the market prices a player
+  - sorts by any column, flipping on a second click, with missing values last
+  - opens a player's seasons under their row, valued in the board's league
+  - leaves out games so far before the season starts
+  - says so when the board cannot load
+
+### src/fantasy/chart.test.js (4 tests)
+
+- **Chart math**
+  - puts the y axis on round steps that cover every value
+  - still draws an axis when every value is the same
+  - pushes end labels apart so none overlap, keeping their order
+  - shifts a stack of labels up when it would run past the bottom of the plot
+
+### src/fantasy/format.test.js (5 tests)
+
+- **Fantasy number formats**
+  - shows numbers to a fixed number of places, with thousands separators
+  - shows a missing value as an en dash
+  - signs a number with a plus or a true minus, and leaves zero bare
+  - shows a share as a signed whole percent
+  - names the career model for people
+
+### src/fantasy/settings.test.js (7 tests)
+
+- **Fantasy settings**
+  - reads the defaults from an empty URL
+  - reads every setting the URL names
+  - falls back to the default for anything that is not a valid choice
+  - accepts a rate of zero and rounds a rate to whole percents
+  - writes only the settings moved off their defaults, in a fixed order
+  - builds the board address from the settings
+  - builds a player's address from only the settings that change their seasons
+
+### src/fantasy/sort.test.js (3 tests)
+
+- **Sorting the board**
+  - sorts numbers either way and keeps missing values last both times
+  - sorts text alphabetically, ignoring case
+  - leaves the rows it was given untouched
+
+### src/hooks/useApi.test.jsx (6 tests)
 
 - **useApi**
   - returns the data once it loads
   - surfaces a failed request as an error
   - flags a slow request so the UI can explain a cold start
   - ignores a late response for a path it has moved away from
+  - shows nothing while a new path loads, unless asked to keep the previous data
+  - drops the kept data when the new path fails, so the error shows
+
+### src/hooks/useDebounced.test.jsx (1 tests)
+
+- **useDebounced**
+  - starts on the first value and only moves once a new value holds still
 
 ### src/lib/api.test.js (3 tests)
 
@@ -191,7 +274,7 @@ pipe it to tail.
 - **About**
   - shows each paragraph about me, in order, beside my photo spot
 
-### src/pages/Portfolio.test.jsx (7 tests)
+### src/pages/Portfolio.test.jsx (8 tests)
 
 - **Portfolio**
   - offers one tab per piece, in order, with coming-soon ones marked, and opens on the first
@@ -200,6 +283,7 @@ pipe it to tail.
   - opens straight to the tab named in the URL
   - falls back to the first tab when the URL names one that does not exist
   - moves between tabs with the arrow keys, Home, and End, wrapping at the ends
+  - shows the fantasy piece with a live top five and a way into the section
   - points every ready piece at a project that exists
 
 ### src/pages/Projects.test.jsx (3 tests)
@@ -228,6 +312,17 @@ pipe it to tail.
 - **when the API is down**
   - the site still loads and says so plainly
 
+### e2e/fantasy.spec.js (8 tests)
+
+- the board shows the newest run, priced players first by value
+- moving the discount rate revalues the board and keeps the rate in the address
+- another league's settings come back in that league's values
+- a player opens into their projected seasons
+- the model view leads with the backtests and reads its charts on hover
+- the portfolio's fantasy tab previews the board and leads into it
+- a fantasy address works when opened directly and survives a reload
+- no market price and no league member ever reaches the browser
+
 ### e2e/journey.spec.js (3 tests)
 
 - lays the timeline out in order, with no cards overlapping and work beside personal projects
@@ -244,4 +339,4 @@ pipe it to tail.
 
 ---
 
-110 unit and 10 end-to-end tests cataloged.
+162 unit and 18 end-to-end tests cataloged.

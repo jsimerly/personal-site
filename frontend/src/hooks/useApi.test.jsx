@@ -47,4 +47,43 @@ describe('useApi', () => {
 
     expect(result.current.data).toBe('new')
   })
+
+  it('shows nothing while a new path loads, unless asked to keep the previous data', async () => {
+    const pending = {}
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((url) => new Promise((resolve) => (pending[url] = (body) => resolve({ ok: true, json: async () => body })))),
+    )
+    const { result, rerender } = renderHook(({ path, keep }) => useApi(path, { keepPrevious: keep }), {
+      initialProps: { path: '/api/old/', keep: false },
+    })
+    await act(async () => pending['/api/old/']('old'))
+
+    rerender({ path: '/api/new/', keep: false })
+    expect(result.current).toMatchObject({ data: null, loading: true, stale: false })
+
+    rerender({ path: '/api/new/', keep: true })
+    expect(result.current).toMatchObject({ data: 'old', loading: true, stale: true })
+
+    await act(async () => pending['/api/new/']('new'))
+    expect(result.current).toMatchObject({ data: 'new', loading: false, stale: false })
+  })
+
+  it('drops the kept data when the new path fails, so the error shows', async () => {
+    const pending = {}
+    vi.stubGlobal(
+      'fetch',
+      vi.fn((url) => new Promise((resolve) => (pending[url] = (response) => resolve(response)))),
+    )
+    const { result, rerender } = renderHook(({ path }) => useApi(path, { keepPrevious: true }), {
+      initialProps: { path: '/api/old/' },
+    })
+    await act(async () => pending['/api/old/']({ ok: true, json: async () => 'old' }))
+
+    rerender({ path: '/api/broken/' })
+    await act(async () => pending['/api/broken/']({ ok: false, status: 500 }))
+
+    expect(result.current.data).toBeNull()
+    expect(result.current.error.status).toBe(500)
+  })
 })

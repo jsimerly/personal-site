@@ -1,4 +1,4 @@
-import { IconArrowLeft, IconBrandGithub, IconExternalLink } from '@tabler/icons-react'
+import { IconArrowLeft, IconBrandGithub, IconChartLine, IconExternalLink } from '@tabler/icons-react'
 import { Link, useParams } from 'react-router'
 import ProjectCover from '../components/ProjectCover.jsx'
 import TagList from '../components/TagList.jsx'
@@ -27,8 +27,14 @@ function ProjectDetail({ project }) {
       <h1 className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">{project.name}</h1>
       <p className="mt-3 text-lg leading-8 text-zinc-600 dark:text-zinc-400">{project.summary}</p>
 
-      {(links.live || links.github) && (
+      {(links.explore || links.live || links.github) && (
         <div className="mt-6 flex flex-wrap gap-3">
+          {links.explore && (
+            <Link to={links.explore} className={buttonStyles.primary}>
+              <IconChartLine size={16} aria-hidden="true" />
+              Explore the data
+            </Link>
+          )}
           {links.live && (
             <a href={links.live} {...newTab} className={buttonStyles.primary}>
               <IconExternalLink size={16} aria-hidden="true" />

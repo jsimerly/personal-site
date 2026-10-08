@@ -1,3 +1,4 @@
+import { lazy } from 'react'
 import { Route, Routes } from 'react-router'
 import Layout from './components/Layout.jsx'
 import About from './pages/About.jsx'
@@ -7,6 +8,12 @@ import Portfolio from './pages/Portfolio.jsx'
 import ProjectPage from './pages/ProjectPage.jsx'
 import Projects from './pages/Projects.jsx'
 import Resume from './pages/Resume.jsx'
+
+// The fantasy section is the heaviest part of the site, so it loads on its own
+// the first time someone opens it.
+const FantasyLayout = lazy(() => import('./fantasy/FantasyLayout.jsx'))
+const PlayersPage = lazy(() => import('./fantasy/PlayersPage.jsx'))
+const ModelPage = lazy(() => import('./fantasy/ModelPage.jsx'))
 
 export default function App() {
   return (
@@ -18,6 +25,10 @@ export default function App() {
         <Route path="projects" element={<Projects />} />
         <Route path="projects/:slug" element={<ProjectPage />} />
         <Route path="resume" element={<Resume />} />
+        <Route path="fantasy-analysis" element={<FantasyLayout />}>
+          <Route index element={<PlayersPage />} />
+          <Route path="model" element={<ModelPage />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

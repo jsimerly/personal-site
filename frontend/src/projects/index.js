@@ -5,7 +5,7 @@ import { lazy } from 'react'
 // and every build on the home page's timeline links to its page. The page is built from these fields unless the
 // project has its own `Page` (for interactive or data-backed projects, which
 // read from the API under /api/<slug>/). `hidden` keeps a project routable
-// but out of the gallery.
+// but out of the gallery. `links.explore` is a path on this site to try it.
 //
 // `tags` double as the project's skills: on the home page, picking a skill
 // finds the projects tagged with it, so use the same names as the journey.
@@ -33,9 +33,13 @@ export const projects = [
     name: 'Fantasy Analysis',
     kind: 'personal',
     year: '2021 to now',
-    summary: 'Data pipelines, projections, and analysis for my dynasty fantasy football league.',
-    tags: ['Python', 'Polars', 'Cloud Storage', 'Jupyter'],
-    links: { github: 'https://github.com/jsimerly/fantasy-analysis' },
+    summary: 'A data lake, projection models, and a live dynasty value board for my fantasy football leagues.',
+    tags: ['Python', 'Polars', 'Machine learning', 'Statistics', 'Cloud Run', 'Cloud Storage', 'Jupyter'],
+    links: { explore: '/fantasy-analysis', github: 'https://github.com/jsimerly/fantasy-analysis' },
+    description: [
+      'Scheduled Cloud Run jobs pull league, market, and NFL stats data from Sleeper, KeepTradeCut, FantasyCalc, and nflverse into a bronze layer on Cloud Storage, then model it into clean dimensions and facts. A Cloud Workflow runs the whole pipeline in dependency order every day.',
+      "On top of that sit projection models, gradient-boosted trees and TabPFN, that forecast every player's next ten seasons, value them in wins above replacement for each of my leagues, and measure the market against them. Every model is backtested on seasons it never saw.",
+    ],
   },
   {
     slug: 'ecs-engine',

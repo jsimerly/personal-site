@@ -4,6 +4,8 @@ import { MemoryRouter, Route, Routes, useLocation } from 'react-router'
 import { describe, expect, it } from 'vitest'
 import { portfolio } from '../content/portfolio'
 import { projects } from '../projects'
+import { fakeFetch } from '../test/fakeFetch'
+import { PLAYERS, players } from '../test/fantasyApi'
 import Portfolio from './Portfolio.jsx'
 
 // Shows the current query string, so tests can see what the URL holds.
@@ -12,6 +14,7 @@ function Search() {
 }
 
 function renderAt(path = '/portfolio') {
+  fakeFetch({ [PLAYERS]: players() })
   return render(
     <MemoryRouter initialEntries={[path]}>
       <Routes>
@@ -38,7 +41,7 @@ describe('Portfolio', () => {
 
     expect(screen.getAllByRole('tab').map((tab) => tab.textContent)).toEqual([
       'Brolympics',
-      'Fantasy Football Engineering Soon(coming soon)',
+      'Fantasy Football Engineering',
       'Agentic Investing Soon(coming soon)',
     ])
     expect(selectedTab()).toHaveAccessibleName('Brolympics')
@@ -70,8 +73,8 @@ describe('Portfolio', () => {
   it('opens straight to the tab named in the URL', () => {
     renderAt('/portfolio?tab=fantasy-football')
 
-    expect(selectedTab()).toHaveAccessibleName('Fantasy Football Engineering (coming soon)')
-    expect(panelHeading()).toHaveTextContent('Fantasy Football Engineering')
+    expect(selectedTab()).toHaveAccessibleName('Fantasy Football Engineering')
+    expect(panelHeading()).toHaveTextContent('Fantasy Analysis')
   })
 
   it('falls back to the first tab when the URL names one that does not exist', () => {
@@ -92,7 +95,7 @@ describe('Portfolio', () => {
     expect(selectedTab()).toHaveAccessibleName('Brolympics')
 
     await userEvent.keyboard('{ArrowRight}')
-    expect(selectedTab()).toHaveAccessibleName('Fantasy Football Engineering (coming soon)')
+    expect(selectedTab()).toHaveAccessibleName('Fantasy Football Engineering')
     expect(selectedTab()).toHaveFocus()
 
     await userEvent.keyboard('{End}')
@@ -101,6 +104,27 @@ describe('Portfolio', () => {
     await userEvent.keyboard('{Home}')
     expect(selectedTab()).toHaveAccessibleName('Brolympics')
     expect(selectedTab()).toHaveFocus()
+  })
+
+  it('shows the fantasy piece with a live top five and a way into the section', async () => {
+    renderAt('/portfolio?tab=fantasy-football')
+    const panel = within(screen.getByRole('tabpanel'))
+
+    const top = await panel.findByRole('list', { name: 'Top players' })
+    expect(within(top).getAllByRole('listitem').map((item) => item.textContent)).toEqual([
+      '1Blake Rivers RB7.38',
+      '2Avery Stone QB6.47',
+      '3Casey Field WR2.90',
+      '4Drew Lake TE0.77',
+      '5Emery Hill WR0.38',
+    ])
+    expect(panel.getByText('Career wins above replacement in Home League, in-season, 2026 through week 4')).toBeInTheDocument()
+    expect(panel.getByRole('link', { name: 'See all 5 players' })).toHaveAttribute('href', '/fantasy-analysis')
+    expect(panel.getByRole('link', { name: 'Explore the data' })).toHaveAttribute('href', '/fantasy-analysis')
+    expect(panel.getByRole('link', { name: 'View the code' })).toHaveAttribute(
+      'href',
+      'https://github.com/jsimerly/fantasy-analysis',
+    )
   })
 
   it('points every ready piece at a project that exists', () => {

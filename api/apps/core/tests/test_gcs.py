@@ -50,3 +50,34 @@ def test_a_local_root_reads_from_disk_and_never_touches_gcs(client, settings, tm
 
     assert gcs.read_json("my-bucket", "data/items.json") == {"from": "disk"}
     client.bucket.assert_not_called()
+
+
+def test_list_names_lists_the_blobs_under_a_prefix(client):
+    """list_names returns the names of every blob under the prefix, sorted."""
+    client.list_blobs.return_value = [MagicMock(), MagicMock()]
+    client.list_blobs.return_value[0].name = "data/b.json"
+    client.list_blobs.return_value[1].name = "data/a.json"
+
+    assert gcs.list_names("my-bucket", "data/") == ["data/a.json", "data/b.json"]
+    client.list_blobs.assert_called_with("my-bucket", prefix="data/")
+
+
+def test_repeat_listings_come_from_the_cache(client):
+    """A second listing of the same prefix is served from the cache, not a second round trip."""
+    client.list_blobs.return_value = []
+    gcs.list_names("my-bucket", "data/")
+    gcs.list_names("my-bucket", "data/")
+
+    assert client.list_blobs.call_count == 1
+
+
+def test_a_local_root_lists_files_on_disk_under_the_prefix(client, settings, tmp_path):
+    """With GCS_LOCAL_ROOT set, listing walks <root>/<bucket> and keeps only names under the prefix."""
+    for name in ("data/a.json", "data/deep/b.json", "other/c.json"):
+        path = tmp_path / "my-bucket" / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("{}")
+    settings.GCS_LOCAL_ROOT = str(tmp_path)
+
+    assert gcs.list_names("my-bucket", "data/") == ["data/a.json", "data/deep/b.json"]
+    client.list_blobs.assert_not_called()
