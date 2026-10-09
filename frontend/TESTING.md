@@ -154,11 +154,13 @@ pipe it to tail.
   - sends nothing flying on the way back up, or when the caller says not to
   - keeps still for readers who ask for reduced motion
 
-### src/content/journey.test.js (8 tests)
+### src/content/journey.test.js (10 tests)
 
 - **journey**
   - links every timeline card that names a project to a page that exists
   - gives every personal build on the timeline a project page
+  - gives every project from a job a page too, so work skills find their projects
+  - leaves no placeholder copy on the timeline
   - files every skill on the timeline under a kind, so none lands in \"Other\" when the basket sorts
   - runs oldest first, however the entries are written
   - keeps entries from the same month in the order they are written
@@ -286,10 +288,11 @@ pipe it to tail.
   - shows the fantasy piece with a live top five and a way into the section
   - points every ready piece at a project that exists
 
-### src/pages/Projects.test.jsx (3 tests)
+### src/pages/Projects.test.jsx (4 tests)
 
 - **Projects**
   - shows every listed project, with a count on each filter
+  - offers no filter for a kind nothing is filed under, so none opens on an empty gallery
   - filters by kind and keeps the filter in the URL, so a filtered view can be shared
   - opens straight to the filter named in the URL
 
@@ -339,4 +342,4 @@ pipe it to tail.
 
 ---
 
-162 unit and 18 end-to-end tests cataloged.
+165 unit and 18 end-to-end tests cataloged.
