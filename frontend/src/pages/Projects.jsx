@@ -2,7 +2,14 @@ import { useSearchParams } from 'react-router'
 import ProjectCard from '../components/ProjectCard.jsx'
 import { KIND_LABELS, listedProjects } from '../projects'
 
-const FILTERS = [{ kind: 'all', label: 'All' }, ...Object.entries(KIND_LABELS).map(([kind, label]) => ({ kind, label }))]
+// One filter per kind the gallery has something filed under, so no filter
+// ever opens on nothing.
+const FILTERS = [
+  { kind: 'all', label: 'All' },
+  ...Object.entries(KIND_LABELS)
+    .filter(([kind]) => listedProjects.some((project) => project.kind === kind))
+    .map(([kind, label]) => ({ kind, label })),
+]
 
 export default function Projects() {
   // The filter lives in the URL (?kind=career), so a filtered view can be shared.
