@@ -17,4 +17,11 @@ export const portfolio = [
     soon: true,
     summary: '[Placeholder: a line on what it is and what people will be able to see.]',
   },
+  {
+    slug: 'ai-control-center',
+    name: 'AI Control Center',
+    soon: true,
+    summary:
+      'A hub that listens and dispatches: it runs my routines each morning, lets AI agents respond to what comes in, and alerts me when something needs me.',
+  },
 ]

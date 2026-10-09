@@ -43,6 +43,7 @@ describe('Portfolio', () => {
       'Brolympics',
       'Fantasy Football Engineering',
       'Agentic Investing Soon(coming soon)',
+      'AI Control Center Soon(coming soon)',
     ])
     expect(selectedTab()).toHaveAccessibleName('Brolympics')
     expect(panelHeading()).toHaveTextContent('Brolympics')
@@ -88,7 +89,7 @@ describe('Portfolio', () => {
     await userEvent.click(screen.getByRole('tab', { name: 'Brolympics' }))
 
     await userEvent.keyboard('{ArrowLeft}')
-    expect(selectedTab()).toHaveAccessibleName('Agentic Investing (coming soon)')
+    expect(selectedTab()).toHaveAccessibleName('AI Control Center (coming soon)')
     expect(selectedTab()).toHaveFocus()
 
     await userEvent.keyboard('{ArrowRight}')
@@ -99,7 +100,7 @@ describe('Portfolio', () => {
     expect(selectedTab()).toHaveFocus()
 
     await userEvent.keyboard('{End}')
-    expect(selectedTab()).toHaveAccessibleName('Agentic Investing (coming soon)')
+    expect(selectedTab()).toHaveAccessibleName('AI Control Center (coming soon)')
 
     await userEvent.keyboard('{Home}')
     expect(selectedTab()).toHaveAccessibleName('Brolympics')
