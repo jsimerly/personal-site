@@ -44,9 +44,16 @@ describe('Projects', () => {
     expect(filters.map((filter) => filter.textContent)).toEqual([
       `All ${slugsOf('all').length}`,
       `Work ${slugsOf('work').length}`,
-      `School ${slugsOf('school').length}`,
       `Personal ${slugsOf('personal').length}`,
     ])
+  })
+
+  it('offers no filter for a kind nothing is filed under, so none opens on an empty gallery', () => {
+    renderAt('/projects')
+
+    // Nothing from school is in the gallery yet.
+    expect(slugsOf('school')).toEqual([])
+    expect(screen.queryByRole('button', { name: /^School/ })).not.toBeInTheDocument()
   })
 
   it('filters by kind and keeps the filter in the URL, so a filtered view can be shared', async () => {
@@ -64,8 +71,9 @@ describe('Projects', () => {
   })
 
   it('opens straight to the filter named in the URL', () => {
-    renderAt('/projects?kind=school')
+    renderAt('/projects?kind=personal')
 
-    expect(cards()).toEqual(slugsOf('school'))
+    expect(cards()).toEqual(slugsOf('personal'))
+    expect(screen.getByRole('button', { name: /^Personal/ })).toHaveAttribute('aria-pressed', 'true')
   })
 })

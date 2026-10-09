@@ -20,6 +20,18 @@ describe('journey', () => {
     expect(unlinked).toEqual([])
   })
 
+  it('gives every project from a job a page too, so work skills find their projects', () => {
+    const unlinked = journey.filter((entry) => entry.position && !entry.project).map((entry) => entry.title)
+
+    expect(unlinked).toEqual([])
+  })
+
+  it('leaves no placeholder copy on the timeline', () => {
+    const placeholders = journey.filter((entry) => /\[Placeholder/.test(`${entry.title} ${entry.summary ?? ''}`))
+
+    expect(placeholders.map((entry) => entry.title)).toEqual([])
+  })
+
   it('files every skill on the timeline under a kind, so none lands in "Other" when the basket sorts', () => {
     const filed = new Set(skillCategories.flatMap((category) => category.skills))
 

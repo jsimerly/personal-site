@@ -25,12 +25,14 @@
 //   whole card links there. Every build has one; several entries can share a
 //   project (each version of Brolympics).
 //
-// Entries marked [Placeholder] are made up to fill out the work side for
-// now: replace them with the real thing. The growth numbers are a first pass
+// The work side is a first pass from the resume: entries that go past what
+// it says carry a TODO(jacob) to check. The growth numbers are a first pass
 // to tune.
 // Positions I've held. Each shows above the first card from it, with its logo
 // beside the title and dates; the cards under it are the projects I did there
 // (so they don't repeat the dates).
+// TODO(jacob): the internship's team and months.
+const anthemIntern = { logos: ['logos/anthem.svg'], title: 'Intern', start: '2019' }
 const anthem = { logos: ['logos/anthem.svg'], title: 'Process Consulting', start: '2020' }
 const ukgConsultant = {
   logos: ['logos/ukg.svg'],
@@ -86,9 +88,18 @@ const entries = [
     date: '2019',
     side: 'build',
     title: 'A Kaggle competition',
-    summary: '[Placeholder: which competition, and what you tried.]',
-    skills: {},
+    summary: 'My first go at machine learning: a Kaggle competition during my degree.',
+    skills: { Python: 1, Statistics: 1 },
     project: 'kaggle',
+  },
+  {
+    date: '2019',
+    side: 'work',
+    position: anthemIntern,
+    title: 'Summer internship',
+    summary: "A summer on Anthem's process consulting team, the year before I joined it.",
+    skills: { 'Data analysis': 1, Excel: 1 },
+    project: 'anthem-internship',
   },
   {
     date: '2020',
@@ -97,6 +108,7 @@ const entries = [
     title: 'New website launch',
     summary: 'Helped launch a new website built in C#: I ran the analytics that found what was wrong with it, and wrote the queries that helped fix it.',
     skills: { 'C#': 1, SQL: 1, 'Data analysis': 1 },
+    project: 'anthem-website-launch',
   },
   {
     date: '2021-04',
@@ -105,6 +117,7 @@ const entries = [
     title: 'Customer implementations',
     summary: 'Implemented UKG for customers in healthcare, manufacturing, and retail, up to six at a time.',
     skills: { 'Client consulting': 2 },
+    project: 'ukg-implementations',
   },
   {
     date: '2022-01',
@@ -113,6 +126,7 @@ const entries = [
     title: 'A new training program',
     summary: 'Developed a new training program as team lead, responsible for how 60 new consultants were trained and how they did.',
     skills: { 'Team leadership': 2 },
+    project: 'consultant-training',
   },
   {
     date: '2021-10',
@@ -121,20 +135,25 @@ const entries = [
     title: 'Mentoring new consultants',
     summary: 'Mentored five new consultants through regular one-on-ones.',
     skills: { Mentoring: 1 },
+    project: 'mentoring-consultants',
   },
   {
     date: '2022-09',
     side: 'work',
     position: ukgConsultant,
     title: 'Innovation competition',
+    summary: "An entry in UKG's internal innovation competition.",
     skills: {},
+    project: 'innovation-competition',
   },
   {
     date: '2022-05',
     side: 'work',
     position: ukgConsultant,
     title: 'Rules of Engagement project',
+    summary: 'Defined how the consulting team works with the teams around it: who owns what, how handoffs happen, and when to escalate.',
     skills: {},
+    project: 'rules-of-engagement',
   },
   {
     date: '2021-11',
@@ -148,6 +167,7 @@ const entries = [
     date: '2021-12',
     side: 'build',
     title: 'Monty Hall simulation',
+    summary: 'Simulating the Monty Hall problem to watch the odds play out.',
     skills: { Python: 1, Jupyter: 1 },
     project: 'monty-hall',
   },
@@ -171,6 +191,7 @@ const entries = [
     date: '2022-01',
     side: 'build',
     title: 'Dominion AI',
+    summary: 'Computer players for the Dominion board game.',
     skills: { Python: 1, 'Game AI': 2 },
     project: 'dominion-ai',
   },
@@ -187,14 +208,18 @@ const entries = [
     side: 'work',
     position: ukgEngineer,
     title: 'Process merging and cleanup',
+    summary: 'Overlapping business processes, mapped, merged, and documented as one.',
     skills: { 'Process improvement': 1 },
+    project: 'process-cleanup',
   },
   {
     date: '2023-07',
     side: 'work',
     position: ukgEngineer,
     title: 'Process automation',
+    summary: 'Found the business problems behind slow deliveries and built the solutions, cutting delivery times 30%.',
     skills: { 'Process improvement': 1 },
+    project: 'process-automation',
   },
   {
     date: '2023-10',
@@ -203,6 +228,7 @@ const entries = [
     title: 'Smartsheet data pipelines',
     summary: "Automated Python pipelines from Smartsheet's API into our BigQuery warehouse, cleaning the data along the way.",
     skills: { Python: 2, BigQuery: 2, SQL: 1 },
+    project: 'smartsheet-pipelines',
   },
   {
     date: '2024-01',
@@ -211,13 +237,16 @@ const entries = [
     title: 'Partner onboarding platform',
     summary: 'Led the design of the process and the product: requirements, relational data schemas, and how the microservices work together.',
     skills: { 'System design': 1, 'Data modeling': 1 },
+    project: 'partner-onboarding-platform',
   },
   {
     date: '2024-03',
     side: 'work',
     position: ukgEngineer,
     title: 'Analytics and reporting in Smartsheet',
+    summary: 'Reporting built on the cleaned data, so the business processes team could track its own work.',
     skills: { SQL: 1, 'Data analysis': 1 },
+    project: 'smartsheet-analytics',
   },
   {
     date: '2023-03',
@@ -241,6 +270,7 @@ const entries = [
     date: '2023-08',
     side: 'build',
     title: 'Design patterns',
+    summary: 'The classic software design patterns, implemented one by one.',
     skills: { 'Design patterns': 2, 'Object-oriented design': 1 },
     project: 'design-patterns',
   },
@@ -257,6 +287,7 @@ const entries = [
     date: '2023-12',
     side: 'build',
     title: 'GPT image processor',
+    summary: 'A Django API that describes uploaded images with GPT, with comments and infinite scroll.',
     skills: { Python: 1, 'LLM APIs': 2 },
     project: 'gpt-image-processor',
   },
@@ -272,6 +303,7 @@ const entries = [
     date: '2024-02',
     side: 'build',
     title: 'Rust engine',
+    summary: 'An Entity Component System game engine, in Rust.',
     skills: { Rust: 2, 'Entity Component Systems': 1 },
     project: 'rust-engine',
   },
@@ -279,7 +311,7 @@ const entries = [
     date: '2024-02',
     side: 'build',
     title: 'Rune',
-    summary: 'A game with its own client and server.',
+    summary: 'A two-player tactics game with its own client and server.',
     skills: { Python: 1, Networking: 2 },
     project: 'rune',
   },
@@ -295,6 +327,7 @@ const entries = [
     date: '2024-05',
     side: 'build',
     title: 'Data structures and algorithms',
+    summary: 'Classic data structures and algorithms, worked through in Python.',
     skills: { Python: 1, Jupyter: 1, Algorithms: 2 },
     project: 'dsa',
   },
@@ -338,6 +371,7 @@ const entries = [
     title: 'Unified cloud data platform',
     summary: "Led the firm's first: moving off on-premises systems onto Microsoft Fabric and Azure, with data from 15+ systems in one lake.",
     skills: { 'Microsoft Fabric': 3, Azure: 2, PySpark: 2, SQL: 2, 'Data architecture': 2 },
+    project: 'bt-data-platform',
   },
   {
     date: '2024-12',
@@ -346,6 +380,7 @@ const entries = [
     title: 'Fabric utilities and CI/CD library',
     summary: 'A reusable package and pipelines that standardized ingestion, transformation, and business logic across dev and production.',
     skills: { Python: 2, 'CI/CD': 2 },
+    project: 'fabric-utilities',
   },
   {
     date: '2025-03',
@@ -354,6 +389,7 @@ const entries = [
     title: 'SharePoint MCP server',
     summary: 'A prototype that lets an LLM work in SharePoint: creating lists, updating columns, editing data, and pulling insights.',
     skills: { MCP: 1 },
+    project: 'sharepoint-mcp',
   },
   {
     date: '2025-06',
@@ -362,13 +398,16 @@ const entries = [
     title: 'Unstructured data, normalized with AI',
     summary: 'An automated pipeline using Power Automate and ChatGPT to turn media-licensing and option-agreement contracts into structured data, verified by attorneys.',
     skills: { 'LLM APIs': 1 },
+    project: 'contract-ai-pipeline',
   },
   {
     date: '2025-09',
     side: 'work',
     position: barnesThornburg,
     title: 'Software architecture and design',
+    summary: "The firm's data engineering, Python, and SQL standards: the documentation, the code-review checklists, and the architecture behind them.",
     skills: { 'System design': 1 },
+    project: 'engineering-standards',
   },
   {
     date: '2025-12',
@@ -377,6 +416,7 @@ const entries = [
     title: 'Team management',
     summary: 'Managed the data team, employees and contractors: assigning the work and owning the backlog to keep delivery visible.',
     skills: { 'Team leadership': 2 },
+    project: 'data-team-lead',
   },
   {
     date: '2026-03',
@@ -385,6 +425,7 @@ const entries = [
     title: 'SOX-compliant CI/CD for Microsoft Fabric',
     summary: "Lilly's first GitHub-native CI/CD for Fabric: a workspace per branch, parameterized deployments, and approval gates that brought it under SOX.",
     skills: { 'CI/CD': 3, 'GitHub Actions': 2, 'Microsoft Fabric': 2 },
+    project: 'lilly-fabric-cicd',
   },
   {
     date: '2026-03',
@@ -393,6 +434,7 @@ const entries = [
     title: 'Cash Flow Statement automation',
     summary: 'Re-architected a highly manual quarterly process, with a semantic model that rolls up by day, month, and year and drills to document level.',
     skills: { 'Data modeling': 2, 'Data architecture': 1 },
+    project: 'cash-flow-statement',
   },
   {
     date: '2026-03',
@@ -401,6 +443,7 @@ const entries = [
     title: 'Agentic development enablement',
     summary: 'Brought Claude Code, Fabric Git integration, and VS Code together so developers work locally with context-aware agents.',
     skills: { 'Agentic development': 2 },
+    project: 'agentic-fabric-development',
   },
   {
     date: '2026-03',
@@ -409,6 +452,7 @@ const entries = [
     title: 'SDLC development',
     summary: 'Bringing software development principles and a real development lifecycle to the data teams.',
     skills: { Mentoring: 1 },
+    project: 'data-sdlc',
   },
   {
     date: '2026-03',
@@ -417,6 +461,7 @@ const entries = [
     title: 'Architectural redesign',
     summary: 'Refining our medallion architecture, moving toward a data mesh, and drawing clear lines between analytics engineers, data engineers, and analysts.',
     skills: { 'Data architecture': 2, 'System design': 1 },
+    project: 'lilly-architecture',
   },
   {
     date: '2026-09',
