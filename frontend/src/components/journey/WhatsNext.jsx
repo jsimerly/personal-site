@@ -49,7 +49,7 @@ export default function WhatsNext() {
               Email me
             </a>
           ) : (
-            <span className={`${primary} cursor-default opacity-60`}>[Add your email in profile.js]</span>
+            <span className={`${primary} cursor-default`}>[Add your email in profile.js]</span>
           )}
           {linkedin && (
             <a href={linkedin} {...newTab} className={buttonStyles.secondary}>

@@ -21,7 +21,7 @@ export default function JourneyProjects({ picked, onClear }) {
           {picked.length ? (
             <>
               <span className="text-zinc-200">Where I&apos;ve used {listOf(picked)}</span>
-              <span className="text-zinc-600"> · </span>
+              <span className="text-zinc-500"> · </span>
               <button type="button" onClick={onClear} className={textLink}>
                 Show favorites
               </button>

@@ -11,12 +11,12 @@ const VIEWS = [
 export default function FantasyLayout() {
   return (
     <>
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Fantasy Analysis</h1>
+      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Fantasy Data Engineering & Machine Learning</h1>
       <p className="mt-3 max-w-3xl text-lg text-zinc-400">
         My own projection models for dynasty fantasy football. Every NFL player is valued in wins above replacement
         for my leagues, and the market is measured against those values.
       </p>
-      <nav aria-label="Fantasy analysis" className="mt-8 flex gap-6 overflow-x-auto border-b border-zinc-800">
+      <nav aria-label="Fantasy Data Engineering & Machine Learning" className="mt-8 flex gap-6 overflow-x-auto border-b border-zinc-800">
         {VIEWS.map((view) => (
           <NavLink
             key={view.to}

@@ -49,7 +49,7 @@ export default function PlayerDetail({ id, settings, inSeason, season }) {
                     {player.spans.map((span) => (
                       <tr
                         key={span.label}
-                        className={`border-t border-zinc-800 ${span.weight ? 'text-zinc-300' : 'text-zinc-600'}`}
+                        className={`border-t border-zinc-800 ${span.weight ? 'text-zinc-300' : 'text-zinc-500'}`}
                       >
                         <th scope="row" className="py-1 pr-3 text-left font-normal whitespace-nowrap">
                           {span.label}

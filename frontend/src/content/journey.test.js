@@ -26,6 +26,19 @@ describe('journey', () => {
     expect(unlinked).toEqual([])
   })
 
+  it('writes every project name and timeline title in title case, since they are titles', () => {
+    // Small words stay lowercase in the middle of a title; every other word,
+    // and the first and last, starts with a capital.
+    const minor = new Set(['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'at', 'by', 'in', 'of', 'on', 'to', 'with', 'as'])
+    const sentenceCase = (title) => {
+      const words = title.split(' ')
+      return words.some((word, i) => /^[a-z]/.test(word) && !(i > 0 && i < words.length - 1 && minor.has(word)))
+    }
+
+    const titles = [...projects.map((project) => project.name), ...journey.map((entry) => entry.title)]
+    expect(titles.filter(sentenceCase)).toEqual([])
+  })
+
   it('leaves no placeholder copy on the timeline', () => {
     const placeholders = journey.filter((entry) => /\[Placeholder/.test(`${entry.title} ${entry.summary ?? ''}`))
 
@@ -50,7 +63,7 @@ describe('journey', () => {
     const titles = journey.map((entry) => entry.title)
 
     // Both January 2022: the training program is written first, then Dominion.
-    expect(titles.indexOf('A new training program')).toBeLessThan(titles.indexOf('Dominion'))
+    expect(titles.indexOf('A New Training Program')).toBeLessThan(titles.indexOf('Dominion'))
     expect(titles.indexOf('Dominion')).toBe(titles.indexOf('Dominion AI') - 1)
   })
 
