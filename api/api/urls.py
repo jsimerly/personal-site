@@ -5,4 +5,5 @@ urlpatterns = [
     path("api/", include("apps.core.urls")),
     path("api/example/", include("apps.example.urls")),
     path("api/fantasy-analysis/", include("apps.fantasy_analysis.urls")),
+    path("api/contact/", include("apps.contact.urls")),
 ]

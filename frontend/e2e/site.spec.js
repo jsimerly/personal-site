@@ -14,7 +14,7 @@ test('the first screen says what I do and how to reach me, before any scrolling'
   for (const [name, element] of [
     ['my name', page.getByRole('heading', { level: 1, name: 'Jacob Simerly', exact: true })],
     ['what I do', page.getByText('I build Microsoft Fabric data platforms that hold up to audit, and lead the teams that run them.')],
-    ['the contact button', page.getByRole('link', { name: 'Work with me' })],
+    ['the contact button', page.getByRole('button', { name: 'Work with me' })],
     ['the resume button', page.getByRole('main').getByRole('link', { name: 'Resume', exact: true })],
   ]) {
     const box = await element.boundingBox()

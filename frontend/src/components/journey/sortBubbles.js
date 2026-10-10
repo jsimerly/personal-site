@@ -9,15 +9,16 @@ const GAP_Y = 8
 const SECTION_GAP = 18
 const OTHER = 'Other'
 
-// bubbles: [{ key, w, h }]. categories: [{ name, skills }].
-export function sortBubbles(bubbles, categories, width) {
+// bubbles: [{ key, w, h }]. categories: [{ name, skills }]. `lasting`: the
+// skills that lead their row, ahead of the rest (biggest first within each).
+export function sortBubbles(bubbles, categories, width, lasting = new Set()) {
   const kindOf = new Map(categories.flatMap(({ name, skills }) => skills.map((skill) => [skill, name])))
   const sections = [...categories.map(({ name }) => name), OTHER]
     .map((name) => ({
       name,
       items: bubbles
         .filter((bubble) => (kindOf.get(bubble.key) ?? OTHER) === name)
-        .sort((a, b) => b.h - a.h || a.key.localeCompare(b.key)),
+        .sort((a, b) => lasting.has(b.key) - lasting.has(a.key) || b.h - a.h || a.key.localeCompare(b.key)),
     }))
     .filter(({ items }) => items.length)
 

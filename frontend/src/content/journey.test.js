@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { projects } from '../projects'
-import { skillCategories } from './skillCategories'
+import { lastingSkills, skillCategories } from './skillCategories'
 import { journey, skillTotals } from './journey'
 
 describe('journey', () => {
@@ -51,6 +51,24 @@ describe('journey', () => {
     const unfiled = skillTotals(journey).map(({ skill }) => skill).filter((skill) => !filed.has(skill))
 
     expect(unfiled).toEqual([])
+  })
+
+  it('keeps every skill that sticks around a real skill on the timeline, filed under a kind', () => {
+    const onTimeline = new Set(skillTotals(journey).map(({ skill }) => skill))
+    const filed = new Set(skillCategories.flatMap((category) => category.skills))
+
+    expect(lastingSkills.filter((skill) => !onTimeline.has(skill) || !filed.has(skill))).toEqual([])
+  })
+
+  it('leads the sorted skills with leadership, AI, and data engineering', () => {
+    expect(skillCategories.slice(0, 3).map((category) => category.name)).toEqual(['Leadership', 'AI', 'Data engineering'])
+  })
+
+  it('ends the journey with leadership and data engineering second only to Python, and AI among the leaders', () => {
+    const ranked = skillTotals(journey).sort((a, b) => b.points - a.points).map(({ skill }) => skill)
+
+    expect(ranked.slice(0, 3)).toEqual(['Python', 'Project leadership', 'Data engineering'])
+    expect(ranked.indexOf('Agentic development')).toBeLessThan(5)
   })
 
   it('runs oldest first, however the entries are written', () => {

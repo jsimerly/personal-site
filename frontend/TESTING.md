@@ -31,6 +31,19 @@ pipe it to tail.
   - shows a plain alert instead of the content when the request fails
   - hands the loaded data to its children
 
+### src/components/ContactCapture.test.jsx (9 tests)
+
+- **ContactCapture**
+  - starts as a \"Work with me\" button that opens straight into a focused field, with no other step
+  - sends an email address on Enter and thanks the visitor in its place
+  - sends a phone number just the same, from the send button
+  - catches something that is neither before anything is sent, then sends once it is fixed
+  - explains a %i from the API and keeps what was typed, so the visitor can try again
+  - says to try again when the API cannot be reached at all
+  - closes back to the button on Escape when nothing is typed, with focus on the button
+  - starts open where the visitor already scrolled to it, without stealing focus
+  - hides the decoy from people and sends what a bot puts in it
+
 ### src/components/ProfilePhoto.test.jsx (2 tests)
 
 - **ProfilePhoto**
@@ -50,11 +63,12 @@ pipe it to tail.
   - shows where each piece was done, what changed, and its first three skills, opening its project page
   - offers a live link only for work you can try
 
-### src/components/journey/BubbleCluster.test.jsx (5 tests)
+### src/components/journey/BubbleCluster.test.jsx (6 tests)
 
 - **BubbleCluster**
   - floats as a plain cloud of skills, not yet clickable, while the timeline scrolls
   - assembles the rows from the bottom up, so the top rows land last
+  - once sorted, keeps the skills that stick around purple and bigger, and fades the rest to grey
   - brings in the heading and the kinds of skill as it sorts, still not clickable
   - lets any skill be picked once every row has landed
   - shows which skills are picked, and steps the rest back
@@ -80,16 +94,24 @@ pipe it to tail.
 
 - **SkillTray**
   - shows the newest skill first while the timeline scrolls, and opens up on request
-  - settles open, in the order they were picked up, once the journey is complete
+  - settles open once the journey is complete: the skills that stick around first, biggest first, the rest faded
   - invites scrolling before anything is collected
 
-### src/components/journey/bubble.test.js (4 tests)
+### src/components/journey/WhatsNext.test.jsx (1 tests)
+
+- **WhatsNext**
+  - offers one way forward at the end of the page: the open contact field, with no links away
+
+### src/components/journey/bubble.test.js (6 tests)
 
 - **skillColor**
   - is pure blue for a skill grown only at work
   - is pure red for a skill grown only in builds
   - is pure purple for an even split
   - leans toward the side that contributed more, by how much more
+- **sortedFontPx**
+  - keeps a skill that sticks around at least a step bigger than the faded ones, growing with its points
+  - gives every faded skill the same small size, however many points it has
 
 ### src/components/journey/eras.test.js (5 tests)
 
@@ -121,11 +143,12 @@ pipe it to tail.
 - **listOf**
   - reads naturally for one, two, and several skills
 
-### src/components/journey/sortBubbles.test.js (10 tests)
+### src/components/journey/sortBubbles.test.js (11 tests)
 
 - **sortBubbles**
   - stacks one labeled row per kind of skill, in category order, skipping empty kinds
   - puts the biggest skill of each kind first, right after the label
+  - leads each row with the skills that stick around, biggest first, then the rest
   - files skills it has no kind for under Other, last
   - wraps a long row onto more lines and never overlaps or leaves the width
   - tags each bubble and label with its row, top to bottom
@@ -162,7 +185,7 @@ pipe it to tail.
   - sends nothing flying on the way back up, or when the caller says not to
   - keeps still for readers who ask for reduced motion
 
-### src/content/journey.test.js (11 tests)
+### src/content/journey.test.js (14 tests)
 
 - **journey**
   - links every timeline card that names a project to a page that exists
@@ -171,6 +194,9 @@ pipe it to tail.
   - writes every project name and timeline title in title case, since they are titles
   - leaves no placeholder copy on the timeline
   - files every skill on the timeline under a kind, so none lands in \"Other\" when the basket sorts
+  - keeps every skill that sticks around a real skill on the timeline, filed under a kind
+  - leads the sorted skills with leadership, AI, and data engineering
+  - ends the journey with leadership and data engineering second only to Python, and AI among the leaders
   - runs oldest first, however the entries are written
   - keeps entries from the same month in the order they are written
   - starts the basket with Curious alone, purple, before any entry
@@ -265,12 +291,22 @@ pipe it to tail.
 - **useDebounced**
   - starts on the first value and only moves once a new value holds still
 
-### src/lib/api.test.js (3 tests)
+### src/lib/api.test.js (6 tests)
 
 - **apiGet**
   - calls relative paths when no API base URL is set, for the dev proxy
   - prefixes the configured API base URL, ignoring a trailing slash
   - throws an ApiError carrying the status on a failed response
+- **apiPost**
+  - sends JSON to the API and returns what it answers
+  - throws an ApiError carrying the status and the API's reason when it refuses
+  - still throws, with no reason, when a failed response has no JSON
+
+### src/lib/contact.test.js (2 tests)
+
+- **reachable**
+  - accepts %j as a way to reach someone
+  - refuses %j, the same as the API would
 
 ### src/lib/format.test.js (3 tests)
 
@@ -330,6 +366,14 @@ pipe it to tail.
 - **when the API is down**
   - the site still loads and says so plainly
 
+### e2e/contact.spec.js (4 tests)
+
+- a visitor leaves an email from the first screen in one motion, and it is stored and emailed to me
+- the end of the page has the field already open, and takes a phone number
+- a typo is caught on the page, before anything reaches the API
+- **when the API is down**
+  - the visitor is told to try again, and keeps what they typed
+
 ### e2e/contrast.spec.js (11 tests)
 
 - all text on the home page meets the AA contrast minimum
@@ -355,9 +399,10 @@ pipe it to tail.
 - a fantasy address works when opened directly and survives a reload
 - no market price and no league member ever reaches the browser
 
-### e2e/journey.spec.js (3 tests)
+### e2e/journey.spec.js (4 tests)
 
 - lays the timeline out in order, with no cards overlapping and work beside personal projects
+- never paints one card over another, even in the frame the web font arrives and cards re-wrap
 - splits the skills into rows as they pass Today, never into the cards, and lands them before the projects
 - **the skills basket**
   - holds only Curious until the reader scrolls, then starts collecting
@@ -373,4 +418,4 @@ pipe it to tail.
 
 ---
 
-176 unit and 31 end-to-end tests cataloged.
+198 unit and 36 end-to-end tests cataloged.

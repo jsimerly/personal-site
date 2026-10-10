@@ -44,12 +44,8 @@ describe('App', () => {
     expect(screen.getByText(profile.intro)).toHaveTextContent(/^Now at Eli Lilly/)
     const builtAt = within(screen.getByText("Where I've built").parentElement).getAllByRole('img')
     expect(builtAt.map((logo) => logo.getAttribute('alt'))).toEqual(['Eli Lilly', 'Barnes & Thornburg', 'UKG', 'Anthem'])
-    // Straight to my inbox once there's an address, to the invitation at the
-    // bottom until then; either way it lands somewhere real.
-    const contact = screen.getByRole('link', { name: 'Work with me' })
-    const email = profile.links.email
-    expect(contact).toHaveAttribute('href', email ? `mailto:${email}` : '#contact')
-    expect(document.getElementById('contact')).toHaveTextContent('Want to build something together?')
+    // The funnel starts on the first screen: a button that opens the field.
+    expect(screen.getByRole('button', { name: 'Work with me' })).toBeInTheDocument()
     expect(within(screen.getByRole('main')).getByRole('link', { name: 'Resume' })).toHaveAttribute('href', '/resume')
   })
 

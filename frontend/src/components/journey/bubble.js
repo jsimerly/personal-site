@@ -49,17 +49,30 @@ export function bubbleColors(total) {
 }
 
 // Once the basket has sorted itself into rows, readability wins: a narrower
-// size range (still bigger for stronger skills), one purple, no fading.
+// size range (still bigger for stronger skills) and one purple for the skills
+// that stick around (content/skillCategories.js), which also never drop below
+// LASTING_MIN_FONT_PX. Every other skill fades back: smaller, grey, unfilled.
 export const SORTED_MIN_FONT_PX = 12
 export const SORTED_MAX_FONT_PX = 17
+export const LASTING_MIN_FONT_PX = 14
 
-export function sortedFontPx(points) {
-  return SORTED_MIN_FONT_PX + bubbleLevel(points) * (SORTED_MAX_FONT_PX - SORTED_MIN_FONT_PX)
+export function sortedFontPx(points, lasting = true) {
+  if (!lasting) return SORTED_MIN_FONT_PX
+  return Math.max(LASTING_MIN_FONT_PX, SORTED_MIN_FONT_PX + bubbleLevel(points) * (SORTED_MAX_FONT_PX - SORTED_MIN_FONT_PX))
 }
 
 export const SORTED_COLORS = {
   backgroundColor: 'color-mix(in oklab, var(--color-both) 24%, var(--color-zinc-950))',
   boxShadow: 'inset 0 0 0 1px color-mix(in oklab, var(--color-both) 55%, transparent)',
+  opacity: 1,
+}
+
+// Faded, not see-through: the bubbles are buttons, so their text keeps AA
+// contrast (zinc-500 on the page); the fill and color go instead.
+export const FADED_COLORS = {
+  backgroundColor: 'transparent',
+  boxShadow: 'inset 0 0 0 1px var(--color-zinc-700)',
+  color: 'var(--color-zinc-500)',
   opacity: 1,
 }
 

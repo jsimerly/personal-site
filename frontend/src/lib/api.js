@@ -21,3 +21,20 @@ export async function apiGet(path, { signal } = {}) {
   }
   return response.json()
 }
+
+// Sends JSON. A refused submission throws an ApiError with the status and,
+// in `body`, whatever the API said about why.
+export async function apiPost(path, data) {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: 'POST',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+  const body = await response.json().catch(() => null)
+  if (!response.ok) {
+    const error = new ApiError(response.status, `POST ${path} failed with ${response.status}`)
+    error.body = body
+    throw error
+  }
+  return body
+}

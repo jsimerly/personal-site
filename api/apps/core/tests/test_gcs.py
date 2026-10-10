@@ -81,3 +81,25 @@ def test_a_local_root_lists_files_on_disk_under_the_prefix(client, settings, tmp
 
     assert gcs.list_names("my-bucket", "data/") == ["data/a.json", "data/deep/b.json"]
     client.list_blobs.assert_not_called()
+
+
+def test_write_json_creates_a_new_blob_and_never_overwrites_one(client):
+    """write_json uploads the data as JSON on the condition that the blob doesn't exist yet."""
+    gcs.write_json("my-bucket", "leads/a.json", {"contact": "jane@example.com"})
+
+    client.bucket.assert_called_with("my-bucket")
+    client.bucket.return_value.blob.assert_called_with("leads/a.json")
+    client.bucket.return_value.blob.return_value.upload_from_string.assert_called_once_with(
+        b'{\n  "contact": "jane@example.com"\n}', content_type="application/json", if_generation_match=0
+    )
+
+
+def test_a_local_root_writes_files_on_disk_and_never_overwrites_one(settings, tmp_path):
+    """With GCS_LOCAL_ROOT set, write_json writes the file there, and writing the same name twice fails."""
+    settings.GCS_LOCAL_ROOT = str(tmp_path)
+
+    gcs.write_json("my-bucket", "leads/2026/a.json", {"n": 1})
+
+    assert (tmp_path / "my-bucket" / "leads" / "2026" / "a.json").read_text() == '{\n  "n": 1\n}'
+    with pytest.raises(FileExistsError):
+        gcs.write_json("my-bucket", "leads/2026/a.json", {"n": 2})

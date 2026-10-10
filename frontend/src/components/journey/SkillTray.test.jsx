@@ -22,11 +22,15 @@ describe('SkillTray', () => {
     expect(skillsShown()).toEqual(['Curious', 'C++', 'Visual Basic'])
   })
 
-  it('settles open, in the order they were picked up, once the journey is complete', () => {
-    render(<SkillTray totals={totals} complete />)
+  it('settles open once the journey is complete: the skills that stick around first, biggest first, the rest faded', () => {
+    const python = { skill: 'Python', points: 8, work: 4, build: 4 }
+    render(<SkillTray totals={[...totals, python]} complete />)
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
-    expect(skillsShown()).toEqual(['Curious', 'C++', 'Visual Basic'])
+    expect(skillsShown()).toEqual(['Python', 'Curious', 'C++', 'Visual Basic'])
+    const item = (name) => within(screen.getByRole('list')).getByText(name)
+    expect(item('C++').style).toMatchObject({ color: 'var(--color-zinc-500)', backgroundColor: 'transparent', fontSize: '12px' })
+    expect(item('Python').style.color).toBe('')
   })
 
   it('invites scrolling before anything is collected', () => {

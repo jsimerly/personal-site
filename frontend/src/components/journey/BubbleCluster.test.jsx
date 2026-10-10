@@ -40,7 +40,7 @@ describe('BubbleCluster', () => {
   })
 
   it('assembles the rows from the bottom up, so the top rows land last', () => {
-    // Curious is the top row (Mindset), SQL a lower one (Languages).
+    // SQL is the top row here (Languages), Curious the bottom one (Mindset, last).
     const { container, rerender } = render(
       <BubbleCluster totals={totals} sortProgress={0} popDelay={0} width={320} sortedWidth={1024} picked={[]} onToggle={() => {}} />,
     )
@@ -51,8 +51,21 @@ describe('BubbleCluster', () => {
       <BubbleCluster totals={totals} sortProgress={0.3} popDelay={0} width={320} sortedWidth={1024} picked={[]} onToggle={() => {}} />,
     )
 
-    expect(placeOf('SQL')).not.toBe(cloud.SQL)
-    expect(placeOf('Curious')).toBe(cloud.Curious)
+    expect(placeOf('Curious')).not.toBe(cloud.Curious)
+    expect(placeOf('SQL')).toBe(cloud.SQL)
+  })
+
+  it('once sorted, keeps the skills that stick around purple and bigger, and fades the rest to grey', () => {
+    const withReact = [...totals, { skill: 'React', points: 8, work: 0, build: 8 }]
+    render(<BubbleCluster totals={withReact} sortProgress={1} popDelay={0} width={320} sortedWidth={1024} picked={[]} onToggle={() => {}} />)
+
+    const react = screen.getByRole('button', { name: 'React' })
+    const python = screen.getByRole('button', { name: 'Python' })
+    expect(react.style).toMatchObject({ color: 'var(--color-zinc-500)', backgroundColor: 'transparent', fontSize: '12px' })
+    expect(python.style.color).toBe('')
+    expect(parseFloat(python.style.fontSize)).toBeGreaterThanOrEqual(14)
+    // Faded is still a skill you can pick.
+    expect(react).toBeEnabled()
   })
 
   it('brings in the heading and the kinds of skill as it sorts, still not clickable', () => {
