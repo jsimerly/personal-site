@@ -9,10 +9,11 @@ pipe it to tail.
 
 ## Unit and component tests (Vitest)
 
-### src/App.test.jsx (9 tests)
+### src/App.test.jsx (10 tests)
 
 - **App**
-  - introduces me on the home page and points to my portfolio and every project
+  - says what I do, where I have done it, and how to reach me, before the journey
+  - leads with selected work before the journey, and links to everything else
   - shows my three favorite projects under the skills until skills are picked
   - opens the fantasy section on its player values, with a tab for each view
   - opens the model performance view at its own address
@@ -41,6 +42,13 @@ pipe it to tail.
 - **ProjectCover**
   - shows a project's cover image when it has one
   - stands in with its initials on a flat color, the same color every time, until it has one
+
+### src/components/SelectedWork.test.jsx (3 tests)
+
+- **SelectedWork**
+  - points every piece of selected work at a project that exists
+  - shows where each piece was done, what changed, and its first three skills, opening its project page
+  - offers a live link only for work you can try
 
 ### src/components/journey/BubbleCluster.test.jsx (5 tests)
 
@@ -333,13 +341,15 @@ pipe it to tail.
 - **the skills basket**
   - holds only Curious until the reader scrolls, then starts collecting
 
-### e2e/site.spec.js (4 tests)
+### e2e/site.spec.js (6 tests)
 
-- the home page introduces me and leads to my portfolio
+- the first screen says what I do and how to reach me, before any scrolling
+- the home page leads with selected work, each opening its case study
+- the portfolio is one click from anywhere
 - a data-backed project page loads its data from the API
 - a project address works when opened directly and survives a reload
 - the name in the header leads back home
 
 ---
 
-165 unit and 18 end-to-end tests cataloged.
+169 unit and 20 end-to-end tests cataloged.

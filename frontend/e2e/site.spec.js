@@ -5,14 +5,44 @@
 import { expect, test } from './fixtures'
 import { expectNoHorizontalScroll, visit } from './helpers'
 
-test('the home page introduces me and leads to my portfolio', async ({ page }) => {
+// The ten-second test: on a phone and a laptop alike, the first screen says
+// what I do and offers a way to reach me, before any scrolling.
+test('the first screen says what I do and how to reach me, before any scrolling', async ({ page }) => {
   await visit(page)
 
-  await expect(page.getByRole('heading', { level: 1, name: 'Jacob Simerly', exact: true })).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'My journey' })).toBeVisible()
+  const { height } = page.viewportSize()
+  for (const [name, element] of [
+    ['my name', page.getByRole('heading', { level: 1, name: 'Jacob Simerly', exact: true })],
+    ['what I do', page.getByText('I build Microsoft Fabric data platforms that hold up to audit, and lead the teams that run them.')],
+    ['the contact button', page.getByRole('link', { name: 'Work with me' })],
+    ['the resume button', page.getByRole('main').getByRole('link', { name: 'Resume', exact: true })],
+  ]) {
+    const box = await element.boundingBox()
+    expect(box.y + box.height, `${name} ends below the first screen`).toBeLessThanOrEqual(height)
+  }
   await expectNoHorizontalScroll(page)
+})
 
-  await page.getByRole('link', { name: 'See my portfolio' }).click()
+test('the home page leads with selected work, each opening its case study', async ({ page }) => {
+  await visit(page)
+
+  const work = page.getByRole('region', { name: 'Selected work' })
+  await expect(work.getByRole('heading', { level: 3 })).toHaveText([
+    'SOX-compliant CI/CD for Microsoft Fabric',
+    'Unified cloud data platform',
+    'Cash Flow Statement automation',
+    'Fantasy Analysis',
+  ])
+
+  await work.getByRole('link', { name: 'SOX-compliant CI/CD for Microsoft Fabric' }).click()
+  await expect(page).toHaveURL('/projects/lilly-fabric-cicd')
+  await expect(page.getByRole('heading', { level: 1, name: 'SOX-compliant CI/CD for Microsoft Fabric' })).toBeVisible()
+})
+
+test('the portfolio is one click from anywhere', async ({ page }) => {
+  await visit(page)
+
+  await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Portfolio' }).click()
   await expect(page).toHaveURL('/portfolio')
   await expect(page.getByRole('heading', { level: 1, name: 'Portfolio' })).toBeVisible()
 })
