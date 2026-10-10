@@ -58,10 +58,10 @@ describe('App', () => {
 
     const work = screen.getByRole('region', { name: 'Selected work' })
     expect(within(work).getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent)).toEqual([
-      'SOX-compliant CI/CD for Microsoft Fabric',
-      'Unified cloud data platform',
-      'Cash Flow Statement automation',
-      'Fantasy Analysis',
+      'SOX-Compliant CI/CD for Microsoft Fabric',
+      'Unified Cloud Data Platform',
+      'Cash Flow Statement Automation',
+      'Fantasy Data Engineering & Machine Learning',
     ])
     expect(within(work).getByRole('link', { name: "Everything I've built" })).toHaveAttribute('href', '/projects')
     // Selected work comes first in the page, then the journey.
@@ -88,8 +88,8 @@ describe('App', () => {
     renderAt('/fantasy-analysis')
 
     expect(await screen.findByRole('table', { name: 'Player values' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Fantasy Analysis')
-    const views = within(screen.getByRole('navigation', { name: 'Fantasy analysis' })).getAllByRole('link')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Fantasy Data Engineering & Machine Learning')
+    const views = within(screen.getByRole('navigation', { name: 'Fantasy Data Engineering & Machine Learning' })).getAllByRole('link')
     expect(views.map((link) => [link.textContent, link.getAttribute('href'), link.getAttribute('aria-current')])).toEqual([
       ['Player values', '/fantasy-analysis', 'page'],
       ['Model performance', '/fantasy-analysis/model', null],

@@ -16,7 +16,7 @@ export default function ProfilePhoto({ src, name, className = '' }) {
         />
       ) : (
         <div className="flex aspect-square size-full flex-col items-center justify-center rounded-full bg-zinc-900 text-center">
-          <span aria-hidden="true" className="text-5xl font-semibold tracking-tight text-zinc-600">
+          <span aria-hidden="true" className="text-5xl font-semibold tracking-tight text-zinc-500">
             {initials}
           </span>
           <span className="mt-2 text-xs text-zinc-500">[Your photo]</span>

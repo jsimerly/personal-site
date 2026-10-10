@@ -4,12 +4,12 @@
 // from lg up a center column is kept free for the basket.
 export const SIDES = {
   work: {
-    newSkill: 'bg-work/15 text-work',
+    newSkill: 'bg-work/10 text-work',
     dot: 'bg-work',
     column: 'md:col-start-1',
   },
   build: {
-    newSkill: 'bg-build/15 text-build',
+    newSkill: 'bg-build/10 text-build',
     dot: 'bg-build',
     column: 'md:col-start-2 lg:col-start-3',
   },

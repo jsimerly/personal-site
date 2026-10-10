@@ -89,7 +89,7 @@ export default function JourneyEntry({ entry, index, newSkills, era, position, t
             )}
           </div>
         ) : (
-          era && <p className="mb-1.5 text-[11px] font-medium tracking-widest text-zinc-600 uppercase">{era}</p>
+          era && <p className="mb-1.5 text-[11px] font-medium tracking-widest text-zinc-500 uppercase">{era}</p>
         )}
         <article
           className={`relative rounded-xl border border-zinc-800 bg-zinc-900/60 p-4 ${

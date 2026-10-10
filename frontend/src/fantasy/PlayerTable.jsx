@@ -19,7 +19,7 @@ function Position({ pos }) {
 // A diverging bar: cheap grows left of the middle in blue, rich right in red,
 // capped at 100% either way. The percentage beside it is the reading.
 export function Mispricing({ value }) {
-  if (value == null) return <span className="text-zinc-600">{MISSING}</span>
+  if (value == null) return <span className="text-zinc-500">{MISSING}</span>
   const reach = `${Math.min(Math.abs(value), 1) * 50}%`
   return (
     <span className="inline-flex items-center justify-end gap-2">
@@ -42,7 +42,7 @@ export function Mispricing({ value }) {
 
 // Where a player's floor-to-ceiling band sits among everyone's.
 function Range({ lo, hi, max }) {
-  if (lo == null || hi == null) return <span className="text-zinc-600">{MISSING}</span>
+  if (lo == null || hi == null) return <span className="text-zinc-500">{MISSING}</span>
   const at = (value) => `${Math.max(0, Math.min(100, (100 * value) / max))}%`
   return (
     <span className="inline-flex items-center gap-2">

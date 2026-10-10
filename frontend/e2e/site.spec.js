@@ -28,15 +28,15 @@ test('the home page leads with selected work, each opening its case study', asyn
 
   const work = page.getByRole('region', { name: 'Selected work' })
   await expect(work.getByRole('heading', { level: 3 })).toHaveText([
-    'SOX-compliant CI/CD for Microsoft Fabric',
-    'Unified cloud data platform',
-    'Cash Flow Statement automation',
-    'Fantasy Analysis',
+    'SOX-Compliant CI/CD for Microsoft Fabric',
+    'Unified Cloud Data Platform',
+    'Cash Flow Statement Automation',
+    'Fantasy Data Engineering & Machine Learning',
   ])
 
-  await work.getByRole('link', { name: 'SOX-compliant CI/CD for Microsoft Fabric' }).click()
+  await work.getByRole('link', { name: 'SOX-Compliant CI/CD for Microsoft Fabric' }).click()
   await expect(page).toHaveURL('/projects/lilly-fabric-cicd')
-  await expect(page.getByRole('heading', { level: 1, name: 'SOX-compliant CI/CD for Microsoft Fabric' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'SOX-Compliant CI/CD for Microsoft Fabric' })).toBeVisible()
 })
 
 test('the portfolio is one click from anywhere', async ({ page }) => {

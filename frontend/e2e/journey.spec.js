@@ -54,7 +54,7 @@ test('lays the timeline out in order, with no cards overlapping and work beside 
 
   if (testInfo.project.name === 'mobile') return
   // May 2022 at UKG sits beside April 2022's personal project, not below it.
-  const rules = laidOut.find((card) => card.title === 'Rules of Engagement project')
+  const rules = laidOut.find((card) => card.title === 'Rules of Engagement Project')
   const sportsbook = laidOut.find((card) => card.title === 'Stuck in High School Sportsbook')
   expect(rules.left).not.toBe(sportsbook.left)
   expect(rules.cardTop).toBeLessThan(sportsbook.cardBottom)

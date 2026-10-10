@@ -25,12 +25,12 @@ describe('SelectedWork', () => {
   it('shows where each piece was done, what changed, and its first three skills, opening its project page', () => {
     const [first] = renderCards()
 
-    expect(within(first).getByRole('link', { name: 'SOX-compliant CI/CD for Microsoft Fabric' })).toHaveAttribute(
+    expect(within(first).getByRole('link', { name: 'SOX-Compliant CI/CD for Microsoft Fabric' })).toHaveAttribute(
       'href',
       '/projects/lilly-fabric-cicd',
     )
     expect(first).toHaveTextContent(
-      "Eli LillySOX-compliant CI/CD for Microsoft FabricLilly's first GitHub-native CI/CD for Microsoft Fabric, with the approval gates and segregation of duties that brought deployments under SOX.CI/CDGitHub ActionsMicrosoft Fabric",
+      "Eli LillySOX-Compliant CI/CD for Microsoft FabricLilly's first GitHub-native CI/CD for Microsoft Fabric, with the approval gates and segregation of duties that brought deployments under SOX.CI/CDGitHub ActionsMicrosoft Fabric",
     )
   })
 

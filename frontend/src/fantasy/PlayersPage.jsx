@@ -224,7 +224,7 @@ export default function PlayersPage() {
 
   return (
     <>
-      <title>Player values | Fantasy Analysis | Jacob Simerly</title>
+      <title>Player values | Fantasy Data Engineering & Machine Learning | Jacob Simerly</title>
       <ApiState state={board.stale ? { data: board.data } : board}>
         {(data) => <Board data={data} settings={settings} update={update} stale={board.stale} />}
       </ApiState>

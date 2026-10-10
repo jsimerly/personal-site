@@ -75,7 +75,7 @@ describe('Portfolio', () => {
     renderAt('/portfolio?tab=fantasy-football')
 
     expect(selectedTab()).toHaveAccessibleName('Fantasy Football Engineering')
-    expect(panelHeading()).toHaveTextContent('Fantasy Analysis')
+    expect(panelHeading()).toHaveTextContent('Fantasy Data Engineering & Machine Learning')
   })
 
   it('falls back to the first tab when the URL names one that does not exist', () => {

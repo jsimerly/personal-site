@@ -36,7 +36,7 @@ export default function Projects() {
             onClick={() => setParams(kind === 'all' ? {} : { kind }, { replace: true })}
             className="rounded-md border border-zinc-200 px-3 py-1.5 text-sm text-zinc-700 transition-colors hover:border-zinc-300 aria-pressed:border-zinc-900 aria-pressed:bg-zinc-900 aria-pressed:text-white dark:border-zinc-800 dark:text-zinc-300 dark:aria-pressed:border-white dark:aria-pressed:bg-white dark:aria-pressed:text-zinc-900"
           >
-            {label} <span className="ml-1 opacity-60">{countFor(kind)}</span>
+            {label} <span className="ml-1 opacity-75">{countFor(kind)}</span>
           </button>
         ))}
       </div>
