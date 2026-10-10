@@ -91,7 +91,7 @@ export default function ModelPage() {
 
   return (
     <>
-      <title>Model performance | Fantasy Analysis | Jacob Simerly</title>
+      <title>Model performance | Fantasy Data Engineering & Machine Learning | Jacob Simerly</title>
       <ApiState state={state}>
         {(model) => {
           const longest = Math.max(...model.market.overall.map((row) => row.horizon))

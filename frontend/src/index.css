@@ -11,13 +11,16 @@
      dark theme (page about #1f1f1f, cards #262626, chips and borders #333
      and up), instead of zinc's near-black with a blue tint. Every zinc-950
      to zinc-500 on the site moves with these, so this is the one place to
-     make the site lighter or darker. */
+     make the site lighter or darker. zinc-500 is the faintest text on the
+     site (dates, labels, captions): 0.66 keeps it at least 4.5:1 against
+     the page and the cards (WCAG AA, pinned by e2e/contrast.spec.js). Below
+     it, zinc-600 and darker are for lines and borders, never text. */
   --color-zinc-950: oklch(0.24 0 0);
   --color-zinc-900: oklch(0.27 0 0);
   --color-zinc-800: oklch(0.325 0 0);
   --color-zinc-700: oklch(0.4 0 0);
   --color-zinc-600: oklch(0.49 0 0);
-  --color-zinc-500: oklch(0.59 0 0);
+  --color-zinc-500: oklch(0.66 0 0);
 
   /* The two sides of the journey: blue for work, red for building, and the
      purple where they meet. Flat colors, no glow. A skill's bubble blends

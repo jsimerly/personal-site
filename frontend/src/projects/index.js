@@ -35,7 +35,7 @@ export const projects = [
   },
   {
     slug: 'fantasy-analysis',
-    name: 'Fantasy Analysis',
+    name: 'Fantasy Data Engineering & Machine Learning',
     kind: 'personal',
     year: '2021 to now',
     featured: true,
@@ -75,7 +75,7 @@ export const projects = [
   },
   {
     slug: 'personal-site',
-    name: 'This site',
+    name: 'This Site',
     kind: 'personal',
     year: '2026 to now',
     summary: 'A static React site on GitHub Pages, reading a Django API on Cloud Run.',
@@ -103,7 +103,7 @@ export const projects = [
   },
   {
     slug: 'dsa',
-    name: 'Data structures and algorithms',
+    name: 'Data Structures and Algorithms',
     kind: 'personal',
     year: '2024',
     summary: 'Classic data structures and algorithms, worked through in Python.',
@@ -129,7 +129,7 @@ export const projects = [
   },
   {
     slug: 'rust-engine',
-    name: 'Rust engine',
+    name: 'Rust Engine',
     kind: 'personal',
     year: '2024',
     summary: 'An Entity Component System game engine, in Rust.',
@@ -141,7 +141,7 @@ export const projects = [
   },
   {
     slug: 'gpt-image-processor',
-    name: 'GPT image processor',
+    name: 'GPT Image Processor',
     kind: 'personal',
     year: '2023',
     summary: 'A Django API that describes uploaded images with GPT, with comments and infinite scroll.',
@@ -154,7 +154,7 @@ export const projects = [
   },
   {
     slug: 'design-patterns',
-    name: 'Design patterns',
+    name: 'Design Patterns',
     kind: 'personal',
     year: '2023',
     summary: 'The classic software design patterns, implemented one by one.',
@@ -204,7 +204,7 @@ export const projects = [
   },
   {
     slug: 'ktc-analysis',
-    name: 'KTC analysis and scraping',
+    name: 'KTC Analysis and Scraping',
     kind: 'personal',
     year: '2021',
     summary: 'Scraping and analyzing KeepTradeCut dynasty fantasy values.',
@@ -216,7 +216,7 @@ export const projects = [
   },
   {
     slug: 'monty-hall',
-    name: 'Monty Hall simulation',
+    name: 'Monty Hall Simulation',
     kind: 'personal',
     year: '2021',
     summary: 'Simulating the Monty Hall problem to watch the odds play out.',
@@ -240,7 +240,7 @@ export const projects = [
   },
   {
     slug: 'kaggle',
-    name: 'A Kaggle competition',
+    name: 'A Kaggle Competition',
     kind: 'personal',
     year: '2019',
     summary: 'My first go at machine learning: a Kaggle competition during my degree.',
@@ -253,7 +253,7 @@ export const projects = [
   },
   {
     slug: 'cpp',
-    name: 'Teaching myself C++',
+    name: 'Teaching Myself C++',
     kind: 'personal',
     year: '2013',
     summary: 'My first code: the basics of C++, learned on my own.',
@@ -267,7 +267,7 @@ export const projects = [
   // Work, newest first.
   {
     slug: 'lilly-fabric-cicd',
-    name: 'SOX-compliant CI/CD for Microsoft Fabric',
+    name: 'SOX-Compliant CI/CD for Microsoft Fabric',
     kind: 'work',
     year: '2026',
     featured: true,
@@ -282,7 +282,7 @@ export const projects = [
   },
   {
     slug: 'cash-flow-statement',
-    name: 'Cash Flow Statement automation',
+    name: 'Cash Flow Statement Automation',
     kind: 'work',
     year: '2026',
     summary: 'Re-architected a highly manual quarterly process, with a semantic model that rolls up by day, month, and year and drills to document level.',
@@ -295,7 +295,7 @@ export const projects = [
   },
   {
     slug: 'agentic-fabric-development',
-    name: 'Agentic Fabric development',
+    name: 'Agentic Fabric Development',
     kind: 'work',
     year: '2026',
     summary: 'Brought Claude Code, Fabric Git integration, and VS Code together so developers work locally with context-aware agents.',
@@ -307,7 +307,7 @@ export const projects = [
   },
   {
     slug: 'data-sdlc',
-    name: 'SDLC for data teams',
+    name: 'SDLC for Data Teams',
     kind: 'work',
     year: '2026',
     summary: 'Bringing software development principles and a real development lifecycle to the data teams.',
@@ -319,7 +319,7 @@ export const projects = [
   },
   {
     slug: 'lilly-architecture',
-    name: 'Architectural redesign',
+    name: 'Architectural Redesign',
     kind: 'work',
     year: '2026',
     summary: 'Refining the medallion architecture, moving toward a data mesh, and drawing clear lines between analytics engineers, data engineers, and analysts.',
@@ -331,7 +331,7 @@ export const projects = [
   },
   {
     slug: 'bt-data-platform',
-    name: 'Unified cloud data platform',
+    name: 'Unified Cloud Data Platform',
     kind: 'work',
     year: '2024 to 2026',
     summary: "Led the firm's first: moving off on-premises systems onto Microsoft Fabric and Azure, with data from 15+ systems in one lake.",
@@ -343,7 +343,7 @@ export const projects = [
   },
   {
     slug: 'fabric-utilities',
-    name: 'Fabric utilities and CI/CD library',
+    name: 'Fabric Utilities and CI/CD Library',
     kind: 'work',
     year: '2024 to 2026',
     summary: 'A reusable package and pipelines that standardized ingestion, transformation, and business logic across dev and production.',
@@ -355,7 +355,7 @@ export const projects = [
   },
   {
     slug: 'sharepoint-mcp',
-    name: 'SharePoint MCP server',
+    name: 'SharePoint MCP Server',
     kind: 'work',
     year: '2025',
     summary: 'A prototype that lets an LLM work in SharePoint: creating lists, updating columns, editing data, and pulling insights.',
@@ -367,7 +367,7 @@ export const projects = [
   },
   {
     slug: 'contract-ai-pipeline',
-    name: 'Contract data, normalized with AI',
+    name: 'Contract Data, Normalized with AI',
     kind: 'work',
     year: '2025',
     summary: 'An automated pipeline that turns media-licensing and option-agreement contracts into structured data, verified by attorneys.',
@@ -379,7 +379,7 @@ export const projects = [
   },
   {
     slug: 'engineering-standards',
-    name: 'Engineering standards and architecture',
+    name: 'Engineering Standards and Architecture',
     kind: 'work',
     year: '2025',
     summary: "The firm's data engineering, Python, and SQL standards: the documentation, the code-review checklists, and the architecture behind them.",
@@ -391,7 +391,7 @@ export const projects = [
   },
   {
     slug: 'data-team-lead',
-    name: 'Leading the data team',
+    name: 'Leading the Data Team',
     kind: 'work',
     year: '2025 to 2026',
     summary: 'Managed the data team, employees and contractors: assigning the work and owning the backlog to keep delivery visible.',
@@ -403,7 +403,7 @@ export const projects = [
   },
   {
     slug: 'partner-onboarding-platform',
-    name: 'Partner onboarding platform',
+    name: 'Partner Onboarding Platform',
     kind: 'work',
     year: '2024',
     summary: 'Led the design of the process and the product: requirements, relational data schemas, and how the microservices work together.',
@@ -415,7 +415,7 @@ export const projects = [
   },
   {
     slug: 'smartsheet-analytics',
-    name: 'Analytics and reporting in Smartsheet',
+    name: 'Analytics and Reporting in Smartsheet',
     kind: 'work',
     year: '2024',
     summary: 'Reporting built on the cleaned data, so the business processes team could track its own work.',
@@ -428,7 +428,7 @@ export const projects = [
   },
   {
     slug: 'smartsheet-pipelines',
-    name: 'Smartsheet data pipelines',
+    name: 'Smartsheet Data Pipelines',
     kind: 'work',
     year: '2023',
     summary: "Automated Python pipelines from Smartsheet's API into our BigQuery warehouse, cleaning the data along the way.",
@@ -440,7 +440,7 @@ export const projects = [
   },
   {
     slug: 'process-automation',
-    name: 'Process automation',
+    name: 'Process Automation',
     kind: 'work',
     year: '2023',
     summary: 'Found the business problems behind slow deliveries and built the solutions, cutting delivery times 30%.',
@@ -452,7 +452,7 @@ export const projects = [
   },
   {
     slug: 'process-cleanup',
-    name: 'Process merging and cleanup',
+    name: 'Process Merging and Cleanup',
     kind: 'work',
     year: '2023',
     summary: 'Overlapping business processes, mapped, merged, and documented as one.',
@@ -465,7 +465,7 @@ export const projects = [
   },
   {
     slug: 'ukg-implementations',
-    name: 'Customer implementations',
+    name: 'Customer Implementations',
     kind: 'work',
     year: '2021 to 2022',
     summary: 'Implemented UKG for customers in healthcare, manufacturing, and retail, up to six at a time.',
@@ -477,7 +477,7 @@ export const projects = [
   },
   {
     slug: 'consultant-training',
-    name: 'A new training program',
+    name: 'A New Training Program',
     kind: 'work',
     year: '2022',
     summary: 'Developed a new training program as team lead, responsible for how 60 new consultants were trained and how they did.',
@@ -489,7 +489,7 @@ export const projects = [
   },
   {
     slug: 'mentoring-consultants',
-    name: 'Mentoring new consultants',
+    name: 'Mentoring New Consultants',
     kind: 'work',
     year: '2021 to 2022',
     summary: 'Mentored five new consultants through regular one-on-ones.',
@@ -514,7 +514,7 @@ export const projects = [
   },
   {
     slug: 'innovation-competition',
-    name: 'Innovation competition',
+    name: 'Innovation Competition',
     kind: 'work',
     year: '2022',
     summary: "An entry in UKG's internal innovation competition.",
@@ -527,7 +527,7 @@ export const projects = [
   },
   {
     slug: 'anthem-website-launch',
-    name: 'New website launch',
+    name: 'New Website Launch',
     kind: 'work',
     year: '2020',
     summary: 'Helped launch a new website built in C#: I ran the analytics that found what was wrong with it, and wrote the queries that helped fix it.',
@@ -539,7 +539,7 @@ export const projects = [
   },
   {
     slug: 'anthem-internship',
-    name: 'Summer internship at Anthem',
+    name: 'Summer Internship at Anthem',
     kind: 'work',
     year: '2019',
     summary: "A summer on Anthem's process consulting team, the year before I joined it.",
@@ -552,7 +552,7 @@ export const projects = [
   },
   {
     slug: 'example',
-    name: 'Example project',
+    name: 'Example Project',
     kind: 'personal',
     year: '2026',
     hidden: true,

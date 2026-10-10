@@ -58,7 +58,7 @@ export default function Layout() {
       </main>
 
       <footer className="border-t border-zinc-900">
-        <div className="mx-auto flex h-(--footer-height) max-w-6xl items-center justify-between px-4 text-xs text-zinc-600">
+        <div className="mx-auto flex h-(--footer-height) max-w-6xl items-center justify-between px-4 text-xs text-zinc-500">
           <span>
             © {new Date().getFullYear()} {profile.name}
           </span>

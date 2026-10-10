@@ -162,12 +162,13 @@ pipe it to tail.
   - sends nothing flying on the way back up, or when the caller says not to
   - keeps still for readers who ask for reduced motion
 
-### src/content/journey.test.js (10 tests)
+### src/content/journey.test.js (11 tests)
 
 - **journey**
   - links every timeline card that names a project to a page that exists
   - gives every personal build on the timeline a project page
   - gives every project from a job a page too, so work skills find their projects
+  - writes every project name and timeline title in title case, since they are titles
   - leaves no placeholder copy on the timeline
   - files every skill on the timeline under a kind, so none lands in \"Other\" when the basket sorts
   - runs oldest first, however the entries are written
@@ -323,6 +324,20 @@ pipe it to tail.
 - **when the API is down**
   - the site still loads and says so plainly
 
+### e2e/contrast.spec.js (11 tests)
+
+- all text on the home page meets the AA contrast minimum
+- all text on the portfolio meets the AA contrast minimum
+- all text on the fantasy portfolio tab meets the AA contrast minimum
+- all text on a coming-soon portfolio tab meets the AA contrast minimum
+- all text on the projects gallery meets the AA contrast minimum
+- all text on a project page meets the AA contrast minimum
+- all text on the resume meets the AA contrast minimum
+- all text on the about page meets the AA contrast minimum
+- all text on the fantasy player values meets the AA contrast minimum
+- all text on the fantasy model performance meets the AA contrast minimum
+- all text on the home page meets the AA contrast minimum once the whole journey has been scrolled
+
 ### e2e/fantasy.spec.js (8 tests)
 
 - the board shows the newest run, priced players first by value
@@ -352,4 +367,4 @@ pipe it to tail.
 
 ---
 
-169 unit and 20 end-to-end tests cataloged.
+170 unit and 31 end-to-end tests cataloged.
