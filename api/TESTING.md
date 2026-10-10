@@ -21,6 +21,12 @@ Run the suite: `pytest` (check the exit code, never pipe it to tail).
 - `test_only_takes_submissions`: The contact endpoint has nothing to read: a GET is refused.
 - `test_the_site_may_submit_cross_origin`: The site's origin passes the browser's preflight for a JSON POST; others get no CORS header.
 
+## apps/contact/tests/test_mail_settings.py (3 tests)
+
+- `test_prod_sends_alerts_from_my_own_email_through_gmail`: Prod signs in to my own Gmail account over TLS and sends each lead from that address to itself.
+- `test_prods_sender_and_inbox_pass_the_smtp_backends_address_check`: Prod's sender and inbox are addresses the SMTP backend accepts, so an alert never fails before it is sent.
+- `test_the_default_sender_passes_the_smtp_backends_address_check`: The sender every other environment uses is one the SMTP backend accepts too.
+
 ## apps/core/tests/test_access.py (5 tests)
 
 - `test_reads_are_allowed`: Anyone can GET: the API is public and needs no login.
@@ -91,4 +97,4 @@ Run the suite: `pytest` (check the exit code, never pipe it to tail).
 
 ---
 
-49 tests cataloged.
+52 tests cataloged.

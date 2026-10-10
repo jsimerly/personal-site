@@ -23,7 +23,7 @@ def test_takes_an_email_stores_it_and_emails_me(api_client, frozen, stored):
     [message] = mail.outbox
     assert message.subject == "New lead from jacob-simerly.com: Jane.Doe@Example.com"
     assert message.to == ["jacob@test.invalid"]
-    assert message.from_email == "jacob-simerly.com <webmaster@localhost>"
+    assert message.from_email == '"jacob-simerly.com" <webmaster@localhost>'
     assert message.body == (
         "Someone wants to work with you.\n"
         "\n"

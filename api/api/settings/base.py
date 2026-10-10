@@ -1,3 +1,4 @@
+from email.utils import formataddr
 from pathlib import Path
 
 import environ
@@ -75,7 +76,9 @@ LEADS_NOTIFY_TO = env.list("LEADS_NOTIFY_TO", default=[])
 # One mailer. Locally it prints to the console; prod sends from my own email
 # account (settings/prod.py), and tests swap in Django's in-memory outbox.
 MAILERS = {"default": {"BACKEND": "django.core.mail.backends.console.EmailBackend"}}
-DEFAULT_FROM_EMAIL = "jacob-simerly.com <webmaster@localhost>"
+# formataddr quotes the name ("jacob-simerly.com"): unquoted, its period makes
+# the address invalid, and the SMTP backend refuses it.
+DEFAULT_FROM_EMAIL = formataddr(("jacob-simerly.com", "webmaster@localhost"))
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "America/New_York"

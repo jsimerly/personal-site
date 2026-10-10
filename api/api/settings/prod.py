@@ -25,7 +25,7 @@ MAILERS = {
         },
     }
 }
-DEFAULT_FROM_EMAIL = f"jacob-simerly.com <{LEADS_EMAIL}>"
+DEFAULT_FROM_EMAIL = formataddr(("jacob-simerly.com", LEADS_EMAIL))  # noqa: F405
 LEADS_NOTIFY_TO = [LEADS_EMAIL]
 
 # Cloud Run terminates TLS and forwards plain HTTP.
