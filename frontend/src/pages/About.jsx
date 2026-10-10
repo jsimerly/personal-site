@@ -2,21 +2,59 @@ import ProfilePhoto from '../components/ProfilePhoto.jsx'
 import { about } from '../content/about'
 import { profile } from '../content/profile'
 
-// A little about me, the person rather than the resume (content/about.js).
-// Photo on top on phones, beside the words on wider screens.
+// A little about me, the person rather than the resume (content/about.js):
+// a short intro, then a section each for the basics and the hobbies, each
+// a list of quick facts with its own candid photos under them. Photo on top
+// on phones, beside the words on wider screens; the facts go to two columns
+// where there's room.
 export default function About() {
   return (
-    <div className="flex flex-col-reverse gap-10 md:flex-row md:items-start md:justify-between">
+    <div>
       <title>About | Jacob Simerly</title>
-      <div className="max-w-2xl">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">About me</h1>
-        <div className="mt-6 space-y-5 text-lg leading-8 text-zinc-300">
-          {about.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
+      <div className="flex flex-col-reverse gap-10 md:flex-row md:items-start md:justify-between">
+        <div className="max-w-2xl">
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">About</h1>
+          <div className="mt-6 space-y-5 text-lg leading-8 text-zinc-300">
+            {about.intro.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
         </div>
+        <ProfilePhoto src={profile.photo} name={profile.name} className="size-36 md:size-64" />
       </div>
-      <ProfilePhoto src={profile.photo} name={profile.name} className="size-36 md:size-64" />
+
+      {about.sections.map(({ title, facts, photos }) => {
+        const id = `about-${title.toLowerCase().replace(/\s+/g, '-')}`
+        return (
+          <section key={title} aria-labelledby={id} className="mt-14">
+            <h2 id={id} className="text-2xl font-semibold tracking-tight">
+              {title}
+            </h2>
+            <dl className="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+              {facts.map(({ label, value }) => (
+                <div key={label}>
+                  <dt className="text-xs font-semibold tracking-widest text-zinc-500 uppercase">{label}</dt>
+                  <dd className="mt-1 leading-7 text-zinc-300">{value}</dd>
+                </div>
+              ))}
+            </dl>
+            {photos.length > 0 && (
+              <ul aria-label={`${title} photos`} className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {photos.map(({ file, alt }) => (
+                  <li key={file}>
+                    <img
+                      src={`${import.meta.env.BASE_URL}${file}`}
+                      alt={alt}
+                      loading="lazy"
+                      className="aspect-square w-full rounded-xl bg-zinc-900 object-cover"
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        )
+      })}
     </div>
   )
 }
