@@ -35,7 +35,6 @@ export const skillCategories = [
       'PySpark',
       'BigQuery',
       'Polars',
-      'Statistics',
       'Data analysis',
       'Jupyter',
       'Web scraping',
@@ -65,6 +64,10 @@ export const skillCategories = [
       'Entity Component Systems',
       'Game AI',
     ],
+  },
+  {
+    name: 'Math and economics',
+    skills: ['Statistics', 'Econometrics', 'Probability', 'Linear algebra', 'Calculus', 'Economics'],
   },
   { name: 'Mindset', skills: ['Curious'] },
 ]
@@ -106,7 +109,8 @@ export const lastingSkills = [
   // Languages
   'Python',
   'SQL',
-  // Fundamentals and mindset
+  // Fundamentals, math, and mindset
   'System design',
+  'Statistics',
   'Curious',
 ]

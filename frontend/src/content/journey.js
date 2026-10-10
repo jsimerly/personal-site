@@ -81,8 +81,21 @@ const entries = [
     end: '2020',
     side: 'work',
     logos: ['logos/indiana.svg', 'logos/ball-state.svg', 'logos/sigma-chi-shield.png'],
-    title: 'B.S. in Mathematical Economics, Minor in Computer Science',
-    skills: {},
+    title: 'B.S. in Mathematical Economics',
+    summary:
+      'A math major and an economics major in one degree, with a minor in computer science: probability and statistics, calculus and linear algebra, econometrics, and my first programming courses.',
+    // TODO(jacob): the coursework that mattered most, and how much.
+    skills: {
+      Statistics: 2,
+      Probability: 1,
+      Calculus: 1,
+      'Linear algebra': 1,
+      Econometrics: 2,
+      Economics: 1,
+      Java: 1,
+      'Data structures': 1,
+      Algorithms: 1,
+    },
   },
   {
     date: '2019',
