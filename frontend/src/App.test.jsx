@@ -37,7 +37,7 @@ describe('App', () => {
     renderAt('/')
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Jacob Simerly')
-    expect(screen.getByText(profile.title)).toHaveTextContent('Microsoft Fabric · Data engineering · AI')
+    expect(screen.getByText(profile.title)).toHaveTextContent('Microsoft Fabric · Data Engineering · AI')
     expect(screen.getByText(profile.headline)).toHaveTextContent(
       'I build Microsoft Fabric data platforms that hold up to audit, and lead the teams that run them.',
     )

@@ -65,13 +65,17 @@ test('lays the timeline out in order, with no cards overlapping and work beside 
 })
 
 // The sorted skills are one screen's worth. Every skill added lands in a
-// row, so this is what stops the block outgrowing a laptop screen.
-test('fits the sorted skills, heading and all, on a 1280x720 laptop screen', async ({ page }, testInfo) => {
+// row, so this is what stops the block outgrowing a laptop screen. Each row's
+// label has a column of its own, so a long one ("Math and economics" once)
+// must never run under the row's first skill.
+test('fits the sorted skills, heading and all, on a 1280x720 laptop screen, every row label clear of its skills', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name === 'mobile', 'The rows are the desktop layout; phones get the skill tray.')
   await page.setViewportSize({ width: 1280, height: 720 })
   await visit(page)
+  // Scroll to where the rows have just settled: what the reader sees as the
+  // table finishes. (Small steps, so this is that moment and not well past it.)
   const today = await page.evaluate(() => document.querySelector('[data-journey-end]').getBoundingClientRect().top + window.scrollY)
-  for (let y = today - 1200; y < today + 2000; y += 120) {
+  for (let y = today - 1200; y < today + 2000; y += 40) {
     await page.evaluate((top) => window.scrollTo(0, top), y)
     if (await page.locator('[data-basket="desktop"] button[aria-pressed]').count()) break
   }
@@ -82,6 +86,16 @@ test('fits the sorted skills, heading and all, on a 1280x720 laptop screen', asy
   expect(block.y, 'the block starts under the header').toBeGreaterThanOrEqual(header.y + header.height)
   expect(block.y + block.height, 'the block ends within the screen').toBeLessThanOrEqual(720)
   await expect(page.getByRole('heading', { name: 'What I bring today' })).toBeInViewport({ ratio: 1 })
+
+  const underSkills = await page.evaluate(() => {
+    const root = document.querySelector('[data-basket="desktop"]')
+    const skills = [...root.querySelectorAll('[data-basket-skill]')].map((skill) => ({ name: skill.textContent, box: skill.getBoundingClientRect() }))
+    const overlap = (a, b) => a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1
+    return [...root.querySelectorAll('li[aria-hidden="true"]')]
+      .filter((label) => label.textContent.trim())
+      .flatMap((label) => skills.filter(({ box }) => overlap(label.getBoundingClientRect(), box)).map(({ name }) => `${label.textContent} / ${name}`))
+  })
+  expect(underSkills, 'no row label runs under a skill').toEqual([])
 })
 
 // When the web font arrives, chips re-wrap and cards change height. The

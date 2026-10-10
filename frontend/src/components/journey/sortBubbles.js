@@ -83,7 +83,7 @@ export function sortBubbles(bubbles, categories, width, lasting = new Set()) {
 // lands, and each row eases in and out of place.
 export const ROW_WINDOW = 0.4
 
-const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2)
+export const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2)
 
 export function rowProgress(sortProgress, section, sections) {
   const start = sections > 1 ? ((1 - ROW_WINDOW) * section) / (sections - 1) : 0

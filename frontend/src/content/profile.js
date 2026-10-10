@@ -4,7 +4,7 @@ export const profile = {
   // The home page's first screen has to say, within ten seconds, what I do,
   // for whom, and the proof. Fabric clients first, hiring managers second.
   // The line above my name: the work, in the words people search for.
-  title: 'Microsoft Fabric · Data engineering · AI',
+  title: 'Microsoft Fabric · Data Engineering · AI',
   // The first sentence anyone reads: what I do, plainly.
   headline: 'I build Microsoft Fabric data platforms that hold up to audit, and lead the teams that run them.',
   // The proof right under it: where, and what I did there.

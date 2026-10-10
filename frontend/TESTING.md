@@ -70,11 +70,12 @@ pipe it to tail.
   - shows where each piece was done, what changed, and its first three skills, opening its project page
   - offers a live link only for work you can try
 
-### src/components/journey/BubbleCluster.test.jsx (6 tests)
+### src/components/journey/BubbleCluster.test.jsx (7 tests)
 
 - **BubbleCluster**
   - floats as a plain cloud of skills, not yet clickable, while the timeline scrolls
   - assembles the rows from the bottom up, so the top rows land last
+  - sinks a bubble to its row's level inside the cloud's column before sliding it sideways, clear of the cards beside the cloud
   - once sorted, keeps the skills that stick around purple and bigger, and fades the rest to grey
   - brings in the heading and the kinds of skill as it sorts, still not clickable
   - lets any skill be picked once every row has landed
@@ -194,7 +195,7 @@ pipe it to tail.
   - sends nothing flying on the way back up, or when the caller says not to
   - keeps still for readers who ask for reduced motion
 
-### src/content/journey.test.js (16 tests)
+### src/content/journey.test.js (19 tests)
 
 - **journey**
   - links every timeline card that names a project to a page that exists
@@ -207,6 +208,9 @@ pipe it to tail.
   - leads the sorted skills with leadership, Microsoft Fabric, AI, and data engineering
   - ends the journey with project leadership, data engineering, Fabric, and agentic development right behind Python
   - names the skills that stick around the way Fabric buyers name them, with no engineer-only leftovers
+  - keeps how I ship (Git, GitHub, GitHub Actions, Google Cloud) and the math behind the models (Statistics, Linear Algebra) among the skills that stick around
+  - writes every skill and kind in title case, the way a label reads, except a name its makers write lowercase
+  - tags every project only with skills the basket knows, spelled the same way
   - tags at least one project with every skill that sticks around, so picking it finds work
   - runs oldest first, however the entries are written
   - keeps entries from the same month in the order they are written
@@ -415,7 +419,7 @@ pipe it to tail.
 ### e2e/journey.spec.js (5 tests)
 
 - lays the timeline out in order, with no cards overlapping and work beside personal projects
-- fits the sorted skills, heading and all, on a 1280x720 laptop screen
+- fits the sorted skills, heading and all, on a 1280x720 laptop screen, every row label clear of its skills
 - never paints one card over another, even in the frame the web font arrives and cards re-wrap
 - splits the skills into rows as they pass Today, never into the cards, and lands them before the projects
 - **the skills basket**
@@ -437,4 +441,4 @@ pipe it to tail.
 
 ---
 
-203 unit and 39 end-to-end tests cataloged.
+207 unit and 39 end-to-end tests cataloged.

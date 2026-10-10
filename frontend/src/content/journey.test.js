@@ -65,7 +65,7 @@ describe('journey', () => {
       'Leadership',
       'Microsoft Fabric',
       'AI',
-      'Data engineering',
+      'Data Engineering',
     ])
   })
 
@@ -76,20 +76,52 @@ describe('journey', () => {
 
     expect(ranked.slice(0, 5)).toEqual([
       'Python',
-      'Project leadership',
-      'Data engineering',
+      'Project Leadership',
+      'Data Engineering',
       'Microsoft Fabric',
-      'Agentic development',
+      'Agentic Development',
     ])
   })
 
   it('names the skills that stick around the way Fabric buyers name them, with no engineer-only leftovers', () => {
     const names = new Set(lastingSkills)
 
-    for (const buyerWord of ['Lakehouse architecture', 'Fabric migration', 'Semantic models', 'Governance & compliance', 'Enablement']) {
+    for (const buyerWord of ['Lakehouse Architecture', 'Fabric Migration', 'Semantic Models', 'Governance & Compliance', 'Enablement']) {
       expect(names.has(buyerWord), buyerWord).toBe(true)
     }
     for (const retired of ['Data architecture', 'LLM APIs']) expect(names.has(retired), retired).toBe(false)
+  })
+
+  it('keeps how I ship (Git, GitHub, GitHub Actions, Google Cloud) and the math behind the models (Statistics, Linear Algebra) among the skills that stick around', () => {
+    const names = new Set(lastingSkills)
+
+    for (const skill of ['Git', 'GitHub', 'GitHub Actions', 'Google Cloud', 'Statistics', 'Linear Algebra']) {
+      expect(names.has(skill), skill).toBe(true)
+    }
+  })
+
+  // The chips are labels, so they read in title case (Data Engineering, Power
+  // BI), the way LinkedIn and job postings write skills, and the way the
+  // proper nouns among them already read. A name its makers write lowercase
+  // (pytest) keeps its spelling.
+  it('writes every skill and kind in title case, the way a label reads, except a name its makers write lowercase', () => {
+    const lowercaseByDesign = new Set(['pytest'])
+    const minor = new Set(['&', 'and', 'of'])
+    const titleCase = (name) => name.split(' ').every((word) => minor.has(word) || /^[A-Z0-9]/.test(word))
+
+    const names = [...skillCategories.map((category) => category.name), ...skillCategories.flatMap((category) => category.skills)]
+    expect(names.filter((name) => !lowercaseByDesign.has(name) && !titleCase(name))).toEqual([])
+    expect(names.filter((name) => /(and|And)/.test(name))).toEqual([])
+  })
+
+  // Picking a skill finds projects by their tags, by exact name, so a tag
+  // spelled its own way (or in another case) would never be found.
+  it('tags every project only with skills the basket knows, spelled the same way', () => {
+    const filed = new Set(skillCategories.flatMap((category) => category.skills))
+
+    const strays = projects.flatMap((project) => project.tags.filter((tag) => !filed.has(tag)).map((tag) => `${project.slug}: ${tag}`))
+
+    expect(strays).toEqual([])
   })
 
   // Picking a skill that sticks around should always find work behind it.

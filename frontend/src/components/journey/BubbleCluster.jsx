@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { lastingSkills, skillCategories } from '../../content/skillCategories'
 import { FADED_COLORS, PICKED_COLORS, SORTED_COLORS, bubbleColors, bubbleFontPx, sortedFontPx } from './bubble'
 import { packBubbles } from './packBubbles'
-import { rowProgress, sortBubbles } from './sortBubbles'
+import { easeInOut, rowProgress, sortBubbles } from './sortBubbles'
 
 // The desktop basket: a loose cloud of word bubbles that rides at the middle
 // of the screen while the timeline scrolls. Bubbles grow with their points,
@@ -33,6 +33,9 @@ const LABEL_SLIDE_PX = 16
 const HEADING_PX = 76
 // Faint lines between the kinds of skill once sorted. Set to false for none.
 const SHOW_DIVIDERS = true
+// How far along its row's arrival (0 to 1) a bubble is before it starts
+// sliding sideways; until then it only sinks (or rises) to its row's level.
+const SINK_FIRST = 0.4
 let measuringContext
 
 // Width of a word at a font size, measured with the real font when the
@@ -53,6 +56,7 @@ function seed(text) {
 
 const mix = (from, to, t) => from + (to - from) * t
 const clamp01 = (value) => Math.min(1, Math.max(0, value))
+const spreadAt = (t) => easeInOut(clamp01((t - SINK_FIRST) / (1 - SINK_FIRST)))
 
 const EMPTY_CLOUD = { bubbles: null, width: 0, layout: packBubbles([]) }
 const LASTING = new Set(lastingSkills)
@@ -200,7 +204,12 @@ export default function BubbleCluster({ totals, sortProgress, popDelay, width, s
               const inCloud = cloudLayout.positions.get(key)
               const inRow = rows.positions.get(key)
               const t = sorting ? arrivalOf(inRow.section) : 0
-              const x = mix(inCloud.x, inRow.x, t)
+              // Sink first, then spread: a bubble moves to its row's level
+              // inside the cloud's column, which the cards never overlap, and
+              // only then slides sideways to its place in the row. Straight
+              // there, it would cut across the corner of a card still on
+              // screen beside the cloud.
+              const x = mix(inCloud.x, inRow.x, spreadAt(t))
               const y = mix(inCloud.y, inRow.y, t)
               const w = mix(size.w, size.rowW, t)
               const h = mix(size.h, size.rowH, t)
