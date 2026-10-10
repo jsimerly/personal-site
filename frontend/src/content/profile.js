@@ -33,7 +33,7 @@ export const profile = {
   },
   // Paths under public/ once the files are there, e.g. 'jacob.jpg' and
   // 'jacob-simerly-resume.pdf'. The photo shows square, cropped to a circle.
-  photo: null,
+  photo: 'jacob.jpg',
   // Held back until there's a copy without my phone number on it; the
   // Download button appears once this names a file in public/.
   resumePdf: null,

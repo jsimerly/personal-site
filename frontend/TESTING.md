@@ -303,10 +303,11 @@ pipe it to tail.
 - **formatRange**
   - joins a start and end with an en dash
 
-### src/pages/About.test.jsx (1 tests)
+### src/pages/About.test.jsx (2 tests)
 
 - **About**
-  - shows each paragraph about me, in order, beside my photo spot
+  - shows each paragraph about me, in order, beside my photo
+  - ships the photo the profile names in public/, so the build includes it
 
 ### src/pages/Portfolio.test.jsx (8 tests)
 
@@ -398,4 +399,4 @@ pipe it to tail.
 
 ---
 
-184 unit and 35 end-to-end tests cataloged.
+185 unit and 35 end-to-end tests cataloged.
