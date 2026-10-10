@@ -26,6 +26,8 @@ env:
   SERVICE: jacobsimerly-api
   IMAGE: us-central1-docker.pkg.dev/fantasy-football-473418/personal-site/api
   RUNTIME_SA: jacobsimerly-api@fantasy-football-473418.iam.gserviceaccount.com
+  # Where the site's "Work with me" leads are stored (create-only for the API).
+  LEADS_BUCKET: jacobsimerly-site-leads
   # Cloud Run's fixed address for the service. The repo variable
   # VITE_API_BASE_URL, which the site is built with, holds the same host.
   API_HOST: jacobsimerly-api-624985976737.us-central1.run.app
@@ -83,10 +85,14 @@ jobs:
           docker build --tag "$IMAGE:$GITHUB_SHA" --tag "$IMAGE:latest" api
           docker push --all-tags "$IMAGE"
 
-      # The runtime service account can read the Django secret key and the
-      # buckets the API serves from, and nothing else. --cpu-boost shortens
-      # cold starts; the site explains the wait when one happens anyway.
+      # The runtime service account can read its two secrets (the Django key
+      # and the app password for the email account leads are sent from), read
+      # the buckets the API serves from, and add to the leads bucket; nothing
+      # else. --cpu-boost shortens cold starts; the site explains the wait
+      # when one happens anyway.
       - name: Deploy to Cloud Run
+        env:
+          LEADS_EMAIL: ${{ vars.LEADS_EMAIL }}
         run: |
           gcloud run deploy "$SERVICE" \
             --image "$IMAGE:$GITHUB_SHA" \
@@ -95,8 +101,8 @@ jobs:
             --service-account "$RUNTIME_SA" \
             --allow-unauthenticated \
             --cpu-boost \
-            --set-secrets "SECRET_KEY=django-secret-key:latest" \
-            --set-env-vars "ALLOWED_HOSTS=$API_HOST" \
+            --set-secrets "SECRET_KEY=django-secret-key:latest,EMAIL_APP_PASSWORD=email-app-password:latest" \
+            --set-env-vars "ALLOWED_HOSTS=$API_HOST,LEADS_BUCKET=$LEADS_BUCKET,LEADS_EMAIL=$LEADS_EMAIL" \
             --quiet
 
       - name: Check it answers

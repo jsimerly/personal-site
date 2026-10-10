@@ -1,19 +1,12 @@
-import { IconBrandLinkedin, IconMail } from '@tabler/icons-react'
-import { Link } from 'react-router'
 import { profile } from '../../content/profile'
-import { buttonStyles, newTab } from '../ui'
+import ContactCapture from '../ContactCapture.jsx'
 
 // Where the journey's line ends, and the page's centerpiece: the last screen
 // of the page, the dashed line running down into an open ring for what hasn't
 // happened yet, and an open invite to build something together. The section
 // plus the footer fill exactly one screen, so when the scroll bottoms out,
 // the invite sits in the middle of it.
-const primary =
-  'inline-flex items-center justify-center gap-2 rounded-full bg-both px-6 py-3 text-sm font-semibold text-zinc-950 transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-both'
-
 export default function WhatsNext() {
-  const { email, linkedin } = profile.links
-
   return (
     <>
       {/* The line keeps going past the projects, long enough that they scroll
@@ -42,24 +35,11 @@ export default function WhatsNext() {
           Want to build something together?
         </h2>
         <p className="mt-5 max-w-xl text-lg leading-8 text-zinc-400">{profile.nextUp}</p>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          {email ? (
-            <a href={`mailto:${email}`} className={primary}>
-              <IconMail size={18} aria-hidden="true" />
-              Email me
-            </a>
-          ) : (
-            <span className={`${primary} cursor-default`}>[Add your email in profile.js]</span>
-          )}
-          {linkedin && (
-            <a href={linkedin} {...newTab} className={buttonStyles.secondary}>
-              <IconBrandLinkedin size={16} aria-hidden="true" />
-              LinkedIn
-            </a>
-          )}
-          <Link to="/projects" className={buttonStyles.secondary}>
-            See my projects
-          </Link>
+        {/* Whoever scrolled this far is already here for it: the field is
+            open, no button to press first, and nothing else to click away
+            to. One way forward. */}
+        <div className="mt-10 flex w-full justify-center">
+          <ContactCapture source="footer" open />
         </div>
 
         <span aria-hidden="true" className="flex-1" />
