@@ -31,17 +31,42 @@ function renderAt(path, basename) {
 }
 
 describe('App', () => {
-  it('introduces me on the home page and points to my portfolio and every project', () => {
+  // The ten-second test: before any scrolling, what I do, for whom, where,
+  // and how to reach me.
+  it('says what I do, where I have done it, and how to reach me, before the journey', () => {
     renderAt('/')
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Jacob Simerly')
-    expect(screen.getByText(profile.title)).toHaveTextContent('Builder and technology leader')
-    expect(screen.getByRole('link', { name: 'See my portfolio' })).toHaveAttribute('href', '/portfolio')
-    // One under my name, one beside the favorite projects.
-    expect(screen.getAllByRole('link', { name: 'All projects' }).map((link) => link.getAttribute('href'))).toEqual([
-      '/projects',
-      '/projects',
+    expect(screen.getByText(profile.title)).toHaveTextContent('Microsoft Fabric · Data engineering · AI')
+    expect(screen.getByText(profile.headline)).toHaveTextContent(
+      'I build Microsoft Fabric data platforms that hold up to audit, and lead the teams that run them.',
+    )
+    expect(screen.getByText(profile.intro)).toHaveTextContent(/^Now at Eli Lilly/)
+    const builtAt = within(screen.getByText("Where I've built").parentElement).getAllByRole('img')
+    expect(builtAt.map((logo) => logo.getAttribute('alt'))).toEqual(['Eli Lilly', 'Barnes & Thornburg', 'UKG', 'Anthem'])
+    // Straight to my inbox once there's an address, to the invitation at the
+    // bottom until then; either way it lands somewhere real.
+    const contact = screen.getByRole('link', { name: 'Work with me' })
+    const email = profile.links.email
+    expect(contact).toHaveAttribute('href', email ? `mailto:${email}` : '#contact')
+    expect(document.getElementById('contact')).toHaveTextContent('Want to build something together?')
+    expect(within(screen.getByRole('main')).getByRole('link', { name: 'Resume' })).toHaveAttribute('href', '/resume')
+  })
+
+  it('leads with selected work before the journey, and links to everything else', () => {
+    renderAt('/')
+
+    const work = screen.getByRole('region', { name: 'Selected work' })
+    expect(within(work).getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent)).toEqual([
+      'SOX-compliant CI/CD for Microsoft Fabric',
+      'Unified cloud data platform',
+      'Cash Flow Statement automation',
+      'Fantasy Analysis',
     ])
+    expect(within(work).getByRole('link', { name: "Everything I've built" })).toHaveAttribute('href', '/projects')
+    // Selected work comes first in the page, then the journey.
+    const journey = screen.getByRole('heading', { name: 'My journey' })
+    expect(work.compareDocumentPosition(journey) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
   it('shows my three favorite projects under the skills until skills are picked', () => {

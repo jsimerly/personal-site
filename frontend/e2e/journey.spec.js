@@ -6,12 +6,14 @@ import { expect, test } from './fixtures'
 import { visit } from './helpers'
 
 test.describe('the skills basket', () => {
-  // A tall screen, where the first cards start out above the line that
-  // collects their skills.
-  test.use({ viewport: { width: 1920, height: 1200 } })
-
   test('holds only Curious until the reader scrolls, then starts collecting', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name === 'mobile', 'The basket is the desktop layout; phones get the skill tray.')
+    // A screen tall enough that the first cards start out above the line that
+    // collects their skills (65% of the way down), however much sits above
+    // the journey.
+    await visit(page)
+    const firstCard = await page.evaluate(() => document.querySelector('[data-journey-entry]').getBoundingClientRect().top + window.scrollY)
+    await page.setViewportSize({ width: 1920, height: Math.ceil(firstCard / 0.65) + 200 })
     await visit(page)
     const basket = page.locator('[data-basket="desktop"] [data-basket-skill]')
 
@@ -104,11 +106,22 @@ test('splits the skills into rows as they pass Today, never into the cards, and 
   ]) {
     await page.setViewportSize({ width, height })
     await visit(page)
-    // Up to "Today" at the bottom of the screen, then on through the whole
-    // sort a little at a time, checking at every step.
-    await page.evaluate(() => window.scrollTo(0, document.querySelector('[data-journey-end]').offsetTop))
-    await settle()
-    const cloud = await places()
+    // Start with every card collected and "Today" still below the middle:
+    // "Today" just above the collect line (65% down), with every card above
+    // it. Measured against the page, not offsetTop, which counts from the
+    // timeline's own box. Then wait for the last skills to land, and go on
+    // through the whole sort a little at a time, checking at every step.
+    await page.evaluate(() => {
+      const today = document.querySelector('[data-journey-end]').getBoundingClientRect().top + window.scrollY
+      window.scrollTo(0, today - window.innerHeight * 0.6)
+    })
+    let cloud = await places()
+    for (let still = 0; still < 3; ) {
+      await page.waitForTimeout(250)
+      const now = await places()
+      still = now === cloud ? still + 1 : 0
+      cloud = now
+    }
     const python = page.locator('[data-basket="desktop"]').getByRole('button', { name: 'Python' })
     let splitAt = null
     const seen = []
