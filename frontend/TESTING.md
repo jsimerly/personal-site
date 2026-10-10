@@ -398,9 +398,10 @@ pipe it to tail.
 - a fantasy address works when opened directly and survives a reload
 - no market price and no league member ever reaches the browser
 
-### e2e/journey.spec.js (4 tests)
+### e2e/journey.spec.js (5 tests)
 
 - lays the timeline out in order, with no cards overlapping and work beside personal projects
+- fits the sorted skills, heading and all, on a 1280x720 laptop screen
 - never paints one card over another, even in the frame the web font arrives and cards re-wrap
 - splits the skills into rows as they pass Today, never into the cards, and lands them before the projects
 - **the skills basket**
@@ -417,4 +418,4 @@ pipe it to tail.
 
 ---
 
-197 unit and 36 end-to-end tests cataloged.
+197 unit and 37 end-to-end tests cataloged.
