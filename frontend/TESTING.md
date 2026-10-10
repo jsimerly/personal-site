@@ -31,6 +31,19 @@ pipe it to tail.
   - shows a plain alert instead of the content when the request fails
   - hands the loaded data to its children
 
+### src/components/ContactCapture.test.jsx (9 tests)
+
+- **ContactCapture**
+  - starts as a \"Work with me\" button that opens straight into a focused field, with no other step
+  - sends an email address on Enter and thanks the visitor in its place
+  - sends a phone number just the same, from the send button
+  - catches something that is neither before anything is sent, then sends once it is fixed
+  - explains a %i from the API and keeps what was typed, so the visitor can try again
+  - says to try again when the API cannot be reached at all
+  - closes back to the button on Escape when nothing is typed, with focus on the button
+  - starts open where the visitor already scrolled to it, without stealing focus
+  - hides the decoy from people and sends what a bot puts in it
+
 ### src/components/ProfilePhoto.test.jsx (2 tests)
 
 - **ProfilePhoto**
@@ -265,12 +278,22 @@ pipe it to tail.
 - **useDebounced**
   - starts on the first value and only moves once a new value holds still
 
-### src/lib/api.test.js (3 tests)
+### src/lib/api.test.js (6 tests)
 
 - **apiGet**
   - calls relative paths when no API base URL is set, for the dev proxy
   - prefixes the configured API base URL, ignoring a trailing slash
   - throws an ApiError carrying the status on a failed response
+- **apiPost**
+  - sends JSON to the API and returns what it answers
+  - throws an ApiError carrying the status and the API's reason when it refuses
+  - still throws, with no reason, when a failed response has no JSON
+
+### src/lib/contact.test.js (2 tests)
+
+- **reachable**
+  - accepts %j as a way to reach someone
+  - refuses %j, the same as the API would
 
 ### src/lib/format.test.js (3 tests)
 
@@ -324,6 +347,14 @@ pipe it to tail.
 - **when the API is down**
   - the site still loads and says so plainly
 
+### e2e/contact.spec.js (4 tests)
+
+- a visitor leaves an email from the first screen in one motion, and it is stored and emailed to me
+- the end of the page has the field already open, and takes a phone number
+- a typo is caught on the page, before anything reaches the API
+- **when the API is down**
+  - the visitor is told to try again, and keeps what they typed
+
 ### e2e/contrast.spec.js (11 tests)
 
 - all text on the home page meets the AA contrast minimum
@@ -367,4 +398,4 @@ pipe it to tail.
 
 ---
 
-170 unit and 31 end-to-end tests cataloged.
+184 unit and 35 end-to-end tests cataloged.

@@ -1,3 +1,5 @@
+from django.urls import URLPattern, get_resolver
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory
 from rest_framework.views import APIView
@@ -37,3 +39,23 @@ def test_other_origins_are_not_allowed(api_client):
     response = api_client.get("/api/health/", HTTP_ORIGIN="https://somewhere-else.example")
 
     assert "Access-Control-Allow-Origin" not in response
+
+
+def views(patterns, prefix=""):
+    """Every routed view in the API, as (route, view)."""
+    for pattern in patterns:
+        if isinstance(pattern, URLPattern):
+            yield prefix + str(pattern.pattern), pattern.callback
+        else:
+            yield from views(pattern.url_patterns, prefix + str(pattern.pattern))
+
+
+def test_the_contact_form_is_the_only_view_that_takes_writes():
+    """Every routed view keeps the read-only default except the contact form, which lifts it explicitly."""
+    writable = [
+        route
+        for route, view in views(get_resolver().url_patterns)
+        if AllowAny in getattr(getattr(view, "cls", None), "permission_classes", [])
+    ]
+
+    assert writable == ["api/contact/"]

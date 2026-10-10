@@ -7,14 +7,29 @@ from its docstring (mandatory: collection fails without one).
 Run the suite: `pytest` (check the exit code, never pipe it to tail).
 
 
-## apps/core/tests/test_access.py (4 tests)
+## apps/contact/tests/test_contact.py (11 tests)
+
+- `test_takes_an_email_stores_it_and_emails_me`: An email address is stored as one record in the leads bucket and emailed to me, ready to reply to.
+- `test_takes_a_phone_number_in_any_common_format`: A phone number is kept as its digits (and any leading +), however it was typed, and emailed as one to call or text.
+- `test_refuses_anything_that_is_neither_an_email_nor_a_phone_number`: Text that isn't an email address or a 10 to 15 digit phone number is refused with a plain message, and nothing is kept or sent.
+- `test_refuses_an_empty_or_overlong_entry`: Nothing at all, or more than an email address could be, is refused before anything else happens.
+- `test_a_bot_that_fills_in_the_decoy_is_thanked_and_dropped`: A submission with the hidden decoy filled in looks accepted, so the bot learns nothing, but is neither kept nor sent.
+- `test_lets_one_visitor_try_five_times_an_hour`: After five tries in an hour, a visitor is told to wait, whether the tries were valid or not.
+- `test_still_emails_me_when_the_lead_cannot_be_stored`: If storage fails, the email alone keeps the lead, so the visitor is still thanked.
+- `test_still_stores_the_lead_when_the_email_cannot_be_sent`: If the email fails, the stored record alone keeps the lead, so the visitor is still thanked.
+- `test_says_to_try_again_only_when_it_can_neither_store_nor_send`: Only when both storing and emailing fail is the visitor told it didn't go through.
+- `test_only_takes_submissions`: The contact endpoint has nothing to read: a GET is refused.
+- `test_the_site_may_submit_cross_origin`: The site's origin passes the browser's preflight for a JSON POST; others get no CORS header.
+
+## apps/core/tests/test_access.py (5 tests)
 
 - `test_reads_are_allowed`: Anyone can GET: the API is public and needs no login.
 - `test_writes_are_refused_even_when_a_view_defines_them`: The read-only rule lives in the default permissions, so a view that defines post still refuses it.
 - `test_the_site_origin_is_allowed`: The site at jacob-simerly.com may read the API cross-origin.
 - `test_other_origins_are_not_allowed`: Any other site gets no CORS header, so browsers block it from reading responses.
+- `test_the_contact_form_is_the_only_view_that_takes_writes`: Every routed view keeps the read-only default except the contact form, which lifts it explicitly.
 
-## apps/core/tests/test_gcs.py (7 tests)
+## apps/core/tests/test_gcs.py (9 tests)
 
 - `test_read_json_parses_the_blob`: read_json downloads the named blob from the named bucket and returns it parsed.
 - `test_repeat_reads_come_from_the_cache`: A second read of the same blob is served from the cache, not a second download.
@@ -23,6 +38,8 @@ Run the suite: `pytest` (check the exit code, never pipe it to tail).
 - `test_list_names_lists_the_blobs_under_a_prefix`: list_names returns the names of every blob under the prefix, sorted.
 - `test_repeat_listings_come_from_the_cache`: A second listing of the same prefix is served from the cache, not a second round trip.
 - `test_a_local_root_lists_files_on_disk_under_the_prefix`: With GCS_LOCAL_ROOT set, listing walks <root>/<bucket> and keeps only names under the prefix.
+- `test_write_json_creates_a_new_blob_and_never_overwrites_one`: write_json uploads the data as JSON on the condition that the blob doesn't exist yet.
+- `test_a_local_root_writes_files_on_disk_and_never_overwrites_one`: With GCS_LOCAL_ROOT set, write_json writes the file there, and writing the same name twice fails.
 
 ## apps/core/tests/test_health.py (1 tests)
 
@@ -74,4 +91,4 @@ Run the suite: `pytest` (check the exit code, never pipe it to tail).
 
 ---
 
-35 tests cataloged.
+49 tests cataloged.

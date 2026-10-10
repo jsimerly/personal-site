@@ -6,6 +6,28 @@ SECRET_KEY = env("SECRET_KEY")  # noqa: F405
 # The Cloud Run service hostname(s), e.g. jacobsimerly-api-123456789.us-central1.run.app
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")  # noqa: F405
 
+# Leads are emailed from my own Gmail account to itself, through Gmail's SMTP
+# server. Cloud Run can't deliver mail by itself (Google Cloud blocks outbound
+# port 25), so it signs in to my account with an app password, kept in Secret
+# Manager. Both are required: a lead form whose leads nobody hears about is
+# worse than no form, so a missing one stops the deploy.
+LEADS_EMAIL = env("LEADS_EMAIL")  # noqa: F405
+MAILERS = {
+    "default": {
+        "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+        "OPTIONS": {
+            "host": "smtp.gmail.com",
+            "port": 587,
+            "use_tls": True,
+            "username": LEADS_EMAIL,
+            "password": env("EMAIL_APP_PASSWORD"),  # noqa: F405
+            "timeout": 10,
+        },
+    }
+}
+DEFAULT_FROM_EMAIL = f"jacob-simerly.com <{LEADS_EMAIL}>"
+LEADS_NOTIFY_TO = [LEADS_EMAIL]
+
 # Cloud Run terminates TLS and forwards plain HTTP.
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 

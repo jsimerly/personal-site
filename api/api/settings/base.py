@@ -9,15 +9,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 env = environ.Env()
 environ.Env.read_env(BASE_DIR / ".env")
 
-# The API is public and read-only: nobody logs in and nothing is written. That
-# lets it skip django.contrib.auth, sessions, CSRF, and a database entirely,
-# which also keeps Cloud Run cold starts short.
+# The API is public and read-only: nobody logs in, and the only thing it
+# writes is a lead from the site's "Work with me" form (apps.contact), to a
+# bucket. That lets it skip django.contrib.auth, sessions, CSRF, and a database
+# entirely, which also keeps Cloud Run cold starts short.
 INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "apps.core",
     "apps.example",
     "apps.fantasy_analysis",
+    "apps.contact",
 ]
 
 MIDDLEWARE = [
@@ -47,9 +49,12 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [],
     "UNAUTHENTICATED_USER": None,
     # With no authentication, this lets GET/HEAD/OPTIONS through and refuses
-    # writes, even on a view that happens to define post/put/delete.
+    # writes, even on a view that happens to define post/put/delete. The
+    # contact view is the one exception, and it opts out explicitly.
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+    # Per visitor, for the views that throttle (only contact does).
+    "DEFAULT_THROTTLE_RATES": {"contact": env.str("CONTACT_RATE", default="5/hour")},
 }
 
 # The site. www and the old github.io address both redirect here, so this is
@@ -62,6 +67,15 @@ GCS_CACHE_SECONDS = env.int("GCS_CACHE_SECONDS", default=300)
 # Serve GCS reads from this local folder instead (<root>/<bucket>/<path>).
 # Empty means real GCS. The E2E settings point it at api/e2e/gcs/.
 GCS_LOCAL_ROOT = env.str("GCS_LOCAL_ROOT", default="")
+
+# Leads from the site's "Work with me" form: each one is stored in this bucket
+# (the API can only add to it) and emailed to LEADS_NOTIFY_TO.
+LEADS_BUCKET = env.str("LEADS_BUCKET", default="jacobsimerly-site-leads")
+LEADS_NOTIFY_TO = env.list("LEADS_NOTIFY_TO", default=[])
+# One mailer. Locally it prints to the console; prod sends from my own email
+# account (settings/prod.py), and tests swap in Django's in-memory outbox.
+MAILERS = {"default": {"BACKEND": "django.core.mail.backends.console.EmailBackend"}}
+DEFAULT_FROM_EMAIL = "jacob-simerly.com <webmaster@localhost>"
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "America/New_York"
