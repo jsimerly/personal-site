@@ -373,8 +373,4 @@ pipe it to tail.
 
 ---
 
-<<<<<<< HEAD
-170 unit and 31 end-to-end tests cataloged.
-=======
-175 unit and 20 end-to-end tests cataloged.
->>>>>>> first-screen
+176 unit and 31 end-to-end tests cataloged.
