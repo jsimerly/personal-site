@@ -286,11 +286,11 @@ export const projects = [
     kind: 'work',
     year: '2026',
     summary: 'Re-architected a highly manual quarterly process, with a semantic model that rolls up by day, month, and year and drills to document level.',
-    tags: ['Semantic models', 'Microsoft Fabric', 'Data modeling', 'Data engineering', 'Lakehouse architecture', 'Project leadership'],
+    tags: ['Semantic models', 'Power BI', 'Microsoft Fabric', 'Data modeling', 'Data engineering', 'Lakehouse architecture', 'Project leadership'],
     links: {},
     description: [
       "The internal reporting team built the Cash Flow Statement by hand every quarter. I re-architected and delivered the platform behind it, automating most of that process; at full rollout it's projected to save thousands of hours.",
-      "The semantic model was redesigned too, so the statement rolls up by day, month, and year and drills through to company code and document level, analysis the previous model couldn't support.",
+      "The Power BI semantic model was redesigned too, so the statement rolls up by day, month, and year and drills through to company code and document level, analysis the previous model couldn't support.",
     ],
   },
   {
@@ -323,7 +323,7 @@ export const projects = [
     kind: 'work',
     year: '2026',
     summary: 'Refining the medallion architecture, moving toward a data mesh, and drawing clear lines between analytics engineers, data engineers, and analysts.',
-    tags: ['Lakehouse architecture', 'Data engineering', 'System design', 'Microsoft Fabric'],
+    tags: ['Lakehouse architecture', 'Capacity planning', 'Data engineering', 'System design', 'Microsoft Fabric'],
     links: {},
     description: [
       'Enterprise architecture and engineering guidance across multiple teams: refining the medallion architecture so each layer has one job, driving adoption of a data mesh model so domains own their data, and defining where the work of analytics engineers, data engineers, and analysts begins and ends.',
@@ -335,10 +335,10 @@ export const projects = [
     kind: 'work',
     year: '2024 to 2026',
     summary: "Led the firm's first: moving off on-premises systems onto Microsoft Fabric and Azure, with data from 15+ systems in one lake.",
-    tags: ['Microsoft Fabric', 'Fabric migration', 'Lakehouse architecture', 'Project leadership', 'Data engineering', 'Azure', 'PySpark', 'SQL'],
+    tags: ['Microsoft Fabric', 'Fabric migration', 'Lakehouse architecture', 'Capacity planning', 'Project leadership', 'Data engineering', 'Power BI', 'Azure', 'PySpark', 'SQL'],
     links: {},
     description: [
-      "Barnes & Thornburg's first unified cloud data platform. I led the migration from legacy on-premises systems to Microsoft Fabric and Azure, architecting the platform and consolidating data from more than 15 systems into one data lake that the whole firm could report from.",
+      "Barnes & Thornburg's first unified cloud data platform. I led the migration from legacy on-premises systems to Microsoft Fabric and Azure, architecting the platform and consolidating data from more than 15 systems into one data lake that the whole firm could report from in Power BI, and sizing the Fabric capacity it runs on.",
     ],
   },
   {

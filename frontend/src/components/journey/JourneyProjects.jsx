@@ -14,7 +14,7 @@ export default function JourneyProjects({ picked, onClear }) {
   const shown = useMemo(() => relevantProjects(listedProjects, picked), [picked])
 
   return (
-    <section aria-label="Projects" className="mx-auto flex max-w-5xl flex-col items-center">
+    <section aria-label="Projects" className="mx-auto flex max-w-6xl flex-col items-center">
       <span aria-hidden="true" className="hidden h-8 border-l-2 border-dashed border-zinc-700 lg:block" />
       <div className="mt-10 flex w-full items-baseline justify-between gap-4 text-sm lg:mt-3">
         <p aria-live="polite" className="text-zinc-400">

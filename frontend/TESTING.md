@@ -143,13 +143,14 @@ pipe it to tail.
 - **listOf**
   - reads naturally for one, two, and several skills
 
-### src/components/journey/sortBubbles.test.js (12 tests)
+### src/components/journey/sortBubbles.test.js (13 tests)
 
 - **sortBubbles**
   - stacks one labeled row per kind of skill, in category order, skipping empty kinds
   - puts the biggest skill of each kind first, right after the label
   - leads each row with the skills that stick around, biggest first, then the rest
   - orders a row by points when given them, so skills floored to one size still read biggest first
+  - never leaves a lone bubble on the last line of a row: it takes its neighbor down
   - files skills it has no kind for under Other, last
   - wraps a long row onto more lines and never overlaps or leaves the width
   - tags each bubble and label with its row, top to bottom
@@ -416,4 +417,4 @@ pipe it to tail.
 
 ---
 
-196 unit and 36 end-to-end tests cataloged.
+197 unit and 36 end-to-end tests cataloged.

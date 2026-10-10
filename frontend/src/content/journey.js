@@ -399,8 +399,10 @@ const entries = [
       'Microsoft Fabric': 3,
       'Fabric migration': 4,
       'Lakehouse architecture': 3,
+      'Capacity planning': 2,
       'Data engineering': 3,
       'Project leadership': 2,
+      'Power BI': 1,
       Azure: 2,
       PySpark: 2,
       SQL: 2,
@@ -478,6 +480,7 @@ const entries = [
       'Re-architected a highly manual quarterly process on Fabric, with a semantic model that rolls up by day, month, and year and drills to document level.',
     skills: {
       'Semantic models': 3,
+      'Power BI': 3,
       'Microsoft Fabric': 2,
       'Data modeling': 2,
       'Data engineering': 2,
@@ -510,7 +513,7 @@ const entries = [
     position: lilly,
     title: 'Architectural Redesign',
     summary: 'Refining our medallion architecture, moving toward a data mesh, and drawing clear lines between analytics engineers, data engineers, and analysts.',
-    skills: { 'Lakehouse architecture': 2, 'Microsoft Fabric': 1, 'Data engineering': 1, 'System design': 1 },
+    skills: { 'Lakehouse architecture': 2, 'Capacity planning': 1, 'Microsoft Fabric': 1, 'Data engineering': 1, 'System design': 1 },
     project: 'lilly-architecture',
   },
   {

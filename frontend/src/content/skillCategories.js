@@ -16,7 +16,15 @@ export const skillCategories = [
   },
   {
     name: 'Microsoft Fabric',
-    skills: ['Microsoft Fabric', 'Lakehouse architecture', 'Fabric migration', 'Semantic models', 'Governance & compliance'],
+    skills: [
+      'Microsoft Fabric',
+      'Lakehouse architecture',
+      'Fabric migration',
+      'Power BI',
+      'Semantic models',
+      'Governance & compliance',
+      'Capacity planning',
+    ],
   },
   { name: 'AI', skills: ['Agentic development', 'Machine learning', 'LLM integration', 'MCP', 'AI governance'] },
   {
@@ -78,8 +86,10 @@ export const lastingSkills = [
   'Microsoft Fabric',
   'Lakehouse architecture',
   'Fabric migration',
+  'Power BI',
   'Semantic models',
   'Governance & compliance',
+  'Capacity planning',
   // AI
   'Agentic development',
   'Machine learning',
