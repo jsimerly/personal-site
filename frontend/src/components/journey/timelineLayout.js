@@ -1,4 +1,5 @@
 import { useLayoutEffect, useState } from 'react'
+import { flushSync } from 'react-dom'
 
 // Where each piece of the timeline goes, top to bottom, so a job and a
 // personal project from the same stretch sit side by side instead of one
@@ -72,7 +73,11 @@ export function useTimelineLayout(listRef) {
 
     measure()
     if (typeof ResizeObserver === 'undefined') return undefined
-    const observer = new ResizeObserver(measure)
+    // The browser reports a size change after layout but before painting it.
+    // flushSync applies the new positions in that same frame, so a card that
+    // grows (when the web font arrives and its chips re-wrap) never paints
+    // over the next one, not even for a frame.
+    const observer = new ResizeObserver(() => flushSync(measure))
     observer.observe(list)
     list.querySelectorAll('[data-layout-key]').forEach((piece) => observer.observe(piece))
     return () => observer.disconnect()
