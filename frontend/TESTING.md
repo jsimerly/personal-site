@@ -418,16 +418,4 @@ pipe it to tail.
 
 ---
 
-<<<<<<< HEAD
-193 unit and 36 end-to-end tests cataloged.
-=======
-<<<<<<< HEAD
-186 unit and 35 end-to-end tests cataloged.
-=======
-<<<<<<< HEAD
-170 unit and 31 end-to-end tests cataloged.
-=======
-175 unit and 20 end-to-end tests cataloged.
->>>>>>> first-screen
->>>>>>> contrast-and-naming
->>>>>>> work-with-me
+198 unit and 36 end-to-end tests cataloged.
