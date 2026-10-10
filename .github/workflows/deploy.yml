@@ -142,6 +142,10 @@ jobs:
   site:
     name: Deploy site
     needs: build
+    # A job skipped anywhere upstream (the API, on a site-only merge) skips
+    # every job after it unless that job says otherwise, even once the build
+    # it needs has succeeded. This one says otherwise.
+    if: always() && needs.build.result == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -149,3 +153,29 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5
+
+  # A deploy that should have happened and didn't must turn the run red, not
+  # leave it green with a quietly skipped job. Whatever changed has to have
+  # shipped.
+  shipped:
+    name: Everything that changed shipped
+    needs: [changes, api, site]
+    if: always() && needs.changes.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          API_CHANGED: ${{ needs.changes.outputs.api }}
+          SITE_CHANGED: ${{ needs.changes.outputs.site }}
+          API_RESULT: ${{ needs.api.result }}
+          SITE_RESULT: ${{ needs.site.result }}
+        run: |
+          shipped=true
+          if [ "$API_CHANGED" = true ] && [ "$API_RESULT" != success ]; then
+            echo "::error::The API changed, but its deploy ended '$API_RESULT'."
+            shipped=false
+          fi
+          if [ "$SITE_CHANGED" = true ] && [ "$SITE_RESULT" != success ]; then
+            echo "::error::The site changed, but its deploy ended '$SITE_RESULT'."
+            shipped=false
+          fi
+          "$shipped"
