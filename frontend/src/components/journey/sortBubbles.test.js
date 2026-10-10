@@ -32,6 +32,14 @@ describe('sortBubbles', () => {
     expect(xs).toEqual([...xs].sort((a, b) => a - b))
   })
 
+  it('orders a row by points when given them, so skills floored to one size still read biggest first', () => {
+    const same = (key, rank) => ({ ...bubble(key, 16), rank })
+    const layout = sortBubbles([same('Rust', 2), same('SQL', 9), same('Python', 4)], CATEGORIES, 600)
+    const xs = ['SQL', 'Python', 'Rust'].map((key) => layout.positions.get(key).x)
+
+    expect(xs).toEqual([...xs].sort((a, b) => a - b))
+  })
+
   it('files skills it has no kind for under Other, last', () => {
     const layout = sortBubbles([bubble('Juggling', 20), bubble('Python', 20)], CATEGORIES, 600)
 

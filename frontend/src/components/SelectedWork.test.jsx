@@ -30,7 +30,7 @@ describe('SelectedWork', () => {
       '/projects/lilly-fabric-cicd',
     )
     expect(first).toHaveTextContent(
-      "Eli LillySOX-Compliant CI/CD for Microsoft FabricLilly's first GitHub-native CI/CD for Microsoft Fabric, with the approval gates and segregation of duties that brought deployments under SOX.CI/CDGitHub ActionsMicrosoft Fabric",
+      "Eli LillySOX-Compliant CI/CD for Microsoft FabricLilly's first GitHub-native CI/CD for Microsoft Fabric, with the approval gates and segregation of duties that brought deployments under SOX.CI/CDGovernance & complianceMicrosoft Fabric",
     )
   })
 

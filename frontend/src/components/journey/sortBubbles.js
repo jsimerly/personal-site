@@ -9,8 +9,11 @@ const GAP_Y = 8
 const SECTION_GAP = 18
 const OTHER = 'Other'
 
-// bubbles: [{ key, w, h }]. categories: [{ name, skills }]. `lasting`: the
-// skills that lead their row, ahead of the rest (biggest first within each).
+// bubbles: [{ key, w, h, rank? }]. categories: [{ name, skills }]. `lasting`:
+// the skills that lead their row, ahead of the rest. Within each group the
+// biggest comes first, by `rank` (a skill's points) when given, else by
+// height: sizes floor at a minimum, so height alone can't order the smaller
+// skills.
 export function sortBubbles(bubbles, categories, width, lasting = new Set()) {
   const kindOf = new Map(categories.flatMap(({ name, skills }) => skills.map((skill) => [skill, name])))
   const sections = [...categories.map(({ name }) => name), OTHER]
@@ -18,7 +21,7 @@ export function sortBubbles(bubbles, categories, width, lasting = new Set()) {
       name,
       items: bubbles
         .filter((bubble) => (kindOf.get(bubble.key) ?? OTHER) === name)
-        .sort((a, b) => lasting.has(b.key) - lasting.has(a.key) || b.h - a.h || a.key.localeCompare(b.key)),
+        .sort((a, b) => lasting.has(b.key) - lasting.has(a.key) || (b.rank ?? b.h) - (a.rank ?? a.h) || a.key.localeCompare(b.key)),
     }))
     .filter(({ items }) => items.length)
 

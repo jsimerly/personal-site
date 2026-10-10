@@ -143,12 +143,13 @@ pipe it to tail.
 - **listOf**
   - reads naturally for one, two, and several skills
 
-### src/components/journey/sortBubbles.test.js (11 tests)
+### src/components/journey/sortBubbles.test.js (12 tests)
 
 - **sortBubbles**
   - stacks one labeled row per kind of skill, in category order, skipping empty kinds
   - puts the biggest skill of each kind first, right after the label
   - leads each row with the skills that stick around, biggest first, then the rest
+  - orders a row by points when given them, so skills floored to one size still read biggest first
   - files skills it has no kind for under Other, last
   - wraps a long row onto more lines and never overlaps or leaves the width
   - tags each bubble and label with its row, top to bottom
@@ -185,7 +186,7 @@ pipe it to tail.
   - sends nothing flying on the way back up, or when the caller says not to
   - keeps still for readers who ask for reduced motion
 
-### src/content/journey.test.js (14 tests)
+### src/content/journey.test.js (16 tests)
 
 - **journey**
   - links every timeline card that names a project to a page that exists
@@ -195,8 +196,10 @@ pipe it to tail.
   - leaves no placeholder copy on the timeline
   - files every skill on the timeline under a kind, so none lands in \"Other\" when the basket sorts
   - keeps every skill that sticks around a real skill on the timeline, filed under a kind
-  - leads the sorted skills with leadership, AI, and data engineering
-  - ends the journey with leadership and data engineering second only to Python, and AI among the leaders
+  - leads the sorted skills with leadership, Microsoft Fabric, AI, and data engineering
+  - ends the journey with project leadership, data engineering, Fabric, and agentic development right behind Python
+  - names the skills that stick around the way Fabric buyers name them, with no engineer-only leftovers
+  - tags at least one project with every skill that sticks around, so picking it finds work
   - runs oldest first, however the entries are written
   - keeps entries from the same month in the order they are written
   - starts the basket with Curious alone, purple, before any entry
@@ -413,4 +416,4 @@ pipe it to tail.
 
 ---
 
-193 unit and 36 end-to-end tests cataloged.
+196 unit and 36 end-to-end tests cataloged.
