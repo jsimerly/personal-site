@@ -36,3 +36,6 @@ coverage.xml
 test-results/
 playwright-report/
 blob-report/
+
+# The resume PDF is printed by the build (frontend/scripts/build-resume-pdf.mjs); a dev copy is generated too.
+frontend/public/jacob-simerly-resume.pdf

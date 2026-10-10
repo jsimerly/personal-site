@@ -15,9 +15,10 @@ export const profile = {
   // Paths under public/ once the files are there, e.g. 'jacob.jpg' and
   // 'jacob-simerly-resume.pdf'. The photo shows square, cropped to a circle.
   photo: null,
-  // Held back until there's a copy without my phone number on it; the
-  // Download button appears once this names a file in public/.
-  resumePdf: null,
+  // The PDF the Resume page offers. It isn't a file I keep: the build prints
+  // it from the resume content above (scripts/build-resume-pdf.mjs), so it
+  // always matches the page and never carries anything the page doesn't.
+  resumePdf: 'jacob-simerly-resume.pdf',
   // The pitch at the end of the journey, under "Want to build something together?"
   nextUp:
     "I'm always building something, and it's more fun with other people. [A line on what you'd love to dig into next.]",

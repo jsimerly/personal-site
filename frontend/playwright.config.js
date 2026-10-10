@@ -52,7 +52,7 @@ export default defineConfig({
     },
     {
       command:
-        'npx vite build --outDir .e2e-dist && npx vite preview --outDir .e2e-dist --host 127.0.0.1 --port 5175 --strictPort',
+        'npx vite build --outDir .e2e-dist && node scripts/build-resume-pdf.mjs .e2e-dist && npx vite preview --outDir .e2e-dist --host 127.0.0.1 --port 5175 --strictPort',
       cwd: HERE,
       env: { VITE_API_BASE_URL: API },
       url: `${SITE}/`,
