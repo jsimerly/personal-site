@@ -1,15 +1,24 @@
 import { IconBasket, IconChevronUp } from '@tabler/icons-react'
 import { useState } from 'react'
-import { bubbleStyle } from './bubble'
+import { lastingSkills } from '../../content/skillCategories'
+import { FADED_COLORS, SORTED_MIN_FONT_PX, bubbleStyle } from './bubble'
+
+const LASTING = new Set(lastingSkills)
 
 // The small-screen basket: a tray along the bottom of the screen while the
 // timeline scrolls, newest skill first. Once the journey is complete it stops
-// floating and settles under "Today", opened up to show everything.
+// floating and settles under "Today", opened up to show everything: the
+// skills that stick around first (biggest first), every other one faded back.
 // (Mobile is parked while the desktop version is being worked out.)
 export default function SkillTray({ totals, complete, className = '' }) {
   const [expanded, setExpanded] = useState(false)
   const open = complete || expanded
-  const shown = open ? totals : [...totals].reverse()
+  const shown = complete
+    ? [...totals].sort((a, b) => LASTING.has(b.skill) - LASTING.has(a.skill) || b.points - a.points)
+    : open
+      ? totals
+      : [...totals].reverse()
+  const faded = (skillTotal) => complete && !LASTING.has(skillTotal.skill)
 
   return (
     <div
@@ -42,7 +51,7 @@ export default function SkillTray({ totals, complete, className = '' }) {
               {shown.map((skillTotal) => (
                 <li
                   key={skillTotal.skill}
-                  style={bubbleStyle(skillTotal)}
+                  style={faded(skillTotal) ? { ...FADED_COLORS, fontSize: `${SORTED_MIN_FONT_PX}px` } : bubbleStyle(skillTotal)}
                   className="animate-pop rounded-full px-[0.75em] py-[0.25em] font-medium text-zinc-100 transition-all duration-500 motion-reduce:animate-none motion-reduce:transition-none"
                 >
                   {skillTotal.skill}

@@ -24,6 +24,14 @@ describe('sortBubbles', () => {
     expect(layout.positions.get('Python').x - 30).toBeCloseTo(LABEL_WIDTH - 300)
   })
 
+  it('leads each row with the skills that stick around, biggest first, then the rest', () => {
+    const lasting = new Set(['Python', 'SQL'])
+    const layout = sortBubbles([bubble('Rust', 30), bubble('SQL', 16), bubble('Python', 20)], CATEGORIES, 600, lasting)
+    const xs = ['Python', 'SQL', 'Rust'].map((key) => layout.positions.get(key).x)
+
+    expect(xs).toEqual([...xs].sort((a, b) => a - b))
+  })
+
   it('files skills it has no kind for under Other, last', () => {
     const layout = sortBubbles([bubble('Juggling', 20), bubble('Python', 20)], CATEGORIES, 600)
 

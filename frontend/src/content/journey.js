@@ -89,7 +89,7 @@ const entries = [
     side: 'build',
     title: 'A Kaggle Competition',
     summary: 'My first go at machine learning: a Kaggle competition during my degree.',
-    skills: { Python: 1, Statistics: 1 },
+    skills: { Python: 1, Statistics: 1, 'Machine learning': 1 },
     project: 'kaggle',
   },
   {
@@ -116,7 +116,7 @@ const entries = [
     position: ukgConsultant,
     title: 'Customer Implementations',
     summary: 'Implemented UKG for customers in healthcare, manufacturing, and retail, up to six at a time.',
-    skills: { 'Client consulting': 2 },
+    skills: { 'Client consulting': 2, 'Project leadership': 2 },
     project: 'ukg-implementations',
   },
   {
@@ -125,7 +125,7 @@ const entries = [
     position: ukgConsultant,
     title: 'A New Training Program',
     summary: 'Developed a new training program as team lead, responsible for how 60 new consultants were trained and how they did.',
-    skills: { 'Team leadership': 2 },
+    skills: { 'Team leadership': 2, 'Project leadership': 1 },
     project: 'consultant-training',
   },
   {
@@ -134,7 +134,7 @@ const entries = [
     position: ukgConsultant,
     title: 'Mentoring New Consultants',
     summary: 'Mentored five new consultants through regular one-on-ones.',
-    skills: { Mentoring: 1 },
+    skills: { Mentoring: 2 },
     project: 'mentoring-consultants',
   },
   {
@@ -143,7 +143,7 @@ const entries = [
     position: ukgConsultant,
     title: 'Innovation Competition',
     summary: "An entry in UKG's internal innovation competition.",
-    skills: {},
+    skills: { 'Project leadership': 1, 'Process improvement': 1 },
     project: 'innovation-competition',
   },
   {
@@ -152,7 +152,7 @@ const entries = [
     position: ukgConsultant,
     title: 'Rules of Engagement Project',
     summary: 'Defined how the consulting team works with the teams around it: who owns what, how handoffs happen, and when to escalate.',
-    skills: {},
+    skills: { 'Project leadership': 1, 'Process improvement': 1 },
     project: 'rules-of-engagement',
   },
   {
@@ -176,7 +176,7 @@ const entries = [
     side: 'build',
     title: 'KTC Analysis and Scraping',
     summary: 'Scraping and analyzing KeepTradeCut dynasty fantasy values.',
-    skills: { Python: 1, Jupyter: 1, 'Web scraping': 2, 'Data analysis': 1 },
+    skills: { Python: 1, Jupyter: 1, 'Web scraping': 2, 'Data analysis': 1, 'Data engineering': 1 },
     project: 'ktc-analysis',
   },
   {
@@ -209,7 +209,7 @@ const entries = [
     position: ukgEngineer,
     title: 'Process Merging and Cleanup',
     summary: 'Overlapping business processes, mapped, merged, and documented as one.',
-    skills: { 'Process improvement': 1 },
+    skills: { 'Process improvement': 1, 'Project leadership': 1 },
     project: 'process-cleanup',
   },
   {
@@ -218,7 +218,7 @@ const entries = [
     position: ukgEngineer,
     title: 'Process Automation',
     summary: 'Found the business problems behind slow deliveries and built the solutions, cutting delivery times 30%.',
-    skills: { 'Process improvement': 1 },
+    skills: { 'Process improvement': 1, 'Project leadership': 1, Python: 1 },
     project: 'process-automation',
   },
   {
@@ -227,7 +227,7 @@ const entries = [
     position: ukgEngineer,
     title: 'Smartsheet Data Pipelines',
     summary: "Automated Python pipelines from Smartsheet's API into our BigQuery warehouse, cleaning the data along the way.",
-    skills: { Python: 2, BigQuery: 2, SQL: 1 },
+    skills: { Python: 2, BigQuery: 2, SQL: 1, 'Data engineering': 2 },
     project: 'smartsheet-pipelines',
   },
   {
@@ -236,7 +236,7 @@ const entries = [
     position: ukgEngineer,
     title: 'Partner Onboarding Platform',
     summary: 'Led the design of the process and the product: requirements, relational data schemas, and how the microservices work together.',
-    skills: { 'System design': 1, 'Data modeling': 1 },
+    skills: { 'System design': 1, 'Data modeling': 1, 'Project leadership': 2 },
     project: 'partner-onboarding-platform',
   },
   {
@@ -280,7 +280,25 @@ const entries = [
     side: 'build',
     title: 'Fantasy Data Engineering & Machine Learning',
     summary: 'Data pipelines, projections, and analysis for my dynasty fantasy football league.',
-    skills: { Python: 2, Jupyter: 1, 'Data analysis': 2, Polars: 2, 'Cloud Storage': 1 },
+    skills: { Python: 2, Jupyter: 1, 'Data analysis': 2, Statistics: 1 },
+    project: 'fantasy-analysis',
+  },
+  {
+    date: '2025-09',
+    side: 'build',
+    title: 'Fantasy Data Lake on GCP',
+    summary:
+      'Daily pipelines from Sleeper, KeepTradeCut, FantasyCalc, and nflverse into a bronze and silver data lake on Cloud Storage, run as Cloud Run jobs.',
+    skills: { 'Data engineering': 3, 'Cloud Run': 2, 'Cloud Storage': 1, Polars: 2, Python: 1 },
+    project: 'fantasy-analysis',
+  },
+  {
+    date: '2026-06',
+    side: 'build',
+    title: 'Dynasty Value Models',
+    summary:
+      "Models (gradient-boosted trees and TabPFN) that project every player's next ten seasons, value them in wins above replacement, and are backtested against the market.",
+    skills: { 'Machine learning': 4, Statistics: 2, Python: 1 },
     project: 'fantasy-analysis',
   },
   {
@@ -351,7 +369,7 @@ const entries = [
       Docker: 1,
       pytest: 2,
       Playwright: 2,
-      'Agentic development': 1,
+      'Agentic development': 3,
     },
     project: 'brolympics',
   },
@@ -361,7 +379,7 @@ const entries = [
     title: 'Soulpoint AI',
     summary:
       'Data and AI for tough workflows: the strategy, the tools, and the governance that keep operations compliant and efficient. Plus the React site that tells the story.',
-    skills: { 'AI governance': 2, 'Client consulting': 1, React: 1 },
+    skills: { 'AI governance': 2, 'Client consulting': 2, React: 1, 'Project leadership': 1 },
     project: 'soulpoint',
   },
   {
@@ -370,7 +388,15 @@ const entries = [
     position: barnesThornburg,
     title: 'Unified Cloud Data Platform',
     summary: "Led the firm's first: moving off on-premises systems onto Microsoft Fabric and Azure, with data from 15+ systems in one lake.",
-    skills: { 'Microsoft Fabric': 3, Azure: 2, PySpark: 2, SQL: 2, 'Data architecture': 2 },
+    skills: {
+      'Microsoft Fabric': 3,
+      Azure: 2,
+      PySpark: 2,
+      SQL: 2,
+      'Data architecture': 2,
+      'Data engineering': 3,
+      'Project leadership': 2,
+    },
     project: 'bt-data-platform',
   },
   {
@@ -379,7 +405,7 @@ const entries = [
     position: barnesThornburg,
     title: 'Fabric Utilities and CI/CD Library',
     summary: 'A reusable package and pipelines that standardized ingestion, transformation, and business logic across dev and production.',
-    skills: { Python: 2, 'CI/CD': 2 },
+    skills: { Python: 2, 'CI/CD': 2, 'Data engineering': 2, 'Microsoft Fabric': 1 },
     project: 'fabric-utilities',
   },
   {
@@ -388,7 +414,7 @@ const entries = [
     position: barnesThornburg,
     title: 'SharePoint MCP Server',
     summary: 'A prototype that lets an LLM work in SharePoint: creating lists, updating columns, editing data, and pulling insights.',
-    skills: { MCP: 1 },
+    skills: { MCP: 2, 'Agentic development': 1, 'LLM APIs': 1, Python: 1 },
     project: 'sharepoint-mcp',
   },
   {
@@ -397,7 +423,7 @@ const entries = [
     position: barnesThornburg,
     title: 'Unstructured Data, Normalized with AI',
     summary: 'An automated pipeline using Power Automate and ChatGPT to turn media-licensing and option-agreement contracts into structured data, verified by attorneys.',
-    skills: { 'LLM APIs': 1 },
+    skills: { 'LLM APIs': 2, 'AI governance': 1, 'Project leadership': 1 },
     project: 'contract-ai-pipeline',
   },
   {
@@ -406,7 +432,7 @@ const entries = [
     position: barnesThornburg,
     title: 'Software Architecture and Design',
     summary: "The firm's data engineering, Python, and SQL standards: the documentation, the code-review checklists, and the architecture behind them.",
-    skills: { 'System design': 1 },
+    skills: { 'System design': 2, 'Data architecture': 1 },
     project: 'engineering-standards',
   },
   {
@@ -415,7 +441,7 @@ const entries = [
     position: barnesThornburg,
     title: 'Team Management',
     summary: 'Managed the data team, employees and contractors: assigning the work and owning the backlog to keep delivery visible.',
-    skills: { 'Team leadership': 2 },
+    skills: { 'Team leadership': 3, Mentoring: 1, 'Project leadership': 1 },
     project: 'data-team-lead',
   },
   {
@@ -424,7 +450,7 @@ const entries = [
     position: lilly,
     title: 'SOX-Compliant CI/CD for Microsoft Fabric',
     summary: "Lilly's first GitHub-native CI/CD for Fabric: a workspace per branch, parameterized deployments, and approval gates that brought it under SOX.",
-    skills: { 'CI/CD': 3, 'GitHub Actions': 2, 'Microsoft Fabric': 2 },
+    skills: { 'CI/CD': 3, 'GitHub Actions': 2, 'Microsoft Fabric': 2, 'Project leadership': 2, 'Data engineering': 1 },
     project: 'lilly-fabric-cicd',
   },
   {
@@ -433,7 +459,13 @@ const entries = [
     position: lilly,
     title: 'Cash Flow Statement Automation',
     summary: 'Re-architected a highly manual quarterly process, with a semantic model that rolls up by day, month, and year and drills to document level.',
-    skills: { 'Data modeling': 2, 'Data architecture': 1 },
+    skills: {
+      'Data modeling': 2,
+      'Data architecture': 1,
+      'Data engineering': 2,
+      'Microsoft Fabric': 1,
+      'Project leadership': 2,
+    },
     project: 'cash-flow-statement',
   },
   {
@@ -442,7 +474,7 @@ const entries = [
     position: lilly,
     title: 'Agentic Development Enablement',
     summary: 'Brought Claude Code, Fabric Git integration, and VS Code together so developers work locally with context-aware agents.',
-    skills: { 'Agentic development': 2 },
+    skills: { 'Agentic development': 3, Mentoring: 1 },
     project: 'agentic-fabric-development',
   },
   {
@@ -451,7 +483,7 @@ const entries = [
     position: lilly,
     title: 'SDLC Development',
     summary: 'Bringing software development principles and a real development lifecycle to the data teams.',
-    skills: { Mentoring: 1 },
+    skills: { Mentoring: 1, 'Team leadership': 1, 'CI/CD': 1 },
     project: 'data-sdlc',
   },
   {
@@ -460,7 +492,7 @@ const entries = [
     position: lilly,
     title: 'Architectural Redesign',
     summary: 'Refining our medallion architecture, moving toward a data mesh, and drawing clear lines between analytics engineers, data engineers, and analysts.',
-    skills: { 'Data architecture': 2, 'System design': 1 },
+    skills: { 'Data architecture': 2, 'System design': 1, 'Data engineering': 1 },
     project: 'lilly-architecture',
   },
   {
@@ -478,6 +510,7 @@ const entries = [
       'Django REST Framework': 1,
       'GitHub Actions': 1,
       Playwright: 1,
+      'Agentic development': 2,
     },
     project: 'personal-site',
   },

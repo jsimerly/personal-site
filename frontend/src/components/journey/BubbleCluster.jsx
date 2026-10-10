@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { skillCategories } from '../../content/skillCategories'
-import { PICKED_COLORS, SORTED_COLORS, bubbleColors, bubbleFontPx, sortedFontPx } from './bubble'
+import { lastingSkills, skillCategories } from '../../content/skillCategories'
+import { FADED_COLORS, PICKED_COLORS, SORTED_COLORS, bubbleColors, bubbleFontPx, sortedFontPx } from './bubble'
 import { packBubbles } from './packBubbles'
 import { rowProgress, sortBubbles } from './sortBubbles'
 
@@ -16,7 +16,8 @@ import { rowProgress, sortBubbles } from './sortBubbles'
 // the heading land last, once the cards have risen out of the way. Rows
 // assemble one after another, each label fading in as its bubbles arrive, and it all
 // runs backward if you scroll up. As a row lands, its bubbles stop bobbing
-// and settle into an easier-to-read size and a single purple, and a heading
+// and settle into an easier-to-read size, purple for the skills that stick
+// around (lastingSkills, leading each row) and faded grey for the rest, and a heading
 // grows in above them. Once every row has landed, each skill can be clicked
 // (several at once, `picked` / `onToggle`) to pick the projects shown below.
 //
@@ -54,6 +55,7 @@ const mix = (from, to, t) => from + (to - from) * t
 const clamp01 = (value) => Math.min(1, Math.max(0, value))
 
 const EMPTY_CLOUD = { bubbles: null, width: 0, layout: packBubbles([]) }
+const LASTING = new Set(lastingSkills)
 
 export default function BubbleCluster({ totals, sortProgress, popDelay, width, sortedWidth, picked, onToggle }) {
   const bubbles = useMemo(
@@ -63,7 +65,7 @@ export default function BubbleCluster({ totals, sortProgress, popDelay, width, s
         // Full size, unless a long name wouldn't fit the column at that size.
         const naturalWidth = textWidth(skill, 10) / 10 + 1.4
         const font = Math.min(bubbleFontPx(skillTotal.points), (width - 4) / naturalWidth)
-        const rowFont = sortedFontPx(skillTotal.points)
+        const rowFont = sortedFontPx(skillTotal.points, LASTING.has(skill))
         return {
           key: skill,
           total: skillTotal,
@@ -88,7 +90,7 @@ export default function BubbleCluster({ totals, sortProgress, popDelay, width, s
     setCloud({ bubbles, width, layout: cloudLayout })
   }
   const rows = useMemo(
-    () => sortBubbles(bubbles.map(({ key, rowW, rowH }) => ({ key, w: rowW, h: rowH })), skillCategories, sortedWidth),
+    () => sortBubbles(bubbles.map(({ key, rowW, rowH }) => ({ key, w: rowW, h: rowH })), skillCategories, sortedWidth, LASTING),
     [bubbles, sortedWidth],
   )
 
@@ -197,10 +199,12 @@ export default function BubbleCluster({ totals, sortProgress, popDelay, width, s
               const w = mix(size.w, size.rowW, t)
               const h = mix(size.h, size.rowH, t)
               const font = mix(size.font, size.rowFont, t)
-              // Past halfway to its row, a bubble stops bobbing and turns purple.
+              // Past halfway to its row, a bubble stops bobbing and turns
+              // purple if it's a skill that sticks around, or fades back if not.
               const settled = t > 0.5
               const isPicked = picked.includes(key)
-              const colors = isPicked ? PICKED_COLORS : settled ? SORTED_COLORS : bubbleColors(skillTotal)
+              const rowColors = LASTING.has(key) ? SORTED_COLORS : FADED_COLORS
+              const colors = isPicked ? PICKED_COLORS : settled ? rowColors : bubbleColors(skillTotal)
               const rhythm = seed(key)
               return (
                 <li
