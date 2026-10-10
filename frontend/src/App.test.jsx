@@ -106,6 +106,15 @@ describe('App', () => {
     expect(screen.getByRole('link', { name: 'Explore the data' })).toHaveAttribute('href', '/fantasy-analysis')
   })
 
+  it('serves the resume laid out for paper at its own address, with none of the site around it', () => {
+    renderAt('/resume/print')
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Jacob Simerly')
+    expect(screen.getByText('Senior Data Engineer · Indianapolis, IN')).toBeInTheDocument()
+    expect(screen.queryByRole('navigation', { name: 'Main' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('contentinfo')).not.toBeInTheDocument()
+  })
+
   it('shows a not-found page for unknown paths', () => {
     renderAt('/nowhere')
 

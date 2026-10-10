@@ -137,6 +137,11 @@ jobs:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
           VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
 
+      # The resume PDF is printed from the built site's own resume page, so
+      # it never drifts from it and never carries anything the page doesn't.
+      - run: npx playwright install --with-deps chromium
+      - run: npm run resume:pdf -- dist
+
       # Pages has no rewrite rules, so a deep link like /projects/x would 404.
       # Serving the app as the 404 page lets the router take over instead.
       - run: cp dist/index.html dist/404.html

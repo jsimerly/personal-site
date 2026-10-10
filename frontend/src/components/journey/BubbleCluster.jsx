@@ -90,7 +90,13 @@ export default function BubbleCluster({ totals, sortProgress, popDelay, width, s
     setCloud({ bubbles, width, layout: cloudLayout })
   }
   const rows = useMemo(
-    () => sortBubbles(bubbles.map(({ key, rowW, rowH }) => ({ key, w: rowW, h: rowH })), skillCategories, sortedWidth, LASTING),
+    () =>
+      sortBubbles(
+        bubbles.map(({ key, rowW, rowH, total }) => ({ key, w: rowW, h: rowH, rank: total.points })),
+        skillCategories,
+        sortedWidth,
+        LASTING,
+      ),
     [bubbles, sortedWidth],
   )
 

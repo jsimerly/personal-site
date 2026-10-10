@@ -32,6 +32,26 @@ describe('sortBubbles', () => {
     expect(xs).toEqual([...xs].sort((a, b) => a - b))
   })
 
+  it('orders a row by points when given them, so skills floored to one size still read biggest first', () => {
+    const same = (key, rank) => ({ ...bubble(key, 16), rank })
+    const layout = sortBubbles([same('Rust', 2), same('SQL', 9), same('Python', 4)], CATEGORIES, 600)
+    const xs = ['SQL', 'Python', 'Rust'].map((key) => layout.positions.get(key).x)
+
+    expect(xs).toEqual([...xs].sort((a, b) => a - b))
+  })
+
+  it('never leaves a lone bubble on the last line of a row: it takes its neighbor down', () => {
+    // Four 200px bubbles of one size (so they read alphabetically: Python,
+    // React, Rust, SQL) into 670px after the label: three fit, SQL would wrap
+    // alone, so Rust comes down with it.
+    const four = ['Python', 'Rust', 'SQL', 'React'].map((key) => bubble(key, 20, 200))
+    const layout = sortBubbles(four, [{ name: 'All', skills: ['Python', 'Rust', 'SQL', 'React'] }], 820)
+    const ys = four.map(({ key }) => layout.positions.get(key).y)
+
+    expect(new Set(ys).size).toBe(2)
+    expect(four.filter(({ key }) => layout.positions.get(key).y === Math.max(...ys)).map(({ key }) => key)).toEqual(['Rust', 'SQL'])
+  })
+
   it('files skills it has no kind for under Other, last', () => {
     const layout = sortBubbles([bubble('Juggling', 20), bubble('Python', 20)], CATEGORIES, 600)
 

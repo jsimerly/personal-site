@@ -11,10 +11,11 @@ import { useJourneyProgress } from './useJourneyProgress'
 import { FLIGHT_MS, MAX_ENTRIES_AT_ONCE, useSkillFlights } from './useSkillFlights'
 
 // The basket's column between the two sides (20rem), and how wide the rows
-// get when it sorts itself by kind at the end: the same width as the project
-// cards below (max-w-5xl), so the two line up.
+// get when it sorts itself by kind at the end: the page's full column (the
+// content box of max-w-6xl), the same width as the project cards below, so
+// the two line up and a row of skills rarely has to wrap.
 const CLUSTER_WIDTH = 320
-const SORTED_WIDTH = 1024
+const SORTED_WIDTH = 1120
 
 // Consecutive entries grouped under their year, keeping each entry's index
 // so reveal and collect state can be matched to it.

@@ -81,8 +81,21 @@ const entries = [
     end: '2020',
     side: 'work',
     logos: ['logos/indiana.svg', 'logos/ball-state.svg', 'logos/sigma-chi-shield.png'],
-    title: 'B.S. in Mathematical Economics, Minor in Computer Science',
-    skills: {},
+    title: 'B.S. in Mathematical Economics',
+    summary:
+      'A math major and an economics major in one degree, with a minor in computer science: probability and statistics, calculus and linear algebra, econometrics, and my first programming courses.',
+    // TODO(jacob): the coursework that mattered most, and how much.
+    skills: {
+      Statistics: 2,
+      Probability: 1,
+      Calculus: 1,
+      'Linear algebra': 1,
+      Econometrics: 2,
+      Economics: 1,
+      Java: 1,
+      'Data structures': 1,
+      Algorithms: 1,
+    },
   },
   {
     date: '2019',
@@ -125,7 +138,7 @@ const entries = [
     position: ukgConsultant,
     title: 'A New Training Program',
     summary: 'Developed a new training program as team lead, responsible for how 60 new consultants were trained and how they did.',
-    skills: { 'Team leadership': 2, 'Project leadership': 1 },
+    skills: { Enablement: 3, 'Team leadership': 2, 'Project leadership': 1 },
     project: 'consultant-training',
   },
   {
@@ -134,7 +147,7 @@ const entries = [
     position: ukgConsultant,
     title: 'Mentoring New Consultants',
     summary: 'Mentored five new consultants through regular one-on-ones.',
-    skills: { Mentoring: 2 },
+    skills: { Mentoring: 2, Enablement: 1 },
     project: 'mentoring-consultants',
   },
   {
@@ -306,7 +319,7 @@ const entries = [
     side: 'build',
     title: 'GPT Image Processor',
     summary: 'A Django API that describes uploaded images with GPT, with comments and infinite scroll.',
-    skills: { Python: 1, 'LLM APIs': 2 },
+    skills: { Python: 1, 'LLM integration': 2 },
     project: 'gpt-image-processor',
   },
   {
@@ -379,7 +392,13 @@ const entries = [
     title: 'Soulpoint AI',
     summary:
       'Data and AI for tough workflows: the strategy, the tools, and the governance that keep operations compliant and efficient. Plus the React site that tells the story.',
-    skills: { 'AI governance': 2, 'Client consulting': 2, React: 1, 'Project leadership': 1 },
+    skills: {
+      'AI governance': 2,
+      'Client consulting': 2,
+      'Governance & compliance': 1,
+      'Project leadership': 1,
+      React: 1,
+    },
     project: 'soulpoint',
   },
   {
@@ -387,15 +406,19 @@ const entries = [
     side: 'work',
     position: barnesThornburg,
     title: 'Unified Cloud Data Platform',
-    summary: "Led the firm's first: moving off on-premises systems onto Microsoft Fabric and Azure, with data from 15+ systems in one lake.",
+    summary:
+      "Led the firm's first: migrating off on-premises systems onto a Microsoft Fabric lakehouse on Azure, with data from 15+ systems in one lake.",
     skills: {
       'Microsoft Fabric': 3,
+      'Fabric migration': 4,
+      'Lakehouse architecture': 3,
+      'Capacity planning': 2,
+      'Data engineering': 3,
+      'Project leadership': 2,
+      'Power BI': 1,
       Azure: 2,
       PySpark: 2,
       SQL: 2,
-      'Data architecture': 2,
-      'Data engineering': 3,
-      'Project leadership': 2,
     },
     project: 'bt-data-platform',
   },
@@ -405,7 +428,7 @@ const entries = [
     position: barnesThornburg,
     title: 'Fabric Utilities and CI/CD Library',
     summary: 'A reusable package and pipelines that standardized ingestion, transformation, and business logic across dev and production.',
-    skills: { Python: 2, 'CI/CD': 2, 'Data engineering': 2, 'Microsoft Fabric': 1 },
+    skills: { 'Microsoft Fabric': 2, 'CI/CD': 2, 'Engineering standards': 2, 'Data engineering': 2, Python: 2 },
     project: 'fabric-utilities',
   },
   {
@@ -414,7 +437,7 @@ const entries = [
     position: barnesThornburg,
     title: 'SharePoint MCP Server',
     summary: 'A prototype that lets an LLM work in SharePoint: creating lists, updating columns, editing data, and pulling insights.',
-    skills: { MCP: 2, 'Agentic development': 1, 'LLM APIs': 1, Python: 1 },
+    skills: { MCP: 2, 'Agentic development': 1, 'LLM integration': 1, Python: 1 },
     project: 'sharepoint-mcp',
   },
   {
@@ -423,7 +446,7 @@ const entries = [
     position: barnesThornburg,
     title: 'Unstructured Data, Normalized with AI',
     summary: 'An automated pipeline using Power Automate and ChatGPT to turn media-licensing and option-agreement contracts into structured data, verified by attorneys.',
-    skills: { 'LLM APIs': 2, 'AI governance': 1, 'Project leadership': 1 },
+    skills: { 'LLM integration': 2, 'Governance & compliance': 1, 'AI governance': 1, 'Project leadership': 1 },
     project: 'contract-ai-pipeline',
   },
   {
@@ -432,7 +455,7 @@ const entries = [
     position: barnesThornburg,
     title: 'Software Architecture and Design',
     summary: "The firm's data engineering, Python, and SQL standards: the documentation, the code-review checklists, and the architecture behind them.",
-    skills: { 'System design': 2, 'Data architecture': 1 },
+    skills: { 'Engineering standards': 2, 'System design': 2, 'Lakehouse architecture': 1 },
     project: 'engineering-standards',
   },
   {
@@ -449,8 +472,16 @@ const entries = [
     side: 'work',
     position: lilly,
     title: 'SOX-Compliant CI/CD for Microsoft Fabric',
-    summary: "Lilly's first GitHub-native CI/CD for Fabric: a workspace per branch, parameterized deployments, and approval gates that brought it under SOX.",
-    skills: { 'CI/CD': 3, 'GitHub Actions': 2, 'Microsoft Fabric': 2, 'Project leadership': 2, 'Data engineering': 1 },
+    summary:
+      "Lilly's first GitHub-native CI/CD for Fabric: a workspace per branch, parameterized deployments, and the approval gates and segregation of duties that brought it under SOX.",
+    skills: {
+      'CI/CD': 3,
+      'Governance & compliance': 3,
+      'Microsoft Fabric': 3,
+      'GitHub Actions': 2,
+      'Project leadership': 2,
+      'Data engineering': 1,
+    },
     project: 'lilly-fabric-cicd',
   },
   {
@@ -458,12 +489,15 @@ const entries = [
     side: 'work',
     position: lilly,
     title: 'Cash Flow Statement Automation',
-    summary: 'Re-architected a highly manual quarterly process, with a semantic model that rolls up by day, month, and year and drills to document level.',
+    summary:
+      'Re-architected a highly manual quarterly process on Fabric, with a semantic model that rolls up by day, month, and year and drills to document level.',
     skills: {
+      'Semantic models': 3,
+      'Power BI': 3,
+      'Microsoft Fabric': 2,
       'Data modeling': 2,
-      'Data architecture': 1,
       'Data engineering': 2,
-      'Microsoft Fabric': 1,
+      'Lakehouse architecture': 1,
       'Project leadership': 2,
     },
     project: 'cash-flow-statement',
@@ -474,7 +508,7 @@ const entries = [
     position: lilly,
     title: 'Agentic Development Enablement',
     summary: 'Brought Claude Code, Fabric Git integration, and VS Code together so developers work locally with context-aware agents.',
-    skills: { 'Agentic development': 3, Mentoring: 1 },
+    skills: { 'Agentic development': 3, Enablement: 2, 'Microsoft Fabric': 1, Mentoring: 1 },
     project: 'agentic-fabric-development',
   },
   {
@@ -483,7 +517,7 @@ const entries = [
     position: lilly,
     title: 'SDLC Development',
     summary: 'Bringing software development principles and a real development lifecycle to the data teams.',
-    skills: { Mentoring: 1, 'Team leadership': 1, 'CI/CD': 1 },
+    skills: { Enablement: 2, 'Engineering standards': 1, 'Team leadership': 1, 'CI/CD': 1, Mentoring: 1 },
     project: 'data-sdlc',
   },
   {
@@ -492,7 +526,7 @@ const entries = [
     position: lilly,
     title: 'Architectural Redesign',
     summary: 'Refining our medallion architecture, moving toward a data mesh, and drawing clear lines between analytics engineers, data engineers, and analysts.',
-    skills: { 'Data architecture': 2, 'System design': 1, 'Data engineering': 1 },
+    skills: { 'Lakehouse architecture': 2, 'Capacity planning': 1, 'Microsoft Fabric': 1, 'Data engineering': 1, 'System design': 1 },
     project: 'lilly-architecture',
   },
   {
@@ -502,6 +536,7 @@ const entries = [
     title: 'This Site',
     summary: 'A static React site on GitHub Pages, reading a Django API on Cloud Run.',
     skills: {
+      'Agentic development': 3,
       React: 1,
       JavaScript: 1,
       Vite: 1,
@@ -510,7 +545,6 @@ const entries = [
       'Django REST Framework': 1,
       'GitHub Actions': 1,
       Playwright: 1,
-      'Agentic development': 2,
     },
     project: 'personal-site',
   },

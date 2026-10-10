@@ -60,15 +60,44 @@ describe('journey', () => {
     expect(lastingSkills.filter((skill) => !onTimeline.has(skill) || !filed.has(skill))).toEqual([])
   })
 
-  it('leads the sorted skills with leadership, AI, and data engineering', () => {
-    expect(skillCategories.slice(0, 3).map((category) => category.name)).toEqual(['Leadership', 'AI', 'Data engineering'])
+  it('leads the sorted skills with leadership, Microsoft Fabric, AI, and data engineering', () => {
+    expect(skillCategories.slice(0, 4).map((category) => category.name)).toEqual([
+      'Leadership',
+      'Microsoft Fabric',
+      'AI',
+      'Data engineering',
+    ])
   })
 
-  it('ends the journey with leadership and data engineering second only to Python, and AI among the leaders', () => {
+  // What a Fabric buyer should read first: leading projects, data engineering,
+  // Fabric itself, and AI-assisted work, right behind Python.
+  it('ends the journey with project leadership, data engineering, Fabric, and agentic development right behind Python', () => {
     const ranked = skillTotals(journey).sort((a, b) => b.points - a.points).map(({ skill }) => skill)
 
-    expect(ranked.slice(0, 3)).toEqual(['Python', 'Project leadership', 'Data engineering'])
-    expect(ranked.indexOf('Agentic development')).toBeLessThan(5)
+    expect(ranked.slice(0, 5)).toEqual([
+      'Python',
+      'Project leadership',
+      'Data engineering',
+      'Microsoft Fabric',
+      'Agentic development',
+    ])
+  })
+
+  it('names the skills that stick around the way Fabric buyers name them, with no engineer-only leftovers', () => {
+    const names = new Set(lastingSkills)
+
+    for (const buyerWord of ['Lakehouse architecture', 'Fabric migration', 'Semantic models', 'Governance & compliance', 'Enablement']) {
+      expect(names.has(buyerWord), buyerWord).toBe(true)
+    }
+    for (const retired of ['Data architecture', 'LLM APIs']) expect(names.has(retired), retired).toBe(false)
+  })
+
+  // Picking a skill that sticks around should always find work behind it.
+  // (Curious is a mindset, not something a project is tagged with.)
+  it('tags at least one project with every skill that sticks around, so picking it finds work', () => {
+    const tagged = new Set(projects.flatMap((project) => project.tags))
+
+    expect(lastingSkills.filter((skill) => skill !== 'Curious' && !tagged.has(skill))).toEqual([])
   })
 
   it('runs oldest first, however the entries are written', () => {

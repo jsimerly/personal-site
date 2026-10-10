@@ -1,6 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import { existsSync } from 'node:fs'
-import { resolve } from 'node:path'
 import { MemoryRouter } from 'react-router'
 import { describe, expect, it } from 'vitest'
 import { profile } from '../content/profile'
@@ -45,11 +43,11 @@ describe('Resume', () => {
     })
   })
 
-  it('never points the download at a PDF missing from public/, so the build ships it', () => {
-    // Tests run from frontend/, where Vite serves public/ at the site root.
-    const missing = [profile.resumePdf].filter(Boolean).filter((pdf) => !existsSync(resolve('public', pdf)))
-
-    expect(missing).toEqual([])
+  // The PDF isn't a file in the repo: the build prints it from the resume
+  // content (scripts/build-resume-pdf.mjs), and the e2e lane downloads and
+  // reads it. What matters here is that the page offers it.
+  it('offers the PDF the build prints', () => {
+    expect(profile.resumePdf).toBe('jacob-simerly-resume.pdf')
   })
 
   it('puts my current role and where I live under my name', () => {

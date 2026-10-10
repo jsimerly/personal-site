@@ -64,6 +64,26 @@ test('lays the timeline out in order, with no cards overlapping and work beside 
   expect(rules.cardTop).toBeLessThan(sportsbook.cardBottom)
 })
 
+// The sorted skills are one screen's worth. Every skill added lands in a
+// row, so this is what stops the block outgrowing a laptop screen.
+test('fits the sorted skills, heading and all, on a 1280x720 laptop screen', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile', 'The rows are the desktop layout; phones get the skill tray.')
+  await page.setViewportSize({ width: 1280, height: 720 })
+  await visit(page)
+  const today = await page.evaluate(() => document.querySelector('[data-journey-end]').getBoundingClientRect().top + window.scrollY)
+  for (let y = today - 1200; y < today + 2000; y += 120) {
+    await page.evaluate((top) => window.scrollTo(0, top), y)
+    if (await page.locator('[data-basket="desktop"] button[aria-pressed]').count()) break
+  }
+  await page.waitForTimeout(900)
+
+  const block = await page.locator('[data-basket="desktop"]').boundingBox()
+  const header = await page.getByRole('banner').boundingBox()
+  expect(block.y, 'the block starts under the header').toBeGreaterThanOrEqual(header.y + header.height)
+  expect(block.y + block.height, 'the block ends within the screen').toBeLessThanOrEqual(720)
+  await expect(page.getByRole('heading', { name: 'What I bring today' })).toBeInViewport({ ratio: 1 })
+})
+
 // When the web font arrives, chips re-wrap and cards change height. The
 // layout has to move the cards below in the same frame, or one frame paints a
 // card over its neighbor. A ResizeObserver made after the page's own runs

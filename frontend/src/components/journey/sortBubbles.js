@@ -3,14 +3,17 @@
 // onto more lines as needed, with a divider between kinds. Positions are
 // bubble centers relative to the layout's center, the same as packBubbles, so
 // bubbles can glide between the cloud and the rows. Pure.
-export const LABEL_WIDTH = 170
+export const LABEL_WIDTH = 150
 const GAP_X = 8
 const GAP_Y = 8
-const SECTION_GAP = 18
+const SECTION_GAP = 14
 const OTHER = 'Other'
 
-// bubbles: [{ key, w, h }]. categories: [{ name, skills }]. `lasting`: the
-// skills that lead their row, ahead of the rest (biggest first within each).
+// bubbles: [{ key, w, h, rank? }]. categories: [{ name, skills }]. `lasting`:
+// the skills that lead their row, ahead of the rest. Within each group the
+// biggest comes first, by `rank` (a skill's points) when given, else by
+// height: sizes floor at a minimum, so height alone can't order the smaller
+// skills.
 export function sortBubbles(bubbles, categories, width, lasting = new Set()) {
   const kindOf = new Map(categories.flatMap(({ name, skills }) => skills.map((skill) => [skill, name])))
   const sections = [...categories.map(({ name }) => name), OTHER]
@@ -18,7 +21,7 @@ export function sortBubbles(bubbles, categories, width, lasting = new Set()) {
       name,
       items: bubbles
         .filter((bubble) => (kindOf.get(bubble.key) ?? OTHER) === name)
-        .sort((a, b) => lasting.has(b.key) - lasting.has(a.key) || b.h - a.h || a.key.localeCompare(b.key)),
+        .sort((a, b) => lasting.has(b.key) - lasting.has(a.key) || (b.rank ?? b.h) - (a.rank ?? a.h) || a.key.localeCompare(b.key)),
     }))
     .filter(({ items }) => items.length)
 
@@ -38,6 +41,16 @@ export function sortBubbles(bubbles, categories, width, lasting = new Set()) {
       }
       lines.at(-1).push({ item, left: x })
       x += item.w + GAP_X
+    }
+    // A row never ends with one lone bubble: it takes its neighbor down too.
+    if (lines.length > 1 && lines.at(-1).length === 1 && lines.at(-2).length > 2) {
+      const moved = lines.at(-2).pop()
+      lines.at(-1).unshift(moved)
+      let left = LABEL_WIDTH
+      for (const placed of lines.at(-1)) {
+        placed.left = left
+        left += placed.item.w + GAP_X
+      }
     }
 
     lines.forEach((line, index) => {

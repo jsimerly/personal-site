@@ -40,3 +40,5 @@ blob-report/
 # What the E2E lane's contact form writes: leads and their emails.
 api/e2e/gcs/jacobsimerly-site-leads/
 api/e2e/outbox/
+# The resume PDF is printed by the build (frontend/scripts/build-resume-pdf.mjs); a dev copy is generated too.
+frontend/public/jacob-simerly-resume.pdf

@@ -9,7 +9,13 @@ pipe it to tail.
 
 ## Unit and component tests (Vitest)
 
-### src/App.test.jsx (10 tests)
+### scripts/resume-pdf-hint.test.js (2 tests)
+
+- **missingPdfHint**
+  - answers a request for the PDF that has not been printed yet with a plain 404 saying how to print it
+  - stays out of the way once the PDF exists, and for every other path
+
+### src/App.test.jsx (11 tests)
 
 - **App**
   - says what I do, where I have done it, and how to reach me, before the journey
@@ -18,6 +24,7 @@ pipe it to tail.
   - opens the fantasy section on its player values, with a tab for each view
   - opens the model performance view at its own address
   - links the fantasy project's page into the section
+  - serves the resume laid out for paper at its own address, with none of the site around it
   - shows a not-found page for unknown paths
   - quietly pings the API once when the site loads
   - loads a project page when the site is served under a base path
@@ -143,12 +150,14 @@ pipe it to tail.
 - **listOf**
   - reads naturally for one, two, and several skills
 
-### src/components/journey/sortBubbles.test.js (11 tests)
+### src/components/journey/sortBubbles.test.js (13 tests)
 
 - **sortBubbles**
   - stacks one labeled row per kind of skill, in category order, skipping empty kinds
   - puts the biggest skill of each kind first, right after the label
   - leads each row with the skills that stick around, biggest first, then the rest
+  - orders a row by points when given them, so skills floored to one size still read biggest first
+  - never leaves a lone bubble on the last line of a row: it takes its neighbor down
   - files skills it has no kind for under Other, last
   - wraps a long row onto more lines and never overlaps or leaves the width
   - tags each bubble and label with its row, top to bottom
@@ -185,7 +194,7 @@ pipe it to tail.
   - sends nothing flying on the way back up, or when the caller says not to
   - keeps still for readers who ask for reduced motion
 
-### src/content/journey.test.js (14 tests)
+### src/content/journey.test.js (16 tests)
 
 - **journey**
   - links every timeline card that names a project to a page that exists
@@ -195,8 +204,10 @@ pipe it to tail.
   - leaves no placeholder copy on the timeline
   - files every skill on the timeline under a kind, so none lands in \"Other\" when the basket sorts
   - keeps every skill that sticks around a real skill on the timeline, filed under a kind
-  - leads the sorted skills with leadership, AI, and data engineering
-  - ends the journey with leadership and data engineering second only to Python, and AI among the leaders
+  - leads the sorted skills with leadership, Microsoft Fabric, AI, and data engineering
+  - ends the journey with project leadership, data engineering, Fabric, and agentic development right behind Python
+  - names the skills that stick around the way Fabric buyers name them, with no engineer-only leftovers
+  - tags at least one project with every skill that sticks around, so picking it finds work
   - runs oldest first, however the entries are written
   - keeps entries from the same month in the order they are written
   - starts the basket with Curious alone, purple, before any entry
@@ -347,9 +358,16 @@ pipe it to tail.
 - **Resume**
   - offers the resume PDF as a download, named for me, when there is one
   - shows no download until there is a PDF
-  - never points the download at a PDF missing from public/, so the build ships it
+  - offers the PDF the build prints
   - puts my current role and where I live under my name
   - lists every role newest first, each under its company
+
+### src/pages/ResumePrint.test.jsx (3 tests)
+
+- **ResumePrint**
+  - lays the whole resume out for paper: every role, highlight, skill group, school, and project
+  - writes every link out as text, since paper has nothing to click
+  - shows only what the resume content holds: no phone number anywhere
 
 ## End-to-end tests (Playwright, each on a phone and a laptop)
 
@@ -394,13 +412,19 @@ pipe it to tail.
 - a fantasy address works when opened directly and survives a reload
 - no market price and no league member ever reaches the browser
 
-### e2e/journey.spec.js (4 tests)
+### e2e/journey.spec.js (5 tests)
 
 - lays the timeline out in order, with no cards overlapping and work beside personal projects
+- fits the sorted skills, heading and all, on a 1280x720 laptop screen
 - never paints one card over another, even in the frame the web font arrives and cards re-wrap
 - splits the skills into rows as they pass Today, never into the cards, and lands them before the projects
 - **the skills basket**
   - holds only Curious until the reader scrolls, then starts collecting
+
+### e2e/resume.spec.js (2 tests)
+
+- the resume downloads as a PDF of the page itself, with no phone number, on two pages at most
+- the print layout stands alone: light, one column, nothing of the site around it
 
 ### e2e/site.spec.js (6 tests)
 
@@ -413,4 +437,4 @@ pipe it to tail.
 
 ---
 
-193 unit and 36 end-to-end tests cataloged.
+203 unit and 39 end-to-end tests cataloged.
