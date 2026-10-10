@@ -96,6 +96,11 @@ pipe it to tail.
   - settles open, in the order they were picked up, once the journey is complete
   - invites scrolling before anything is collected
 
+### src/components/journey/WhatsNext.test.jsx (1 tests)
+
+- **WhatsNext**
+  - offers one way forward at the end of the page: the open contact field, with no links away
+
 ### src/components/journey/bubble.test.js (4 tests)
 
 - **skillColor**
@@ -399,4 +404,4 @@ pipe it to tail.
 
 ---
 
-185 unit and 35 end-to-end tests cataloged.
+186 unit and 35 end-to-end tests cataloged.

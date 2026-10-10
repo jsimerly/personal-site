@@ -1,8 +1,5 @@
-import { IconBrandLinkedin } from '@tabler/icons-react'
-import { Link } from 'react-router'
 import { profile } from '../../content/profile'
 import ContactCapture from '../ContactCapture.jsx'
-import { buttonStyles, newTab } from '../ui'
 
 // Where the journey's line ends, and the page's centerpiece: the last screen
 // of the page, the dashed line running down into an open ring for what hasn't
@@ -10,8 +7,6 @@ import { buttonStyles, newTab } from '../ui'
 // plus the footer fill exactly one screen, so when the scroll bottoms out,
 // the invite sits in the middle of it.
 export default function WhatsNext() {
-  const { linkedin } = profile.links
-
   return (
     <>
       {/* The line keeps going past the projects, long enough that they scroll
@@ -41,20 +36,10 @@ export default function WhatsNext() {
         </h2>
         <p className="mt-5 max-w-xl text-lg leading-8 text-zinc-400">{profile.nextUp}</p>
         {/* Whoever scrolled this far is already here for it: the field is
-            open, no button to press first. */}
+            open, no button to press first, and nothing else to click away
+            to. One way forward. */}
         <div className="mt-10 flex w-full justify-center">
           <ContactCapture source="footer" open />
-        </div>
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-          {linkedin && (
-            <a href={linkedin} {...newTab} className={buttonStyles.secondary}>
-              <IconBrandLinkedin size={16} aria-hidden="true" />
-              LinkedIn
-            </a>
-          )}
-          <Link to="/projects" className={buttonStyles.secondary}>
-            See my projects
-          </Link>
         </div>
 
         <span aria-hidden="true" className="flex-1" />
