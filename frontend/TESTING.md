@@ -271,10 +271,14 @@ pipe it to tail.
 - **formatRange**
   - joins a start and end with an en dash
 
-### src/pages/About.test.jsx (2 tests)
+### src/pages/About.test.jsx (6 tests)
 
 - **About**
-  - shows each paragraph about me, in order, beside my photo
+  - opens with the intro beside my photo, then every fact with its label, in order
+  - shows no photo grid until there are photos
+  - shows each photo with its words, in order, loaded only when scrolled to
+  - has every photo the page names in public/, so the build ships it
+  - leaves no placeholder copy on the page
   - ships the photo the profile names in public/, so the build includes it
 
 ### src/pages/Portfolio.test.jsx (8 tests)
@@ -343,4 +347,4 @@ pipe it to tail.
 
 ---
 
-166 unit and 18 end-to-end tests cataloged.
+170 unit and 18 end-to-end tests cataloged.
