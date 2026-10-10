@@ -9,7 +9,7 @@ pipe it to tail.
 
 ## Unit and component tests (Vitest)
 
-### src/App.test.jsx (9 tests)
+### src/App.test.jsx (10 tests)
 
 - **App**
   - introduces me on the home page and points to my portfolio and every project
@@ -17,6 +17,7 @@ pipe it to tail.
   - opens the fantasy section on its player values, with a tab for each view
   - opens the model performance view at its own address
   - links the fantasy project's page into the section
+  - serves the resume laid out for paper at its own address, with none of the site around it
   - shows a not-found page for unknown paths
   - quietly pings the API once when the site loads
   - loads a project page when the site is served under a base path
@@ -301,9 +302,16 @@ pipe it to tail.
 - **Resume**
   - offers the resume PDF as a download, named for me, when there is one
   - shows no download until there is a PDF
-  - never points the download at a PDF missing from public/, so the build ships it
+  - offers the PDF the build prints
   - puts my current role and where I live under my name
   - lists every role newest first, each under its company
+
+### src/pages/ResumePrint.test.jsx (3 tests)
+
+- **ResumePrint**
+  - lays the whole resume out for paper: every role, highlight, skill group, school, and project
+  - writes every link out as text, since paper has nothing to click
+  - shows only what the resume content holds: no phone number anywhere
 
 ## End-to-end tests (Playwright, each on a phone and a laptop)
 
@@ -333,6 +341,11 @@ pipe it to tail.
 - **the skills basket**
   - holds only Curious until the reader scrolls, then starts collecting
 
+### e2e/resume.spec.js (2 tests)
+
+- the resume downloads as a PDF of the page itself, with no phone number, on two pages at most
+- the print layout stands alone: light, one column, nothing of the site around it
+
 ### e2e/site.spec.js (4 tests)
 
 - the home page introduces me and leads to my portfolio
@@ -342,4 +355,4 @@ pipe it to tail.
 
 ---
 
-165 unit and 18 end-to-end tests cataloged.
+169 unit and 20 end-to-end tests cataloged.
