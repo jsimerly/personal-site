@@ -21,6 +21,7 @@ export default function WhatsNext() {
       <span aria-hidden="true" className="mx-auto hidden h-[35vh] w-0 border-l-2 border-dashed border-zinc-700 lg:block" />
 
       <section
+        id="contact"
         aria-labelledby="whats-next-title"
         className="-mb-10 flex min-h-[calc(100dvh-3.5rem-var(--footer-height))] flex-col items-center text-center sm:-mb-16"
       >
