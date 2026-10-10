@@ -6,8 +6,10 @@
  */
 import { expect } from './fixtures'
 
-export async function visit(page, path = '') {
-  await page.goto(path.replace(/^\//, ''))
+// `options` go to page.goto (waitUntil, for one), for a spec holding
+// something back that the default 'load' would wait on.
+export async function visit(page, path = '', options) {
+  await page.goto(path.replace(/^\//, ''), options)
 }
 
 /** Mobile-first guard: nothing may push the page wider than the screen. */
@@ -27,4 +29,15 @@ export async function delayApi(page, ms) {
 /** Fails every API request at the network level, as if the service were down. */
 export async function cutApi(page) {
   await page.route('**/api/**', (route) => route.abort())
+}
+
+/** Holds the web font back until the returned release() is called, so a spec can watch the page re-wrap as it arrives. */
+export async function holdFonts(page) {
+  let release
+  const gate = new Promise((resolve) => (release = resolve))
+  await page.route(/\.woff2?(\?|$)/, async (route) => {
+    await gate
+    await route.continue()
+  })
+  return release
 }

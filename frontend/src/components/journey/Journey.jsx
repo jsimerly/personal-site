@@ -11,10 +11,11 @@ import { useJourneyProgress } from './useJourneyProgress'
 import { FLIGHT_MS, MAX_ENTRIES_AT_ONCE, useSkillFlights } from './useSkillFlights'
 
 // The basket's column between the two sides (20rem), and how wide the rows
-// get when it sorts itself by kind at the end: the same width as the project
-// cards below (max-w-5xl), so the two line up.
+// get when it sorts itself by kind at the end: the page's full column (the
+// content box of max-w-6xl), the same width as the project cards below, so
+// the two line up and a row of skills rarely has to wrap.
 const CLUSTER_WIDTH = 320
-const SORTED_WIDTH = 1024
+const SORTED_WIDTH = 1120
 
 // Consecutive entries grouped under their year, keeping each entry's index
 // so reveal and collect state can be matched to it.
@@ -164,8 +165,8 @@ export default function Journey() {
         {/* Past today the line keeps going, dashed, to what's next. The basket
             sorts itself along this stretch once "Today" is up out of the way,
             then catches against the projects. Long enough for the rows to land
-            just before the catch. */}
-        <div ref={stageRef} aria-hidden="true" className="relative hidden h-[110vh] lg:block">
+            and hold for a beat, the whole block on screen, before the catch. */}
+        <div ref={stageRef} aria-hidden="true" className="relative hidden h-[130vh] lg:block">
           <span className="absolute inset-y-0 left-1/2 -translate-x-1/2 border-l-2 border-dashed border-zinc-700" />
         </div>
 

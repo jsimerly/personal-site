@@ -37,19 +37,15 @@ describe('App', () => {
     renderAt('/')
 
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Jacob Simerly')
-    expect(screen.getByText(profile.title)).toHaveTextContent('Microsoft Fabric · Data engineering · AI')
+    expect(screen.getByText(profile.title)).toHaveTextContent('Microsoft Fabric · Data Engineering · AI')
     expect(screen.getByText(profile.headline)).toHaveTextContent(
       'I build Microsoft Fabric data platforms that hold up to audit, and lead the teams that run them.',
     )
     expect(screen.getByText(profile.intro)).toHaveTextContent(/^Now at Eli Lilly/)
     const builtAt = within(screen.getByText("Where I've built").parentElement).getAllByRole('img')
     expect(builtAt.map((logo) => logo.getAttribute('alt'))).toEqual(['Eli Lilly', 'Barnes & Thornburg', 'UKG', 'Anthem'])
-    // Straight to my inbox once there's an address, to the invitation at the
-    // bottom until then; either way it lands somewhere real.
-    const contact = screen.getByRole('link', { name: 'Work with me' })
-    const email = profile.links.email
-    expect(contact).toHaveAttribute('href', email ? `mailto:${email}` : '#contact')
-    expect(document.getElementById('contact')).toHaveTextContent('Want to build something together?')
+    // The funnel starts on the first screen: a button that opens the field.
+    expect(screen.getByRole('button', { name: 'Work with me' })).toBeInTheDocument()
     expect(within(screen.getByRole('main')).getByRole('link', { name: 'Resume' })).toHaveAttribute('href', '/resume')
   })
 
@@ -108,6 +104,15 @@ describe('App', () => {
     renderAt('/projects/fantasy-analysis')
 
     expect(screen.getByRole('link', { name: 'Explore the data' })).toHaveAttribute('href', '/fantasy-analysis')
+  })
+
+  it('serves the resume laid out for paper at its own address, with none of the site around it', () => {
+    renderAt('/resume/print')
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Jacob Simerly')
+    expect(screen.getByText('Senior Data Engineer · Indianapolis, IN')).toBeInTheDocument()
+    expect(screen.queryByRole('navigation', { name: 'Main' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('contentinfo')).not.toBeInTheDocument()
   })
 
   it('shows a not-found page for unknown paths', () => {

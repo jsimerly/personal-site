@@ -3,7 +3,7 @@
  * middle (desktop only; phones get the skill tray instead).
  */
 import { expect, test } from './fixtures'
-import { visit } from './helpers'
+import { holdFonts, visit } from './helpers'
 
 test.describe('the skills basket', () => {
   test('holds only Curious until the reader scrolls, then starts collecting', async ({ page }, testInfo) => {
@@ -30,6 +30,10 @@ test.describe('the skills basket', () => {
 
 test('lays the timeline out in order, with no cards overlapping and work beside personal projects', async ({ page }, testInfo) => {
   await visit(page)
+  // The settled layout: once the web font is in and the layout has had a
+  // frame to respond. (The frames in between are the next test's job.)
+  await page.evaluate(() => document.fonts.ready)
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))))
   const laidOut = await page.evaluate(() =>
     [...document.querySelectorAll('[data-journey-entry]')].map((row) => {
       const card = row.children[1].getBoundingClientRect()
@@ -58,6 +62,72 @@ test('lays the timeline out in order, with no cards overlapping and work beside 
   const sportsbook = laidOut.find((card) => card.title === 'Stuck in High School Sportsbook')
   expect(rules.left).not.toBe(sportsbook.left)
   expect(rules.cardTop).toBeLessThan(sportsbook.cardBottom)
+})
+
+// The sorted skills are one screen's worth. Every skill added lands in a
+// row, so this is what stops the block outgrowing a laptop screen. Each row's
+// label has a column of its own, so a long one ("Math and economics" once)
+// must never run under the row's first skill.
+test('fits the sorted skills, heading and all, on a 1280x720 laptop screen, every row label clear of its skills', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile', 'The rows are the desktop layout; phones get the skill tray.')
+  await page.setViewportSize({ width: 1280, height: 720 })
+  await visit(page)
+  // Scroll to where the rows have just settled: what the reader sees as the
+  // table finishes. (Small steps, so this is that moment and not well past it.)
+  const today = await page.evaluate(() => document.querySelector('[data-journey-end]').getBoundingClientRect().top + window.scrollY)
+  for (let y = today - 1200; y < today + 2000; y += 40) {
+    await page.evaluate((top) => window.scrollTo(0, top), y)
+    if (await page.locator('[data-basket="desktop"] button[aria-pressed]').count()) break
+  }
+  await page.waitForTimeout(900)
+
+  const block = await page.locator('[data-basket="desktop"]').boundingBox()
+  const header = await page.getByRole('banner').boundingBox()
+  expect(block.y, 'the block starts under the header').toBeGreaterThanOrEqual(header.y + header.height)
+  expect(block.y + block.height, 'the block ends within the screen').toBeLessThanOrEqual(720)
+  await expect(page.getByRole('heading', { name: 'What I bring today' })).toBeInViewport({ ratio: 1 })
+
+  const underSkills = await page.evaluate(() => {
+    const root = document.querySelector('[data-basket="desktop"]')
+    const skills = [...root.querySelectorAll('[data-basket-skill]')].map((skill) => ({ name: skill.textContent, box: skill.getBoundingClientRect() }))
+    const overlap = (a, b) => a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1
+    return [...root.querySelectorAll('li[aria-hidden="true"]')]
+      .filter((label) => label.textContent.trim())
+      .flatMap((label) => skills.filter(({ box }) => overlap(label.getBoundingClientRect(), box)).map(({ name }) => `${label.textContent} / ${name}`))
+  })
+  expect(underSkills, 'no row label runs under a skill').toEqual([])
+})
+
+// When the web font arrives, chips re-wrap and cards change height. The
+// layout has to move the cards below in the same frame, or one frame paints a
+// card over its neighbor. A ResizeObserver made after the page's own runs
+// after its handler in each frame, so it sees what is about to be painted.
+test('never paints one card over another, even in the frame the web font arrives and cards re-wrap', async ({ page }) => {
+  const release = await holdFonts(page)
+  await visit(page, '', { waitUntil: 'domcontentloaded' })
+  await page.locator('[data-journey-entry]').first().waitFor()
+  await page.evaluate(() => {
+    window.paintedOverlaps = []
+    const check = () => {
+      const cards = [...document.querySelectorAll('[data-journey-entry]')].map((row) => {
+        const card = row.children[1].getBoundingClientRect()
+        return { title: row.querySelector('h3').textContent, left: Math.round(card.left), top: card.top, bottom: card.bottom }
+      })
+      cards.forEach((a, i) =>
+        cards.slice(i + 1).forEach((b) => {
+          if (a.left === b.left && a.top < b.bottom - 1 && b.top < a.bottom - 1) window.paintedOverlaps.push(`${a.title} / ${b.title}`)
+        }),
+      )
+    }
+    const probe = new ResizeObserver(check)
+    document.querySelectorAll('[data-journey-entry]').forEach((row) => probe.observe(row))
+  })
+
+  release()
+  await page.waitForFunction(() => document.fonts.status === 'loaded')
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))))
+
+  expect(await page.evaluate(() => window.paintedOverlaps)).toEqual([])
 })
 
 test('splits the skills into rows as they pass Today, never into the cards, and lands them before the projects', async ({ page }, testInfo) => {

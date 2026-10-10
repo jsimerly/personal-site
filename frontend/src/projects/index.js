@@ -26,7 +26,7 @@ export const projects = [
     featured: true,
     summary:
       "Runs a weekend of games for a group of friends: leagues, teams, brackets, and live standings on everyone's phone.",
-    tags: ['React', 'Django REST Framework', 'Cloud Run', 'Postgres', 'Firebase Auth'],
+    tags: ['React', 'Django REST Framework', 'Google Cloud', 'Cloud Run', 'Postgres', 'Firebase Auth', 'GitHub'],
     links: { live: 'https://brolympics.app' },
     description: [
       'Commissioners set up a league, draw teams, and schedule the events. On game day, players check in, report their scores, and follow brackets and standings live.',
@@ -40,7 +40,7 @@ export const projects = [
     year: '2021 to now',
     featured: true,
     summary: 'A data lake, projection models, and a live dynasty value board for my fantasy football leagues.',
-    tags: ['Python', 'Polars', 'Machine learning', 'Statistics', 'Cloud Run', 'Cloud Storage', 'Jupyter'],
+    tags: ['Python', 'Data Engineering', 'Polars', 'Machine Learning', 'Statistics', 'Linear Algebra', 'Google Cloud', 'Cloud Run', 'Cloud Storage', 'Jupyter'],
     links: { explore: '/fantasy-analysis', github: 'https://github.com/jsimerly/fantasy-analysis' },
     description: [
       'Scheduled Cloud Run jobs pull league, market, and NFL stats data from Sleeper, KeepTradeCut, FantasyCalc, and nflverse into a bronze layer on Cloud Storage, then model it into clean dimensions and facts. A Cloud Workflow runs the whole pipeline in dependency order every day.',
@@ -79,7 +79,7 @@ export const projects = [
     kind: 'personal',
     year: '2026 to now',
     summary: 'A static React site on GitHub Pages, reading a Django API on Cloud Run.',
-    tags: ['React', 'JavaScript', 'Vite', 'Tailwind CSS', 'Python', 'Django REST Framework', 'GitHub Actions', 'Playwright'],
+    tags: ['React', 'JavaScript', 'Vite', 'Tailwind CSS', 'Python', 'Django REST Framework', 'Google Cloud', 'GitHub Actions', 'GitHub', 'Playwright'],
     links: { github: repo('personal-site') },
     description: [
       "The site you're reading. The front end is a static React app on GitHub Pages, so the first paint never waits on a server; anything backed by data, like the fantasy analysis section, reads a read-only Django REST Framework API on Cloud Run, which scales to zero between visits.",
@@ -93,7 +93,7 @@ export const projects = [
     year: '2025',
     summary:
       'Data and AI for tough workflows: the strategy, the tools, and the governance that keep operations compliant and efficient. Plus the React site that tells the story.',
-    tags: ['AI governance', 'Client consulting', 'React'],
+    tags: ['AI Governance', 'Governance & Compliance', 'Client Consulting', 'React'],
     links: {},
     // TODO(jacob): what Soulpoint is and who it serves, in your words.
     description: [
@@ -145,7 +145,7 @@ export const projects = [
     kind: 'personal',
     year: '2023',
     summary: 'A Django API that describes uploaded images with GPT, with comments and infinite scroll.',
-    tags: ['Python', 'Django REST Framework', 'LLM APIs'],
+    tags: ['Python', 'Django REST Framework', 'LLM Integration'],
     links: { github: repo('gpt-image-processor') },
     description: [
       "Built as a take-home task. Upload an image, as a file or a base64 string, and the API sends it to GPT's vision model and stores the description it comes back with. Images and their comments page through Django REST Framework's pagination, so a client can scroll them endlessly, and anyone can leave a comment on an image.",
@@ -158,7 +158,7 @@ export const projects = [
     kind: 'personal',
     year: '2023',
     summary: 'The classic software design patterns, implemented one by one.',
-    tags: ['Design patterns', 'Object-oriented design'],
+    tags: ['Design Patterns', 'Object-Oriented Design'],
     links: { github: repo('design-patterns') },
     description: [
       'The Gang of Four patterns, each written out in Python with a small example of the problem it solves: adapter, builder, facade, factory, iterator, mediator, observer, prototype, proxy, singleton, state, and strategy. Writing them by hand is how I learned to spot which one a messy piece of code is trying to be.',
@@ -196,7 +196,7 @@ export const projects = [
     kind: 'personal',
     year: '2022',
     summary: 'A Python implementation of the Dominion board game, kept as the table for my own players.',
-    tags: ['Python', 'Object-oriented design'],
+    tags: ['Python', 'Object-Oriented Design'],
     links: { github: repo('dominion') },
     description: [
       "A fork of an open-source Python implementation of Dominion, the deck-building card game, with the base game, a console player, and a script that pits two players against each other. I kept it as the table my own players sat at, and reading its card, effect, and turn classes was a good lesson in modeling a game's rules in objects.",
@@ -208,7 +208,7 @@ export const projects = [
     kind: 'personal',
     year: '2021',
     summary: 'Scraping and analyzing KeepTradeCut dynasty fantasy values.',
-    tags: ['Python', 'Jupyter', 'Web scraping', 'Data analysis'],
+    tags: ['Python', 'Jupyter', 'Web Scraping', 'Data Engineering', 'Data Analysis'],
     links: { github: repo('KTC-Analysis-and-Scraping') },
     description: [
       "KeepTradeCut crowdsources what dynasty fantasy players are worth. This scraper pulls those values into a SQLite database, and a notebook digs through them: how values move through a season, which positions hold value with age, and where the crowd disagrees with itself. It's the seed of the fantasy analysis project.",
@@ -232,7 +232,7 @@ export const projects = [
     kind: 'personal',
     year: '2021',
     summary: "Projects from The Odin Project's web development curriculum.",
-    tags: ['HTML', 'CSS', 'JavaScript'],
+    tags: ['HTML', 'CSS', 'JavaScript', 'Git', 'GitHub'],
     links: { github: repo('OdinRepo') },
     description: [
       "Where I learned the front end: the exercises and projects from The Odin Project's curriculum, in plain HTML, CSS, and JavaScript, from a recipes site through the CSS exercises. No frameworks yet, which is the point.",
@@ -244,7 +244,7 @@ export const projects = [
     kind: 'personal',
     year: '2019',
     summary: 'My first go at machine learning: a Kaggle competition during my degree.',
-    tags: ['Python', 'Jupyter', 'Statistics'],
+    tags: ['Python', 'Jupyter', 'Statistics', 'Machine Learning', 'Linear Algebra'],
     links: {},
     // TODO(jacob): which competition, what you tried, and how it placed.
     description: [
@@ -273,7 +273,7 @@ export const projects = [
     featured: true,
     summary:
       "Lilly's first GitHub-native CI/CD pipeline for Microsoft Fabric, with a workspace per branch and the approval gates that brought deployments under SOX.",
-    tags: ['CI/CD', 'GitHub Actions', 'Microsoft Fabric', 'Azure'],
+    tags: ['CI/CD', 'Governance & Compliance', 'Microsoft Fabric', 'Data Engineering', 'GitHub Actions', 'GitHub', 'Git', 'Project Leadership', 'Azure'],
     links: {},
     description: [
       'Lilly had no GitHub-native way to ship Microsoft Fabric. I architected and launched the first one: a workspace per branch so every feature is isolated, parameterized deployments through fabric-cicd, and GitHub Actions authenticating as a service principal to promote code from feature branches through to production.',
@@ -286,11 +286,11 @@ export const projects = [
     kind: 'work',
     year: '2026',
     summary: 'Re-architected a highly manual quarterly process, with a semantic model that rolls up by day, month, and year and drills to document level.',
-    tags: ['Microsoft Fabric', 'Data modeling', 'Data architecture', 'SQL'],
+    tags: ['Semantic Models', 'Power BI', 'Microsoft Fabric', 'Data Modeling', 'Data Engineering', 'Lakehouse Architecture', 'Project Leadership'],
     links: {},
     description: [
       "The internal reporting team built the Cash Flow Statement by hand every quarter. I re-architected and delivered the platform behind it, automating most of that process; at full rollout it's projected to save thousands of hours.",
-      "The semantic model was redesigned too, so the statement rolls up by day, month, and year and drills through to company code and document level, analysis the previous model couldn't support.",
+      "The Power BI semantic model was redesigned too, so the statement rolls up by day, month, and year and drills through to company code and document level, analysis the previous model couldn't support.",
     ],
   },
   {
@@ -299,7 +299,7 @@ export const projects = [
     kind: 'work',
     year: '2026',
     summary: 'Brought Claude Code, Fabric Git integration, and VS Code together so developers work locally with context-aware agents.',
-    tags: ['Agentic development', 'Microsoft Fabric'],
+    tags: ['Agentic Development', 'Enablement', 'Microsoft Fabric', 'Git', 'GitHub'],
     links: {},
     description: [
       "Fabric development happened in the browser, one notebook at a time, with no way for an agent to see the whole codebase. I brought Claude Code, Fabric's Git integration, and VS Code together so developers work locally, with agents that have the full repo as context. Both the speed and the quality of what shipped went up.",
@@ -311,7 +311,7 @@ export const projects = [
     kind: 'work',
     year: '2026',
     summary: 'Bringing software development principles and a real development lifecycle to the data teams.',
-    tags: ['Mentoring', 'Process improvement', 'CI/CD'],
+    tags: ['Enablement', 'Engineering Standards', 'Team Leadership', 'CI/CD', 'Git', 'GitHub', 'GitHub Actions'],
     links: {},
     description: [
       'Data teams often ship without the habits software teams take for granted. Across several teams at Lilly I introduce those habits and the lifecycle around them: branches, reviews, tests, and releases that can be traced, taught by working alongside the developers rather than by memo.',
@@ -323,7 +323,7 @@ export const projects = [
     kind: 'work',
     year: '2026',
     summary: 'Refining the medallion architecture, moving toward a data mesh, and drawing clear lines between analytics engineers, data engineers, and analysts.',
-    tags: ['Data architecture', 'System design', 'Microsoft Fabric'],
+    tags: ['Lakehouse Architecture', 'Capacity Planning', 'Data Engineering', 'System Design', 'Microsoft Fabric'],
     links: {},
     description: [
       'Enterprise architecture and engineering guidance across multiple teams: refining the medallion architecture so each layer has one job, driving adoption of a data mesh model so domains own their data, and defining where the work of analytics engineers, data engineers, and analysts begins and ends.',
@@ -335,10 +335,10 @@ export const projects = [
     kind: 'work',
     year: '2024 to 2026',
     summary: "Led the firm's first: moving off on-premises systems onto Microsoft Fabric and Azure, with data from 15+ systems in one lake.",
-    tags: ['Microsoft Fabric', 'Azure', 'PySpark', 'SQL', 'Data architecture'],
+    tags: ['Microsoft Fabric', 'Fabric Migration', 'Lakehouse Architecture', 'Capacity Planning', 'Project Leadership', 'Data Engineering', 'Power BI', 'Azure', 'PySpark', 'SQL'],
     links: {},
     description: [
-      "Barnes & Thornburg's first unified cloud data platform. I led the migration from legacy on-premises systems to Microsoft Fabric and Azure, architecting the platform and consolidating data from more than 15 systems into one data lake that the whole firm could report from.",
+      "Barnes & Thornburg's first unified cloud data platform. I led the migration from legacy on-premises systems to Microsoft Fabric and Azure, architecting the platform and consolidating data from more than 15 systems into one data lake that the whole firm could report from in Power BI, and sizing the Fabric capacity it runs on.",
     ],
   },
   {
@@ -347,7 +347,7 @@ export const projects = [
     kind: 'work',
     year: '2024 to 2026',
     summary: 'A reusable package and pipelines that standardized ingestion, transformation, and business logic across dev and production.',
-    tags: ['Python', 'CI/CD', 'Microsoft Fabric'],
+    tags: ['Microsoft Fabric', 'Engineering Standards', 'Data Engineering', 'CI/CD', 'Python'],
     links: {},
     description: [
       "The team's reusable Microsoft Fabric utilities package and the CI/CD pipelines around it. It standardized how ingestion, transformation, and business logic were written, and kept the internal Python packages version-synced and deployment-ready across dev and production, so a change moved through environments the same way every time.",
@@ -359,7 +359,7 @@ export const projects = [
     kind: 'work',
     year: '2025',
     summary: 'A prototype that lets an LLM work in SharePoint: creating lists, updating columns, editing data, and pulling insights.',
-    tags: ['MCP', 'Python', 'LLM APIs'],
+    tags: ['MCP', 'Agentic Development', 'LLM Integration', 'Python'],
     links: {},
     description: [
       "A prototype Model Context Protocol server that extends an LLM into SharePoint. From a conversation, the model can create lists, update columns, edit data, and generate insights from what's there, with the server deciding what it's allowed to touch.",
@@ -371,7 +371,7 @@ export const projects = [
     kind: 'work',
     year: '2025',
     summary: 'An automated pipeline that turns media-licensing and option-agreement contracts into structured data, verified by attorneys.',
-    tags: ['LLM APIs', 'Process improvement'],
+    tags: ['LLM Integration', 'Governance & Compliance', 'AI Governance', 'Project Leadership'],
     links: {},
     description: [
       'Media-licensing and option-agreement contracts arrived as unstructured documents. I designed an automated pipeline on Power Automate and ChatGPT that reads them into structured data, integrated with SharePoint and Microsoft Copilot, with attorneys verifying the output before anything downstream trusts it.',
@@ -383,7 +383,7 @@ export const projects = [
     kind: 'work',
     year: '2025',
     summary: "The firm's data engineering, Python, and SQL standards: the documentation, the code-review checklists, and the architecture behind them.",
-    tags: ['System design', 'Data architecture', 'Python', 'SQL'],
+    tags: ['Engineering Standards', 'Lakehouse Architecture', 'System Design', 'Python', 'SQL'],
     links: {},
     description: [
       "Established the firm's data engineering, Python, and SQL development standards, and wrote the documentation and code-review checklists that made them stick. Standards are the quiet half of architecture: they're what keeps a platform built by five people from looking like five platforms.",
@@ -395,7 +395,7 @@ export const projects = [
     kind: 'work',
     year: '2025 to 2026',
     summary: 'Managed the data team, employees and contractors: assigning the work and owning the backlog to keep delivery visible.',
-    tags: ['Team leadership', 'Mentoring'],
+    tags: ['Team Leadership', 'Mentoring'],
     links: {},
     description: [
       'Organized and assigned the work across a five-person data team of employees and contractors, owning the Kanban board and the backlog so that what was coming, what was blocked, and what had shipped stayed visible to stakeholders.',
@@ -407,7 +407,7 @@ export const projects = [
     kind: 'work',
     year: '2024',
     summary: 'Led the design of the process and the product: requirements, relational data schemas, and how the microservices work together.',
-    tags: ['System design', 'Data modeling', 'Process improvement'],
+    tags: ['Project Leadership', 'System Design', 'Data Modeling', 'Process Improvement'],
     links: {},
     description: [
       "Led the design of both the process and the product for UKG's partner onboarding platform: detailing the requirements, establishing the frameworks, designing the relational data schemas, and orchestrating how the microservices interact.",
@@ -419,7 +419,7 @@ export const projects = [
     kind: 'work',
     year: '2024',
     summary: 'Reporting built on the cleaned data, so the business processes team could track its own work.',
-    tags: ['SQL', 'Data analysis'],
+    tags: ['SQL', 'Data Analysis'],
     links: {},
     // TODO(jacob): what the reports covered and who used them.
     description: [
@@ -432,7 +432,7 @@ export const projects = [
     kind: 'work',
     year: '2023',
     summary: "Automated Python pipelines from Smartsheet's API into our BigQuery warehouse, cleaning the data along the way.",
-    tags: ['Python', 'BigQuery', 'SQL'],
+    tags: ['Data Engineering', 'Python', 'BigQuery', 'Google Cloud', 'SQL'],
     links: {},
     description: [
       "Automated data pipelines in Python from Smartsheet's API into our BigQuery data warehouse, cleaning and transforming the data on the way in so that the analytics built on it could be trusted.",
@@ -444,7 +444,7 @@ export const projects = [
     kind: 'work',
     year: '2023',
     summary: 'Found the business problems behind slow deliveries and built the solutions, cutting delivery times 30%.',
-    tags: ['Process improvement', 'Python'],
+    tags: ['Process Improvement', 'Python'],
     links: {},
     description: [
       'Working cross-functionally with end users to find the business challenges behind slow deliveries, then building tailored solutions and drafting the business proposals to fund them. Delivery times fell 30%, enough to meet our SLAs.',
@@ -456,7 +456,7 @@ export const projects = [
     kind: 'work',
     year: '2023',
     summary: 'Overlapping business processes, mapped, merged, and documented as one.',
-    tags: ['Process improvement'],
+    tags: ['Process Improvement'],
     links: {},
     // TODO(jacob): which processes, and what merging them changed.
     description: [
@@ -469,7 +469,7 @@ export const projects = [
     kind: 'work',
     year: '2021 to 2022',
     summary: 'Implemented UKG for customers in healthcare, manufacturing, and retail, up to six at a time.',
-    tags: ['Client consulting'],
+    tags: ['Client Consulting', 'Project Leadership'],
     links: {},
     description: [
       "Managed up to six customer SaaS implementations at once, for customers in healthcare, manufacturing, and retail. The job was translating what each customer needed into working technical configuration, and keeping six timelines honest at the same time.",
@@ -481,7 +481,7 @@ export const projects = [
     kind: 'work',
     year: '2022',
     summary: 'Developed a new training program as team lead, responsible for how 60 new consultants were trained and how they did.',
-    tags: ['Team leadership', 'Mentoring'],
+    tags: ['Enablement', 'Team Leadership', 'Project Leadership'],
     links: {},
     description: [
       'Promoted to team lead, I developed a new training program for incoming consultants and was responsible for how 60 of them were trained and for their overall success once they were on customer work.',
@@ -493,7 +493,7 @@ export const projects = [
     kind: 'work',
     year: '2021 to 2022',
     summary: 'Mentored five new consultants through regular one-on-ones.',
-    tags: ['Mentoring'],
+    tags: ['Mentoring', 'Enablement'],
     links: {},
     description: [
       'Regular one-on-ones with five new consultants: working through their implementations with them, and the habits that make a consultant someone customers trust.',
@@ -505,7 +505,7 @@ export const projects = [
     kind: 'work',
     year: '2022',
     summary: 'Defined how the consulting team works with the teams around it: who owns what, how handoffs happen, and when to escalate.',
-    tags: ['Process improvement', 'Client consulting'],
+    tags: ['Process Improvement', 'Client Consulting'],
     links: {},
     // TODO(jacob): what the project actually covered.
     description: [
@@ -518,7 +518,7 @@ export const projects = [
     kind: 'work',
     year: '2022',
     summary: "An entry in UKG's internal innovation competition.",
-    tags: ['Process improvement'],
+    tags: ['Process Improvement'],
     links: {},
     // TODO(jacob): what you pitched and how it went.
     description: [
@@ -531,7 +531,7 @@ export const projects = [
     kind: 'work',
     year: '2020',
     summary: 'Helped launch a new website built in C#: I ran the analytics that found what was wrong with it, and wrote the queries that helped fix it.',
-    tags: ['C#', 'SQL', 'Data analysis'],
+    tags: ['C#', 'SQL', 'Data Analysis'],
     links: {},
     description: [
       'Anthem was launching a new website built in C#. I ran the analytics on it after launch, found what was going wrong and where, and wrote the SQL queries that helped the team fix it.',
@@ -543,7 +543,7 @@ export const projects = [
     kind: 'work',
     year: '2019',
     summary: "A summer on Anthem's process consulting team, the year before I joined it.",
-    tags: ['Data analysis', 'Excel'],
+    tags: ['Data Analysis', 'Excel'],
     links: {},
     // TODO(jacob): what the internship involved.
     description: [

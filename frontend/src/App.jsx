@@ -8,6 +8,7 @@ import Portfolio from './pages/Portfolio.jsx'
 import ProjectPage from './pages/ProjectPage.jsx'
 import Projects from './pages/Projects.jsx'
 import Resume from './pages/Resume.jsx'
+import ResumePrint from './pages/ResumePrint.jsx'
 
 // The fantasy section is the heaviest part of the site, so it loads on its own
 // the first time someone opens it.
@@ -18,6 +19,9 @@ const ModelPage = lazy(() => import('./fantasy/ModelPage.jsx'))
 export default function App() {
   return (
     <Routes>
+      {/* The resume laid out for paper, with none of the site around it: what
+          the build prints to the downloadable PDF. */}
+      <Route path="resume/print" element={<ResumePrint />} />
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />

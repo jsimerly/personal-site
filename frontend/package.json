@@ -8,6 +8,7 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
+    "resume:pdf": "node scripts/build-resume-pdf.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -37,6 +38,7 @@
     "@vitest/coverage-v8": "^5.0.2",
     "jsdom": "^29.1.1",
     "oxlint": "^1.81.0",
+    "pdfjs-dist": "^6.4.299",
     "vite": "^8.3.0",
     "vitest": "^5.0.2"
   }

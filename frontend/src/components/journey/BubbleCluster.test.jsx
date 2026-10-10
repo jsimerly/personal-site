@@ -40,7 +40,7 @@ describe('BubbleCluster', () => {
   })
 
   it('assembles the rows from the bottom up, so the top rows land last', () => {
-    // Curious is the top row (Mindset), SQL a lower one (Languages).
+    // SQL is the top row here (Languages), Curious the bottom one (Mindset, last).
     const { container, rerender } = render(
       <BubbleCluster totals={totals} sortProgress={0} popDelay={0} width={320} sortedWidth={1024} picked={[]} onToggle={() => {}} />,
     )
@@ -51,8 +51,48 @@ describe('BubbleCluster', () => {
       <BubbleCluster totals={totals} sortProgress={0.3} popDelay={0} width={320} sortedWidth={1024} picked={[]} onToggle={() => {}} />,
     )
 
-    expect(placeOf('SQL')).not.toBe(cloud.SQL)
-    expect(placeOf('Curious')).toBe(cloud.Curious)
+    expect(placeOf('Curious')).not.toBe(cloud.Curious)
+    expect(placeOf('SQL')).toBe(cloud.SQL)
+  })
+
+  // The cards scroll past on either side of the cloud's column. A bubble that
+  // set off straight for its place in a row could cut across the corner of a
+  // card still on screen, so it moves to its row's level first, then slides.
+  it("sinks a bubble to its row's level inside the cloud's column before sliding it sideways, clear of the cards beside the cloud", () => {
+    const at = (sortProgress) => (
+      <BubbleCluster totals={totals} sortProgress={sortProgress} popDelay={0} width={320} sortedWidth={1024} picked={[]} onToggle={() => {}} />
+    )
+    const { container, rerender } = render(at(0))
+    const centerOf = (skill) => {
+      const bubble = container.querySelector(`[data-basket-skill="${skill}"]`)
+      const [, x, y] = bubble.style.transform.match(/translate\(([-\d.]+)px, ([-\d.]+)px\)/).map(Number)
+      const button = bubble.querySelector('button')
+      return { x: x + parseFloat(button.style.width) / 2, y: y + parseFloat(button.style.height) / 2 }
+    }
+    const cloud = centerOf('Curious')
+
+    // Curious's row (the bottom one) is a fifth of the way to landing.
+    rerender(at(0.15))
+    const sinking = centerOf('Curious')
+    expect(sinking.x).toBeCloseTo(cloud.x, 6)
+    expect(Math.abs(sinking.y - cloud.y)).toBeGreaterThan(2)
+
+    // Most of the way there, it has slid out toward its place in the row.
+    rerender(at(0.3))
+    expect(Math.abs(centerOf('Curious').x - cloud.x)).toBeGreaterThan(100)
+  })
+
+  it('once sorted, keeps the skills that stick around purple and bigger, and fades the rest to grey', () => {
+    const withReact = [...totals, { skill: 'React', points: 8, work: 0, build: 8 }]
+    render(<BubbleCluster totals={withReact} sortProgress={1} popDelay={0} width={320} sortedWidth={1024} picked={[]} onToggle={() => {}} />)
+
+    const react = screen.getByRole('button', { name: 'React' })
+    const python = screen.getByRole('button', { name: 'Python' })
+    expect(react.style).toMatchObject({ color: 'var(--color-zinc-500)', backgroundColor: 'transparent', fontSize: '12px' })
+    expect(python.style.color).toBe('')
+    expect(parseFloat(python.style.fontSize)).toBeGreaterThanOrEqual(14)
+    // Faded is still a skill you can pick.
+    expect(react).toBeEnabled()
   })
 
   it('brings in the heading and the kinds of skill as it sorts, still not clickable', () => {
