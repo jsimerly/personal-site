@@ -1,5 +1,6 @@
-import { IconFileText, IconMail } from '@tabler/icons-react'
+import { IconFileText } from '@tabler/icons-react'
 import { Link } from 'react-router'
+import ContactCapture from '../components/ContactCapture.jsx'
 import Journey from '../components/journey/Journey.jsx'
 import ProfilePhoto from '../components/ProfilePhoto.jsx'
 import SelectedWork from '../components/SelectedWork.jsx'
@@ -11,8 +12,6 @@ import { profile } from '../content/profile'
 // proof, and how to reach me. The proof follows right under it (Selected
 // work), and the journey tells the longer story below that.
 export default function Home() {
-  const { email } = profile.links
-
   return (
     <>
       {/* Photo on top on phones (small, so the words still fit the first
@@ -23,13 +22,10 @@ export default function Home() {
           <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">{profile.name}</h1>
           <p className="mt-5 text-xl leading-8 text-zinc-100 sm:text-2xl sm:leading-9">{profile.headline}</p>
           <p className="mt-4 text-lg leading-8 text-zinc-400">{profile.intro}</p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            {/* Straight to my inbox once there's an address; until then, to
-                the invitation at the bottom of the page. */}
-            <a href={email ? `mailto:${email}` : '#contact'} className={buttonStyles.primary}>
-              <IconMail size={16} aria-hidden="true" />
-              Work with me
-            </a>
+          {/* Top-aligned, so the buttons stay level with the field when it
+              opens with its note underneath. */}
+          <div className="mt-8 flex flex-wrap items-start gap-3">
+            <ContactCapture source="hero" />
             <Link to="/resume" className={buttonStyles.secondary}>
               <IconFileText size={16} aria-hidden="true" />
               Resume

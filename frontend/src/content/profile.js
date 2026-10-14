@@ -19,6 +19,12 @@ export const profile = {
     { name: 'UKG', logo: 'logos/ukg.svg', height: 'h-5' },
     { name: 'Anthem', logo: 'logos/anthem.svg', height: 'h-6' },
   ],
+  // "Work with me": the field's prompt, what happens after, and the thanks.
+  contact: {
+    prompt: 'Your email or phone',
+    promise: "I'll get back to you within a day.",
+    thanks: "Got it. I'll get back to you within a day.",
+  },
   location: 'Indianapolis, IN',
   links: {
     github: 'https://github.com/jsimerly',

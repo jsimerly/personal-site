@@ -36,3 +36,7 @@ coverage.xml
 test-results/
 playwright-report/
 blob-report/
+
+# What the E2E lane's contact form writes: leads and their emails.
+api/e2e/gcs/jacobsimerly-site-leads/
+api/e2e/outbox/
