@@ -47,6 +47,18 @@ test('the portfolio is one click from anywhere', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1, name: 'Portfolio' })).toBeVisible()
 })
 
+// A cover is a file under public/. It has to load from the site root on the
+// portfolio and on the project's own page alike, deeper in the path.
+test("Ele Cards' cover loads on its portfolio tab and on its project page", async ({ page }) => {
+  for (const path of ['portfolio?tab=ele-cards', 'projects/ele-cards']) {
+    await visit(page, path)
+
+    const cover = page.getByRole('main').locator('img[src$="covers/ele-cards.jpg"]')
+    await expect(cover).toBeVisible()
+    expect(await cover.evaluate((img) => img.complete && img.naturalWidth), path).toBe(1120)
+  }
+})
+
 test('a data-backed project page loads its data from the API', async ({ page }) => {
   await visit(page, 'projects/example')
 

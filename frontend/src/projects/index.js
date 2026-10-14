@@ -6,7 +6,9 @@ import { lazy } from 'react'
 // built from these fields unless the project has its own `Page` (for
 // interactive or data-backed projects, which read from the API under
 // /api/<slug>/). `hidden` keeps a project routable but out of the gallery.
-// `links.explore` is a path on this site to try it.
+// `links.explore` is a path on this site to try it. `cover` is an image
+// under public/ (e.g. 'covers/ele-cards.jpg', 16:9) shown in place of the
+// project's initials.
 //
 // `tags` double as the project's skills: on the home page, picking a skill
 // finds the projects tagged with it, so use the same names as the journey.
@@ -45,6 +47,20 @@ export const projects = [
     description: [
       'Scheduled Cloud Run jobs pull league, market, and NFL stats data from Sleeper, KeepTradeCut, FantasyCalc, and nflverse into a bronze layer on Cloud Storage, then model it into clean dimensions and facts. A Cloud Workflow runs the whole pipeline in dependency order every day.',
       "On top of that sit projection models, gradient-boosted trees and TabPFN, that forecast every player's next ten seasons, value them in wins above replacement for each of my leagues, and measure the market against them. Every model is backtested on seasons it never saw.",
+    ],
+  },
+  {
+    slug: 'ele-cards',
+    name: 'Ele Cards',
+    kind: 'personal',
+    year: '2024 to now',
+    summary: 'A spaced-repetition flashcard app: each card comes back right before you would forget it.',
+    tags: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Google Cloud', 'Cloud Run', 'Docker', 'GitHub Actions', 'Django'],
+    links: { live: 'https://ele.cards' },
+    cover: 'covers/ele-cards.jpg',
+    description: [
+      'Ele is named for the animal that never forgets. You study a card once, and it returns on a schedule set by how well you knew it, so what you learn stays learned without cramming. It started in 2024 as a company and is a personal project now.',
+      "The site is live at ele.cards: React, TypeScript, and Tailwind, built in Docker and deployed to Cloud Run by GitHub Actions with keyless auth. The app behind it, on a Django API, is what I'm building next.",
     ],
   },
   {

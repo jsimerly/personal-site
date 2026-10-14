@@ -37,10 +37,11 @@ pipe it to tail.
   - shows the photo from public/ under the site base, described by name
   - holds the initials and a marked spot until there is a photo
 
-### src/components/ProjectCover.test.jsx (2 tests)
+### src/components/ProjectCover.test.jsx (3 tests)
 
 - **ProjectCover**
-  - shows a project's cover image when it has one
+  - shows a project's cover image when it has one, from the site root
+  - has every cover a project names in public/, so the build ships it
   - stands in with its initials on a flat color, the same color every time, until it has one
 
 ### src/components/SelectedWork.test.jsx (3 tests)
@@ -291,7 +292,7 @@ pipe it to tail.
   - leaves no placeholder copy on the page
   - ships the photo the profile names in public/, so the build includes it
 
-### src/pages/Portfolio.test.jsx (8 tests)
+### src/pages/Portfolio.test.jsx (9 tests)
 
 - **Portfolio**
   - offers one tab per piece, in order, with coming-soon ones marked, and opens on the first
@@ -300,6 +301,7 @@ pipe it to tail.
   - opens straight to the tab named in the URL
   - falls back to the first tab when the URL names one that does not exist
   - moves between tabs with the arrow keys, Home, and End, wrapping at the ends
+  - shows Ele Cards with its cover, its story, and a link to ele.cards, with no code link while the repo is private
   - shows the fantasy piece with a live top five and a way into the section
   - points every ready piece at a project that exists
 
@@ -362,15 +364,16 @@ pipe it to tail.
 - **the skills basket**
   - holds only Curious until the reader scrolls, then starts collecting
 
-### e2e/site.spec.js (6 tests)
+### e2e/site.spec.js (7 tests)
 
 - the first screen says what I do and how to reach me, before any scrolling
 - the home page leads with selected work, each opening its case study
 - the portfolio is one click from anywhere
+- Ele Cards' cover loads on its portfolio tab and on its project page
 - a data-backed project page loads its data from the API
 - a project address works when opened directly and survives a reload
 - the name in the header leads back home
 
 ---
 
-176 unit and 31 end-to-end tests cataloged.
+178 unit and 32 end-to-end tests cataloged.

@@ -42,8 +42,8 @@ describe('Portfolio', () => {
     expect(screen.getAllByRole('tab').map((tab) => tab.textContent)).toEqual([
       'Brolympics',
       'Fantasy Football Engineering',
+      'Ele Cards',
       'Agentic Investing Soon(coming soon)',
-      'AI Control Center Soon(coming soon)',
     ])
     expect(selectedTab()).toHaveAccessibleName('Brolympics')
     expect(panelHeading()).toHaveTextContent('Brolympics')
@@ -89,7 +89,7 @@ describe('Portfolio', () => {
     await userEvent.click(screen.getByRole('tab', { name: 'Brolympics' }))
 
     await userEvent.keyboard('{ArrowLeft}')
-    expect(selectedTab()).toHaveAccessibleName('AI Control Center (coming soon)')
+    expect(selectedTab()).toHaveAccessibleName('Agentic Investing (coming soon)')
     expect(selectedTab()).toHaveFocus()
 
     await userEvent.keyboard('{ArrowRight}')
@@ -100,11 +100,24 @@ describe('Portfolio', () => {
     expect(selectedTab()).toHaveFocus()
 
     await userEvent.keyboard('{End}')
-    expect(selectedTab()).toHaveAccessibleName('AI Control Center (coming soon)')
+    expect(selectedTab()).toHaveAccessibleName('Agentic Investing (coming soon)')
 
     await userEvent.keyboard('{Home}')
     expect(selectedTab()).toHaveAccessibleName('Brolympics')
     expect(selectedTab()).toHaveFocus()
+  })
+
+  it('shows Ele Cards with its cover, its story, and a link to ele.cards, with no code link while the repo is private', () => {
+    renderAt('/portfolio?tab=ele-cards')
+    const panel = within(screen.getByRole('tabpanel'))
+
+    expect(selectedTab()).toHaveAccessibleName('Ele Cards')
+    expect(panelHeading()).toHaveTextContent('Ele Cards')
+    expect(panel.getByText('2024 to now')).toBeInTheDocument()
+    expect(panel.getByText('A spaced-repetition flashcard app: each card comes back right before you would forget it.')).toBeInTheDocument()
+    expect(panel.getByRole('link', { name: 'Visit the site' })).toHaveAttribute('href', 'https://ele.cards')
+    expect(panel.queryByRole('link', { name: 'View the code' })).not.toBeInTheDocument()
+    expect(screen.getByRole('tabpanel').querySelector('img')).toHaveAttribute('src', '/covers/ele-cards.jpg')
   })
 
   it('shows the fantasy piece with a live top five and a way into the section', async () => {

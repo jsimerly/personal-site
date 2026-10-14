@@ -1,5 +1,7 @@
 // A project's cover image, or until it has one, a flat muted color with its
 // initials. The hue comes from the slug, so each project keeps its own color.
+// The image is a path under public/, resolved from the site root, so it
+// loads the same on /portfolio as on /projects/<slug>.
 function hueFor(slug) {
   let hue = 0
   for (const char of slug) hue = (hue * 31 + char.charCodeAt(0)) % 360
@@ -18,7 +20,7 @@ function initialsFor(name) {
 
 export default function ProjectCover({ project, className = '' }) {
   if (project.cover) {
-    return <img src={project.cover} alt="" className={`w-full object-cover ${className}`} />
+    return <img src={`${import.meta.env.BASE_URL}${project.cover}`} alt="" className={`w-full object-cover ${className}`} />
   }
   const hue = hueFor(project.slug)
   return (
